@@ -1,0 +1,387 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Crimson+Pro:wght@300;400;600&family=JetBrains+Mono:wght@300;400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-soda-night text-soda-warm;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Cursor personalizado */
+* {
+  cursor: none !important;
+}
+
+#custom-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border: 1px solid rgba(212, 197, 176, 0.6);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease-out, width 0.15s, height 0.15s;
+  mix-blend-mode: difference;
+}
+
+#custom-cursor.hover {
+  width: 40px;
+  height: 40px;
+  background: rgba(212, 197, 176, 0.1);
+}
+
+/* Grano de película analógica */
+.film-grain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.08;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  animation: grain 8s steps(10) infinite;
+}
+
+/* Vignette oscuro en los bordes */
+.vignette {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9997;
+  background: radial-gradient(ellipse at center, transparent 0%, transparent 40%, rgba(10, 14, 26, 0.4) 80%, rgba(10, 14, 26, 0.8) 100%);
+}
+
+/* Scanlines de monitor CRT */
+.scanlines {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9996;
+  background: linear-gradient(
+    to bottom,
+    transparent 50%,
+    rgba(212, 197, 176, 0.02) 50%
+  );
+  background-size: 100% 4px;
+  opacity: 0.4;
+}
+
+/* Gotas de lluvia */
+.rain-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 50;
+  overflow: hidden;
+}
+
+.rain-drop {
+  position: absolute;
+  width: 1px;
+  height: 20px;
+  background: linear-gradient(to bottom, transparent, rgba(212, 197, 176, 0.3), transparent);
+  animation: rainDrop linear infinite;
+}
+
+/* Vidrio empañado */
+.glass-fog {
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-fog::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(42, 49, 66, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  pointer-events: none;
+}
+
+/* Efecto de luz volumétrica */
+.light-rays {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(212, 197, 176, 0.1) 0%,
+    transparent 50%
+  );
+  animation: shimmer 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Neblina */
+.mist {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(42, 49, 66, 0.1) 0%,
+    transparent 30%,
+    transparent 70%,
+    rgba(42, 49, 66, 0.15) 100%
+  );
+  animation: float 12s ease-in-out infinite;
+}
+
+/* Estrellas parpadeantes */
+.stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: rgba(212, 197, 176, 0.8);
+  border-radius: 50%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* Efecto glitch para contenido premium */
+.glitch {
+  position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: inherit;
+}
+
+.glitch::before {
+  left: 2px;
+  text-shadow: -2px 0 #ff00de;
+  clip: rect(24px, 550px, 90px, 0);
+  animation: glitch 3s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+  left: -2px;
+  text-shadow: -2px 0 #00fff9;
+  clip: rect(85px, 550px, 140px, 0);
+  animation: glitch 2s infinite linear alternate-reverse;
+}
+
+/* Interferencia de TV estática */
+.static-noise {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.08;
+  animation: interference 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Bokeh de luces urbanas */
+.bokeh {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 197, 176, 0.6) 0%, transparent 70%);
+  filter: blur(8px);
+  animation: float 8s ease-in-out infinite;
+}
+
+/* Chromatic aberration */
+.chromatic {
+  position: relative;
+}
+
+.chromatic::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 2px;
+  width: 100%;
+  height: 100%;
+  background: inherit;
+  mix-blend-mode: screen;
+  opacity: 0.3;
+  filter: hue-rotate(90deg);
+}
+
+.chromatic::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -2px;
+  width: 100%;
+  height: 100%;
+  background: inherit;
+  mix-blend-mode: screen;
+  opacity: 0.3;
+  filter: hue-rotate(270deg);
+}
+
+/* Transiciones suaves para cambios de página */
+.page-transition {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+/* Hover effects para cards */
+.card-hover {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px rgba(212, 197, 176, 0.15);
+}
+
+/* Efecto de ondas al hacer click */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(212, 197, 176, 0.4);
+  transform: scale(0);
+  animation: ripple-effect 0.6s ease-out;
+  pointer-events: none;
+}
+
+@keyframes ripple-effect {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(20, 24, 36, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(212, 197, 176, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 197, 176, 0.5);
+}
+
+/* Selección de texto */
+::selection {
+  background: rgba(212, 197, 176, 0.3);
+  color: #fef8ed;
+}
+
+/* Botones con efecto de resplandor */
+.glow-button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.glow-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(212, 197, 176, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.glow-button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Imagen con overlay oscuro */
+.image-overlay {
+  position: relative;
+  overflow: hidden;
+}
+
+.image-overlay::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 14, 26, 0.3) 0%,
+    rgba(10, 14, 26, 0.7) 100%
+  );
+  transition: opacity 0.3s ease;
+}
+
+.image-overlay:hover::after {
+  opacity: 0.5;
+}
+
+/* Loader atmosférico */
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba(212, 197, 176, 0.2);
+  border-bottom-color: rgba(212, 197, 176, 0.8);
+  border-radius: 50%;
+  display: inline-block;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
