@@ -90,19 +90,74 @@ export const EpisodeCard: React.FC<EpisodeCardProps> = ({ episode }) => {
           
           {/* Overlay premium con glitch */}
           {episode.isPremium && (
-            <div className="absolute inset-0 bg-soda-night bg-opacity-70 backdrop-blur-sm flex items-center justify-center">
-              <div className="static-noise" />
-              <div className="relative z-10 text-center">
+            <div className="absolute inset-0 bg-gradient-to-br from-soda-red/40 via-soda-night/60 to-soda-accent/40 backdrop-blur-md flex items-center justify-center overflow-hidden">
+              <div className="static-noise opacity-20" />
+              
+              {/* Efecto de ondas de frecuencia */}
+              {[...Array(5)].map((_, i) => (
                 <motion.div
-                  animate={{ opacity: [0.5, 1, 0.5] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="text-soda-red text-6xl mb-4"
+                  key={i}
+                  className="absolute inset-0 border-2 border-soda-red rounded-sm"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ 
+                    opacity: [0, 0.5, 0],
+                    scale: [0.8, 1.2, 1.4]
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    delay: i * 0.6,
+                    ease: "easeOut"
+                  }}
+                />
+              ))}
+              
+              <div className="relative z-10 text-center px-6">
+                <motion.div
+                  animate={{ 
+                    scale: [1, 1.1, 1],
+                    rotate: [0, 5, -5, 0]
+                  }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                  className="text-soda-red text-7xl mb-4 drop-shadow-2xl"
+                  style={{ filter: 'drop-shadow(0 0 20px rgba(196, 85, 85, 0.8))' }}
                 >
                   ◉
                 </motion.div>
-                <div className="glitch text-soda-lamp text-xl tracking-wider" data-text="FRECUENCIA INTERNA">
+                
+                <motion.div
+                  animate={{ opacity: [0.7, 1, 0.7] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="text-soda-glow text-2xl tracking-widest mb-3 font-light"
+                  style={{ textShadow: '0 0 20px rgba(255, 255, 255, 0.5)' }}
+                >
                   FRECUENCIA INTERNA
+                </motion.div>
+                
+                <div className="text-soda-lamp text-sm tracking-wide">
+                  Contenido Exclusivo
                 </div>
+                
+                {/* Partículas flotantes */}
+                {[...Array(8)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute w-1 h-1 bg-soda-red rounded-full"
+                    style={{
+                      left: `${Math.random() * 100}%`,
+                      top: `${Math.random() * 100}%`,
+                    }}
+                    animate={{
+                      y: [0, -30, 0],
+                      opacity: [0, 1, 0],
+                    }}
+                    transition={{
+                      duration: 3 + Math.random() * 2,
+                      repeat: Infinity,
+                      delay: Math.random() * 2,
+                    }}
+                  />
+                ))}
               </div>
             </div>
           )}

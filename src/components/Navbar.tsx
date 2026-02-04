@@ -12,11 +12,12 @@ export const Navbar: React.FC = () => {
 
   const menuItems = [
     { label: 'Inicio', href: '/' },
-    { label: 'Episodios', href: '/episodios' },
-    { label: 'Frecuencia Interna', href: '/frecuencia-interna' },
-    { label: '¿Qué es esto?', href: '/sobre' },
-    { label: 'Las Voces', href: '/voces' },
-    { label: 'Objetos', href: '/tienda' },
+    { label: '¿Qué es esto?', href: '#que-es-esto' },
+    { label: 'El Equipo', href: '#equipo' },
+    { label: 'Episodios', href: '#episodios' },
+    { label: 'Frecuencia Interna', href: '#frecuencia-interna' },
+    { label: 'Shop', href: '#shop' },
+    { label: 'Contacto', href: '#contacto' },
   ];
 
   return (

@@ -1,7 +1,12 @@
 import React from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
+import { QueEsEsto } from './components/QueEsEsto';
+import { ElEquipo } from './components/ElEquipo';
 import { EpisodeCard } from './components/EpisodeCard';
+import { FrecuenciaInterna } from './components/FrecuenciaInterna';
+import { Shop } from './components/Shop';
+import { Contacto } from './components/Contacto';
 import { CustomCursor } from './effects/CustomCursor';
 import { FloatingParticles } from './effects/FloatingParticles';
 import { Bokeh } from './effects/Bokeh';
@@ -80,8 +85,14 @@ function App() {
       {/* Hero Section */}
       <Hero />
       
+      {/* Sección ¿Qué es esto? */}
+      <QueEsEsto />
+
+      {/* Sección El Equipo */}
+      <ElEquipo />
+
       {/* Sección de Últimos Episodios */}
-      <section className="relative py-24 px-6">
+      <section id="episodios" className="relative py-24 px-6">
         <div className="max-w-7xl mx-auto">
           {/* Título de sección */}
           <div className="text-center mb-16">
@@ -95,7 +106,7 @@ function App() {
           </div>
           
           {/* Grid de episodios */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {mockEpisodes.map((episode) => (
               <EpisodeCard key={episode.id} episode={episode} />
             ))}
@@ -110,41 +121,14 @@ function App() {
         </div>
       </section>
 
-      {/* Sección Frecuencia Interna Preview */}
-      <section className="relative py-24 px-6 bg-gradient-to-b from-transparent via-soda-deep to-transparent">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="relative inline-block mb-8">
-            <div className="text-8xl text-soda-red animate-pulse-slow">◉</div>
-            <div className="absolute inset-0 bg-soda-red rounded-full blur-3xl opacity-20" />
-          </div>
-          
-          <h2 className="text-5xl font-serif text-soda-glow mb-6">
-            Frecuencia Interna
-          </h2>
-          
-          <p className="text-soda-fog text-lg font-light leading-relaxed mb-8 max-w-2xl mx-auto">
-            Las historias que se cuentan cuando la noche ya está avanzada.
-            <br />
-            Episodios más profundos, investigaciones extendidas, contenido exclusivo.
-          </p>
-          
-          <div className="space-y-4 mb-12 text-soda-mist text-sm">
-            <p>• Episodios exclusivos cada mes</p>
-            <p>• Mapas interactivos extendidos</p>
-            <p>• Participación en futuros episodios</p>
-            <p>• Número de Socio Efervescente</p>
-            <p>• Acceso anticipado a lanzamientos</p>
-          </div>
-          
-          <button className="glow-button hoverable px-12 py-4 bg-soda-red bg-opacity-20 border border-soda-red text-soda-lamp rounded-sm hover:bg-opacity-30 transition-all duration-300 font-light tracking-wider backdrop-blur-sm">
-            SUMARTE A LA FRECUENCIA
-          </button>
-          
-          <p className="text-soda-fog text-xs mt-8 font-light">
-            Tu aporte sostiene este proyecto independiente
-          </p>
-        </div>
-      </section>
+      {/* Sección Frecuencia Interna */}
+      <FrecuenciaInterna />
+
+      {/* Sección Shop */}
+      <Shop />
+
+      {/* Sección Contacto */}
+      <Contacto />
 
       {/* Footer */}
       <footer className="relative py-16 px-6 border-t border-soda-mist border-opacity-20">
