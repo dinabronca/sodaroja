@@ -13,12 +13,12 @@ export default {
           'deep': '#141824',          // gris azulado oscuro
           'slate': '#1e2433',         // gris medio
           'mist': '#2a3142',          // gris más claro
-          'fog': '#3d4556',           // gris claro
-          'lamp': '#d4c5b0',          // beige cálido tenue
-          'warm': '#e8dcc8',          // blanco gastado
-          'glow': '#fef8ed',          // luz de velador
-          'red': '#8b3a3a',           // rojo apagado (detalles)
-          'accent': '#6b7a9e',        // azul grisáceo
+          'fog': '#8a94a6',           // gris claro - MÁS VISIBLE
+          'lamp': '#e8dcc8',          // beige cálido - MÁS CLARO
+          'warm': '#f5f0e8',          // blanco gastado - MÁS CLARO
+          'glow': '#ffffff',          // luz de velador - BLANCO PURO
+          'red': '#c45555',           // rojo más visible
+          'accent': '#8a9bc4',        // azul más visible
         },
       },
       fontFamily: {
