@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Link, useLocation } from 'react-router-dom';
 
 export const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -10,27 +12,25 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    if (href === '/') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      const element = document.querySelector(href);
+  const menuItems = [
+    { label: 'Inicio', href: '/' },
+    { label: '¿Qué es esto?', href: '/que-es-esto' },
+    { label: 'El Equipo', href: '/equipo' },
+    { label: 'Episodios', href: '/#episodios' },
+    { label: 'Frecuencia Interna', href: '/frecuencia-interna' },
+    { label: 'Shop', href: '/shop' },
+    { label: 'Contacto', href: '/contacto' },
+  ];
+
+  const handleEpisodiosClick = (e: React.MouseEvent) => {
+    if (location.pathname === '/') {
+      e.preventDefault();
+      const element = document.querySelector('#episodios');
       if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }
   };
-
-  const menuItems = [
-    { label: 'Inicio', href: '/' },
-    { label: '¿Qué es esto?', href: '#que-es-esto' },
-    { label: 'El Equipo', href: '#equipo' },
-    { label: 'Episodios', href: '#episodios' },
-    { label: 'Frecuencia Interna', href: '#frecuencia-interna' },
-    { label: 'Shop', href: '#shop' },
-    { label: 'Contacto', href: '#contacto' },
-  ];
 
   return (
     <motion.nav
@@ -44,31 +44,54 @@ export const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 py-6">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <a href="/" className="hoverable group">
+          <Link to="/" className="hoverable group">
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 border border-soda-red border-opacity-60 rounded-sm flex items-center justify-center group-hover:border-opacity-100 transition-all duration-300">
                 <div className="w-2 h-2 bg-soda-red rounded-full animate-pulse-slow" />
               </div>
               <span className="font-serif text-xl tracking-wider text-soda-glow">SODAROJA</span>
             </div>
-          </a>
+          </Link>
 
           {/* Menu Desktop */}
           <div className="hidden md:flex items-center space-x-8">
-            {menuItems.map((item, index) => (
-              <motion.a
-                key={item.href}
-                href={item.href}
-                onClick={(e) => handleNavClick(e, item.href)}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 * index, duration: 0.5 }}
-                className="hoverable text-soda-fog hover:text-soda-lamp transition-colors duration-300 text-sm tracking-wide font-light relative group"
-              >
-                {item.label}
-                <span className="absolute bottom-0 left-0 w-0 h-px bg-soda-lamp group-hover:w-full transition-all duration-300" />
-              </motion.a>
-            ))}
+            {menuItems.map((item, index) => {
+              const isEpisodios = item.href === '/#episodios';
+              
+              if (isEpisodios) {
+                return (
+                  <motion.a
+                    key={item.href}
+                    href={item.href}
+                    onClick={handleEpisodiosClick}
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 * index, duration: 0.5 }}
+                    className="hoverable text-soda-fog hover:text-soda-lamp transition-colors duration-300 text-sm tracking-wide font-light relative group"
+                  >
+                    {item.label}
+                    <span className="absolute bottom-0 left-0 w-0 h-px bg-soda-lamp group-hover:w-full transition-all duration-300" />
+                  </motion.a>
+                );
+              }
+              
+              return (
+                <motion.div
+                  key={item.href}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 * index, duration: 0.5 }}
+                >
+                  <Link
+                    to={item.href}
+                    className="hoverable text-soda-fog hover:text-soda-lamp transition-colors duration-300 text-sm tracking-wide font-light relative group"
+                  >
+                    {item.label}
+                    <span className="absolute bottom-0 left-0 w-0 h-px bg-soda-lamp group-hover:w-full transition-all duration-300" />
+                  </Link>
+                </motion.div>
+              );
+            })}
           </div>
 
           {/* Mi Cuenta */}
