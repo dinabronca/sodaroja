@@ -1,13 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Package, Shirt, Image, Coffee, Mail } from 'lucide-react';
+import { Package, Mail } from 'lucide-react';
+import { contentData } from '../data/content';
 
 export const Shop: React.FC = () => {
+  const { shop } = contentData;
+  
   const comingSoonItems = [
-    { icon: Shirt, name: 'Remeras y Buzos', desc: 'Diseños exclusivos de SODAROJA' },
-    { icon: Coffee, name: 'Tazas y Termo', desc: 'Para escuchar el podcast con estilo' },
-    { icon: Image, name: 'Postales y Posters', desc: 'Mapas ilustrados de episodios' },
-    { icon: Package, name: 'Stickers', desc: 'Dejá tu marca por el mundo' },
+    { icon: Package, name: 'Pack de Stickers', desc: 'Colección de stickers del culto' },
   ];
 
   return (
@@ -21,11 +21,11 @@ export const Shop: React.FC = () => {
           className="text-center mb-16"
         >
           <h2 className="text-5xl md:text-6xl font-serif text-soda-glow mb-6">
-            Objetos Encontrados
+            {shop.title}
           </h2>
           <div className="w-32 h-px bg-gradient-to-r from-transparent via-soda-accent to-transparent mx-auto mb-8" />
           <p className="text-soda-lamp text-lg">
-            Pronto vas a poder llevar SODAROJA con vos
+            {shop.subtitle}
           </p>
         </motion.div>
 
@@ -55,10 +55,10 @@ export const Shop: React.FC = () => {
         >
           <div className="text-6xl mb-6">📦</div>
           <h3 className="text-2xl font-serif text-soda-glow mb-4">
-            Avisame cuando abran la tienda
+            Notificame cuando esté disponible
           </h3>
           <p className="text-soda-fog mb-6 max-w-2xl mx-auto">
-            Dejanos tu email y te avisamos cuando lancemos la tienda oficial con merchandising exclusivo
+            Dejanos tu email y te avisamos cuando esté disponible el catálogo completo
           </p>
           
           <div className="flex gap-4 max-w-md mx-auto">

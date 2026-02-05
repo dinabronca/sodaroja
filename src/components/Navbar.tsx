@@ -43,7 +43,7 @@ export const Navbar: React.FC = () => {
               <div className="w-8 h-8 border border-soda-red border-opacity-60 rounded-sm flex items-center justify-center group-hover:border-opacity-100 transition-all duration-300">
                 <div className="w-2 h-2 bg-soda-red rounded-full animate-pulse-slow" />
               </div>
-              <span className="font-serif text-xl tracking-wider text-soda-glow">SODAROJA</span>
+              <span className="font-serif text-xl tracking-wider text-soda-glow">sodaroja</span>
             </div>
           </Link>
 
