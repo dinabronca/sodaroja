@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { EpisodeCard } from '../components/EpisodeCard';
+import { FloatingAsh } from '../effects/SectionBackgrounds';
 
-// Mock data extendido
+// Mock data extendido — cada episodio ahora incluye publishDate
 const mockEpisodes = [
   {
     id: '1',
@@ -15,6 +16,9 @@ const mockEpisodes = [
     lng: 2.3522,
     spotifyUrl: '#',
     soundcloudUrl: '#',
+    publishDate: '2025-11-15',
+    // Para embed real, reemplazar con URL de Spotify embed tipo:
+    // spotifyEmbedUrl: 'https://open.spotify.com/embed/episode/XXXXX?theme=0',
   },
   {
     id: '2',
@@ -25,6 +29,7 @@ const mockEpisodes = [
     isPremium: true,
     lat: 35.6762,
     lng: 139.6503,
+    publishDate: '2025-12-01',
   },
   {
     id: '3',
@@ -37,6 +42,7 @@ const mockEpisodes = [
     lng: -58.3816,
     spotifyUrl: '#',
     soundcloudUrl: '#',
+    publishDate: '2025-12-20',
   },
   {
     id: '4',
@@ -49,6 +55,7 @@ const mockEpisodes = [
     lng: 28.9784,
     spotifyUrl: '#',
     soundcloudUrl: '#',
+    publishDate: '2026-01-10',
   },
   {
     id: '5',
@@ -59,6 +66,7 @@ const mockEpisodes = [
     isPremium: true,
     lat: 50.0875,
     lng: 14.4214,
+    publishDate: '2026-01-25',
   },
   {
     id: '6',
@@ -71,19 +79,20 @@ const mockEpisodes = [
     lng: -74.0060,
     spotifyUrl: '#',
     soundcloudUrl: '#',
+    publishDate: '2026-02-05',
   },
 ];
 
 export const EpisodiosPage: React.FC = () => {
-  // Mostrar solo los primeros 18 episodios (sin scroll infinito por ahora)
   const allEpisodes = [
     ...mockEpisodes,
     ...mockEpisodes.map((ep: any, i: number) => ({ ...ep, id: `${ep.id}-2-${i}` })),
     ...mockEpisodes.map((ep: any, i: number) => ({ ...ep, id: `${ep.id}-3-${i}` })),
-  ].slice(0, 18); // Máximo 18 episodios
+  ].slice(0, 18);
 
   return (
     <section className="relative pt-32 pb-24 px-6 min-h-screen">
+      <FloatingAsh />
       <div className="max-w-7xl mx-auto">
         {/* Título */}
         <motion.div
@@ -101,7 +110,7 @@ export const EpisodiosPage: React.FC = () => {
           </p>
         </motion.div>
         
-        {/* Grid de episodios - 3 columnas */}
+        {/* Grid de episodios */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {allEpisodes.map((episode, index) => (
             <motion.div
@@ -115,7 +124,6 @@ export const EpisodiosPage: React.FC = () => {
           ))}
         </div>
 
-        {/* Nota: Conectar con backend para más episodios */}
         <div className="text-center mt-16">
           <p className="text-soda-fog text-sm">
             Más episodios próximamente

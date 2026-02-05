@@ -1,13 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Package, Shirt, Image, Coffee, Mail } from 'lucide-react';
+import { Package, Mail } from 'lucide-react';
+import { contentData } from '../data/content';
 
 export const Shop: React.FC = () => {
+  const { shop } = contentData;
+  
   const comingSoonItems = [
-    { icon: Shirt, name: 'Remeras y Buzos', desc: 'Diseños exclusivos de SODAROJA' },
-    { icon: Coffee, name: 'Tazas y Termo', desc: 'Para escuchar el podcast con estilo' },
-    { icon: Image, name: 'Postales y Posters', desc: 'Mapas ilustrados de episodios' },
-    { icon: Package, name: 'Stickers', desc: 'Dejá tu marca por el mundo' },
+    { icon: Package, name: 'Pack de Stickers', desc: 'Colección de stickers del culto' },
   ];
 
   return (
@@ -21,15 +21,16 @@ export const Shop: React.FC = () => {
           className="text-center mb-16"
         >
           <h2 className="text-5xl md:text-6xl font-serif text-soda-glow mb-6">
-            Objetos Encontrados
+            {shop.title}
           </h2>
           <div className="w-32 h-px bg-gradient-to-r from-transparent via-soda-accent to-transparent mx-auto mb-8" />
           <p className="text-soda-lamp text-lg">
-            Pronto vas a poder llevar SODAROJA con vos
+            {shop.subtitle}
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        {/* Items centrados */}
+        <div className="flex justify-center mb-12">
           {comingSoonItems.map((item, index) => (
             <motion.div
               key={index}
@@ -37,11 +38,14 @@ export const Shop: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm p-8 hover:border-soda-accent hover:border-opacity-40 transition-all"
+              className="bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm p-12 hover:border-soda-accent hover:border-opacity-40 transition-all text-center max-w-md w-full"
             >
-              <item.icon size={40} className="text-soda-accent mb-4" />
-              <h3 className="text-xl font-serif text-soda-glow mb-2">{item.name}</h3>
+              <item.icon size={48} className="text-soda-accent mb-6 mx-auto" />
+              <h3 className="text-2xl font-serif text-soda-glow mb-3">{item.name}</h3>
               <p className="text-soda-fog text-sm">{item.desc}</p>
+              <div className="mt-6 inline-block px-5 py-2 border border-soda-accent border-opacity-30 rounded-sm text-soda-accent text-xs tracking-wider">
+                PRÓXIMAMENTE
+              </div>
             </motion.div>
           ))}
         </div>
@@ -51,14 +55,14 @@ export const Shop: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="bg-soda-night bg-opacity-60 border border-soda-red border-opacity-30 rounded-sm p-12 text-center"
+          className="bg-soda-night bg-opacity-60 border border-soda-red border-opacity-30 rounded-sm p-12 text-center max-w-2xl mx-auto"
         >
           <div className="text-6xl mb-6">📦</div>
           <h3 className="text-2xl font-serif text-soda-glow mb-4">
-            Avisame cuando abran la tienda
+            Notificame cuando esté disponible
           </h3>
           <p className="text-soda-fog mb-6 max-w-2xl mx-auto">
-            Dejanos tu email y te avisamos cuando lancemos la tienda oficial con merchandising exclusivo
+            Dejanos tu email y te avisamos cuando esté disponible el catálogo completo
           </p>
           
           <div className="flex gap-4 max-w-md mx-auto">

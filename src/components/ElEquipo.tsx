@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Instagram, Youtube, Twitter } from 'lucide-react';
+import { Instagram, Youtube, Twitter, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface TeamMember {
   name: string;
@@ -16,41 +16,62 @@ interface TeamMember {
     youtube?: string;
     tiktok?: string;
   };
-  favorites: {
-    iceCream: string;
-    drink: string;
-    book: string;
-    movie: string;
-    series: string;
-    character: string;
-    celebrity: string;
-    album: string;
-    podcast: string;
-    sport: string;
-    food: string;
-    smell: string;
-    sound: string;
-    timeOfDay: string;
-    weather: string;
-    tattoos: number;
-  };
-  cities: {
-    dreamVisit: string;
-    wouldntVisit: string;
-    wouldLive: string;
-    bestFood: string;
-    wouldPropose: string;
-    wouldIsolate: string;
-    meetPeople: string;
-    vacation: string;
-    allExpensesPaid: string;
-    writeBook: string;
-    recordEpisode: string;
-    nostalgia: string;
-  };
+  favorites: Record<string, string | number>;
+  cities: Record<string, string>;
 }
 
-// DATOS DE EJEMPLO - Reemplazar con datos reales desde admin
+// ============================================================
+// ADMIN PANEL — CONFIGURACIÓN DE "EL EQUIPO"
+// ============================================================
+// 
+// TÍTULO Y SUBTÍTULO DE LA SECCIÓN (editable):
+const sectionTitle = 'El Equipo';
+const sectionSubtitle = 'Las personas detrás de cada historia';
+//
+// RESOLUCIÓN DE IMÁGENES RECOMENDADA:
+// Fotos de perfil: 600×800px mínimo (ratio 3:4), formato JPG/WebP, max 500KB
+// Se recomienda que el rostro esté centrado en el tercio superior.
+//
+// CATEGORÍAS EDITABLES — "Perfil Humano"
+// Podés agregar, quitar o renombrar cualquier campo.
+// Cada campo tiene: { key: string, label: string }
+const favoriteFields: { key: string; label: string }[] = [
+  { key: 'iceCream', label: 'Helado favorito' },
+  { key: 'drink', label: 'Bebida favorita' },
+  { key: 'book', label: 'Libro favorito' },
+  { key: 'movie', label: 'Película favorita' },
+  { key: 'series', label: 'Serie favorita' },
+  { key: 'character', label: 'Personaje favorito' },
+  { key: 'celebrity', label: 'Famoso favorito' },
+  { key: 'album', label: 'Álbum musical favorito' },
+  { key: 'podcast', label: 'Podcast que escucha' },
+  { key: 'sport', label: 'Deporte favorito' },
+  { key: 'food', label: 'Comida favorita' },
+  { key: 'smell', label: 'Olor favorito' },
+  { key: 'sound', label: 'Sonido que le relaja' },
+  { key: 'timeOfDay', label: 'Hora favorita del día' },
+  { key: 'weather', label: 'Clima favorito' },
+  { key: 'tattoos', label: 'Cantidad de tatuajes' },
+];
+
+// CATEGORÍAS EDITABLES — "Ciudades"
+// Podés agregar, quitar o renombrar cualquier campo.
+const cityFields: { key: string; label: string }[] = [
+  { key: 'dreamVisit', label: 'Ciudad que sueña con visitar' },
+  { key: 'wouldntVisit', label: 'Ciudad que no visitaría' },
+  { key: 'wouldLive', label: 'Ciudad donde viviría' },
+  { key: 'bestFood', label: 'Ciudad donde se come mejor' },
+  { key: 'wouldPropose', label: 'Ciudad donde propondría casamiento' },
+  { key: 'wouldIsolate', label: 'Ciudad donde se aislaría' },
+  { key: 'meetPeople', label: 'Ciudad donde iría a conocer gente' },
+  { key: 'vacation', label: 'Ciudad para vacacionar siempre' },
+  { key: 'allExpensesPaid', label: 'Ciudad que soñaría conocer todo pago' },
+  { key: 'writeBook', label: 'Ciudad donde escribiría un libro' },
+  { key: 'recordEpisode', label: 'Ciudad donde grabaría un episodio ideal' },
+  { key: 'nostalgia', label: 'Ciudad que le genera nostalgia sin haber ido' },
+];
+
+// DATOS DE LOS INTEGRANTES (editable desde admin)
 const teamMembers: TeamMember[] = [
   {
     name: 'Mikasa',
@@ -59,44 +80,21 @@ const teamMembers: TeamMember[] = [
     cityBorn: 'Buenos Aires',
     cityCurrent: 'Buenos Aires',
     zodiac: 'Escorpio',
+    // Resolución recomendada: 600×800px (3:4), JPG/WebP, max 500KB
     photoUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80',
-    socials: {
-      instagram: "#",
-      twitter: "#",
-      youtube: "#",
-      tiktok: "#",
-    },
+    socials: { instagram: "#", twitter: "#", youtube: "#", tiktok: "#" },
     favorites: {
-      iceCream: 'Chocolate amargo',
-      drink: 'Café negro',
-      book: 'Cien años de soledad',
-      movie: 'Blade Runner',
-      series: 'Dark',
-      character: 'Don Draper',
-      celebrity: 'David Bowie',
-      album: 'OK Computer',
-      podcast: 'Serial',
-      sport: 'Natación',
-      food: 'Pizza napolitana',
-      smell: 'Café recién hecho',
-      sound: 'Lluvia',
-      timeOfDay: '3:00 AM',
-      weather: 'Lluvia nocturna',
-      tattoos: 3,
+      iceCream: 'Chocolate amargo', drink: 'Café negro', book: 'Cien años de soledad',
+      movie: 'Blade Runner', series: 'Dark', character: 'Don Draper',
+      celebrity: 'David Bowie', album: 'OK Computer', podcast: 'Serial',
+      sport: 'Natación', food: 'Pizza napolitana', smell: 'Café recién hecho',
+      sound: 'Lluvia', timeOfDay: '3:00 AM', weather: 'Lluvia nocturna', tattoos: 3,
     },
     cities: {
-      dreamVisit: 'Tokio',
-      wouldntVisit: 'Dubai',
-      wouldLive: 'Berlín',
-      bestFood: 'Roma',
-      wouldPropose: 'París',
-      wouldIsolate: 'Islandia',
-      meetPeople: 'Barcelona',
-      vacation: 'Kioto',
-      allExpensesPaid: 'Nueva York',
-      writeBook: 'Praga',
-      recordEpisode: 'Estambul',
-      nostalgia: 'Lisboa',
+      dreamVisit: 'Tokio', wouldntVisit: 'Dubai', wouldLive: 'Berlín',
+      bestFood: 'Roma', wouldPropose: 'París', wouldIsolate: 'Islandia',
+      meetPeople: 'Barcelona', vacation: 'Kioto', allExpensesPaid: 'Nueva York',
+      writeBook: 'Praga', recordEpisode: 'Estambul', nostalgia: 'Lisboa',
     },
   },
   {
@@ -107,43 +105,19 @@ const teamMembers: TeamMember[] = [
     cityCurrent: 'Barcelona',
     zodiac: 'Piscis',
     photoUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80',
-    socials: {
-      instagram: "#",
-      twitter: "#",
-      youtube: "#",
-      tiktok: "#",
-    },
+    socials: { instagram: "#", twitter: "#", youtube: "#", tiktok: "#" },
     favorites: {
-      iceCream: 'Limón',
-      drink: 'Té verde',
-      book: 'El principito',
-      movie: 'Your Name',
-      series: 'Stranger Things',
-      character: 'Hermione Granger',
-      celebrity: 'Björk',
-      album: 'The Dark Side of the Moon',
-      podcast: 'Radiolab',
-      sport: 'Yoga',
-      food: 'Sushi',
-      smell: 'Jazmín',
-      sound: 'Viento',
-      timeOfDay: '6:00 AM',
-      weather: 'Niebla matinal',
-      tattoos: 5,
+      iceCream: 'Limón', drink: 'Té verde', book: 'El principito',
+      movie: 'Your Name', series: 'Stranger Things', character: 'Hermione Granger',
+      celebrity: 'Björk', album: 'The Dark Side of the Moon', podcast: 'Radiolab',
+      sport: 'Yoga', food: 'Sushi', smell: 'Jazmín',
+      sound: 'Viento', timeOfDay: '6:00 AM', weather: 'Niebla matinal', tattoos: 5,
     },
     cities: {
-      dreamVisit: 'Kioto',
-      wouldntVisit: 'Las Vegas',
-      wouldLive: 'Ámsterdam',
-      bestFood: 'Bangkok',
-      wouldPropose: 'Santorini',
-      wouldIsolate: 'Noruega',
-      meetPeople: 'Lisboa',
-      vacation: 'Bali',
-      allExpensesPaid: 'Tokio',
-      writeBook: 'Edimburgo',
-      recordEpisode: 'Praga',
-      nostalgia: 'París',
+      dreamVisit: 'Kioto', wouldntVisit: 'Las Vegas', wouldLive: 'Ámsterdam',
+      bestFood: 'Bangkok', wouldPropose: 'Santorini', wouldIsolate: 'Noruega',
+      meetPeople: 'Lisboa', vacation: 'Bali', allExpensesPaid: 'Tokio',
+      writeBook: 'Edimburgo', recordEpisode: 'Praga', nostalgia: 'París',
     },
   },
   {
@@ -154,54 +128,31 @@ const teamMembers: TeamMember[] = [
     cityCurrent: 'Buenos Aires',
     zodiac: 'Capricornio',
     photoUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80',
-    socials: {
-      instagram: "#",
-      twitter: "#",
-      youtube: "#",
-      tiktok: "#",
-    },
+    socials: { instagram: "#", twitter: "#", youtube: "#", tiktok: "#" },
     favorites: {
-      iceCream: 'Dulce de leche',
-      drink: 'Fernet con coca',
-      book: 'Rayuela',
-      movie: 'Inception',
-      series: 'Breaking Bad',
-      character: 'Tyler Durden',
-      celebrity: 'Thom Yorke',
-      album: 'In Rainbows',
-      podcast: '99% Invisible',
-      sport: 'Escalada',
-      food: 'Asado',
-      smell: 'Tierra mojada',
-      sound: 'Tormenta',
-      timeOfDay: '11:00 PM',
-      weather: 'Tormenta eléctrica',
-      tattoos: 0,
+      iceCream: 'Dulce de leche', drink: 'Fernet con coca', book: 'Rayuela',
+      movie: 'Inception', series: 'Breaking Bad', character: 'Tyler Durden',
+      celebrity: 'Thom Yorke', album: 'In Rainbows', podcast: '99% Invisible',
+      sport: 'Escalada', food: 'Asado', smell: 'Tierra mojada',
+      sound: 'Tormenta', timeOfDay: '11:00 PM', weather: 'Tormenta eléctrica', tattoos: 0,
     },
     cities: {
-      dreamVisit: 'Reikiavik',
-      wouldntVisit: 'Mumbai',
-      wouldLive: 'Copenhague',
-      bestFood: 'Ciudad de México',
-      wouldPropose: 'Venecia',
-      wouldIsolate: 'Patagonia',
-      meetPeople: 'Berlín',
-      vacation: 'Noruega',
-      allExpensesPaid: 'Islandia',
-      writeBook: 'San Sebastián',
-      recordEpisode: 'Berlín',
-      nostalgia: 'Montevideo',
+      dreamVisit: 'Reikiavik', wouldntVisit: 'Mumbai', wouldLive: 'Copenhague',
+      bestFood: 'Ciudad de México', wouldPropose: 'Venecia', wouldIsolate: 'Patagonia',
+      meetPeople: 'Berlín', vacation: 'Noruega', allExpensesPaid: 'Islandia',
+      writeBook: 'San Sebastián', recordEpisode: 'Berlín', nostalgia: 'Montevideo',
     },
   },
 ];
+// ============================================================
 
 export const ElEquipo: React.FC = () => {
-  const [selectedMember, setSelectedMember] = useState<number | null>(null);
+  const [expandedMember, setExpandedMember] = useState<number | null>(null);
 
   return (
     <section id="equipo" className="relative py-32 px-6">
       <div className="max-w-7xl mx-auto">
-        {/* Título */}
+        {/* Título — editable desde admin (sectionTitle, sectionSubtitle) */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -210,11 +161,11 @@ export const ElEquipo: React.FC = () => {
           className="text-center mb-16"
         >
           <h2 className="text-5xl md:text-6xl font-serif text-soda-glow mb-6">
-            El Equipo
+            {sectionTitle}
           </h2>
           <div className="w-32 h-px bg-gradient-to-r from-transparent via-soda-accent to-transparent mx-auto mb-6" />
           <p className="text-soda-fog font-light">
-            Las personas detrás de cada historia
+            {sectionSubtitle}
           </p>
         </motion.div>
 
@@ -229,12 +180,12 @@ export const ElEquipo: React.FC = () => {
               transition={{ duration: 0.6, delay: index * 0.1 }}
             >
               <div className="bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm overflow-hidden hover:border-soda-accent hover:border-opacity-40 transition-all duration-300 group">
-                {/* Foto - ratio 3:4 con partículas */}
-                <div className="relative aspect-[3/4] overflow-hidden max-h-80 bg-soda-deep flex items-center justify-center">
-                  {/* Partículas flotantes */}
+                {/* Foto - ratio 3:4 con partículas doradas Y negras */}
+                <div className="relative aspect-[3/4] overflow-hidden bg-soda-deep">
+                  {/* Partículas doradas (originales) */}
                   {[...Array(8)].map((_, i) => (
                     <motion.div
-                      key={i}
+                      key={`gold-${i}`}
                       className="absolute w-1 h-1 bg-soda-lamp rounded-full pointer-events-none z-10"
                       style={{
                         left: `${15 + Math.random() * 70}%`,
@@ -253,12 +204,38 @@ export const ElEquipo: React.FC = () => {
                       }}
                     />
                   ))}
+                  {/* Partículas negras (nuevas) */}
+                  {[...Array(6)].map((_, i) => (
+                    <motion.div
+                      key={`black-${i}`}
+                      className="absolute rounded-full pointer-events-none z-10"
+                      style={{
+                        left: `${10 + Math.random() * 80}%`,
+                        top: `${10 + Math.random() * 80}%`,
+                        width: `${4 + Math.random() * 3}px`,
+                        height: `${4 + Math.random() * 3}px`,
+                        background: 'rgba(10, 14, 26, 0.7)',
+                      }}
+                      animate={{
+                        y: [0, -18, 0],
+                        x: [0, 6 * (Math.random() > 0.5 ? 1 : -1), 0],
+                        opacity: [0, 0.55, 0],
+                        scale: [0.4, 1.1, 0.4],
+                      }}
+                      transition={{
+                        duration: 4 + Math.random() * 3,
+                        repeat: Infinity,
+                        delay: Math.random() * 4,
+                        ease: "easeInOut"
+                      }}
+                    />
+                  ))}
                   
+                  {/* Imagen del integrante — editable, resolución recomendada: 600×800px (3:4) */}
                   <motion.img
                     src={member.photoUrl}
                     alt={member.name}
-                    className="absolute inset-0 w-full h-full object-cover"
-                    style={{ objectPosition: 'center center' }}
+                    className="w-full h-full object-cover object-center"
                     whileHover={{ scale: 1.08 }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
                   />
@@ -276,143 +253,78 @@ export const ElEquipo: React.FC = () => {
                     <p>{member.zodiac}</p>
                   </div>
 
-                  {/* Redes sociales - 4 redes (IG y Twitter obligatorias) */}
+                  {/* Redes sociales */}
                   <div className="flex gap-4 mb-6 pb-6 border-b border-soda-mist border-opacity-20">
                     {member.socials.instagram && (
-                      <a
-                        href={member.socials.instagram}
-                        className="hoverable text-soda-accent hover:text-soda-lamp transition-colors"
-                        title="Instagram"
-                      >
+                      <a href={member.socials.instagram} className="hoverable text-soda-accent hover:text-soda-lamp transition-colors" title="Instagram">
                         <Instagram size={20} />
                       </a>
                     )}
                     {member.socials.twitter && (
-                      <a
-                        href={member.socials.twitter}
-                        className="hoverable text-soda-accent hover:text-soda-lamp transition-colors"
-                        title="Twitter/X"
-                      >
+                      <a href={member.socials.twitter} className="hoverable text-soda-accent hover:text-soda-lamp transition-colors" title="Twitter/X">
                         <Twitter size={20} />
                       </a>
                     )}
                     {member.socials.youtube && (
-                      <a
-                        href={member.socials.youtube}
-                        className="hoverable text-soda-accent hover:text-soda-lamp transition-colors"
-                        title="YouTube"
-                      >
+                      <a href={member.socials.youtube} className="hoverable text-soda-accent hover:text-soda-lamp transition-colors" title="YouTube">
                         <Youtube size={20} />
                       </a>
                     )}
                     {member.socials.tiktok && (
-                      <a
-                        href={member.socials.tiktok}
-                        className="hoverable text-soda-accent hover:text-soda-lamp transition-colors text-sm"
-                        title="TikTok"
-                      >
+                      <a href={member.socials.tiktok} className="hoverable text-soda-accent hover:text-soda-lamp transition-colors text-sm" title="TikTok">
                         TT
                       </a>
                     )}
                   </div>
 
-                  {/* Favoritos */}
-                  <div className="mb-6">
-                    <h4 className="text-soda-lamp text-xs font-medium mb-3 tracking-wider">PERFIL HUMANO</h4>
-                    <div className="space-y-2 text-xs">
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Helado favorito:</span> {member.favorites.iceCream}
-                      </div>
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Bebida favorita:</span> {member.favorites.drink}
-                      </div>
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Libro favorito:</span> {member.favorites.book}
-                      </div>
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Película favorita:</span> {member.favorites.movie}
-                      </div>
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Serie favorita:</span> {member.favorites.series}
-                      </div>
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Personaje favorito:</span> {member.favorites.character}
-                      </div>
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Famoso favorito:</span> {member.favorites.celebrity}
-                      </div>
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Álbum musical favorito:</span> {member.favorites.album}
-                      </div>
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Podcast que escucha:</span> {member.favorites.podcast}
-                      </div>
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Deporte favorito:</span> {member.favorites.sport}
-                      </div>
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Comida favorita:</span> {member.favorites.food}
-                      </div>
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Olor favorito:</span> {member.favorites.smell}
-                      </div>
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Sonido que le relaja:</span> {member.favorites.sound}
-                      </div>
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Hora favorita del día:</span> {member.favorites.timeOfDay}
-                      </div>
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Clima favorito:</span> {member.favorites.weather}
-                      </div>
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Cantidad de tatuajes:</span> {member.favorites.tattoos}
-                      </div>
-                    </div>
-                  </div>
+                  {/* Botón expandir/colapsar */}
+                  <button
+                    onClick={() => setExpandedMember(expandedMember === index ? null : index)}
+                    className="w-full flex items-center justify-center gap-2 py-2 text-soda-accent hover:text-soda-lamp transition-colors text-sm hoverable"
+                  >
+                    <span>{expandedMember === index ? 'Ocultar perfil' : 'Conocer más'}</span>
+                    {expandedMember === index ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                  </button>
 
-                  {/* Ciudades */}
-                  <div>
-                    <h4 className="text-soda-lamp text-xs font-medium mb-3 tracking-wider">CIUDADES</h4>
-                    <div className="space-y-2 text-xs">
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Ciudad que sueña con visitar:</span> {member.cities.dreamVisit}
-                      </div>
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Ciudad que no visitaría:</span> {member.cities.wouldntVisit}
-                      </div>
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Ciudad donde viviría:</span> {member.cities.wouldLive}
-                      </div>
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Ciudad donde se come mejor:</span> {member.cities.bestFood}
-                      </div>
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Ciudad donde propondría casamiento:</span> {member.cities.wouldPropose}
-                      </div>
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Ciudad donde se aislaría:</span> {member.cities.wouldIsolate}
-                      </div>
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Ciudad donde iría a conocer gente:</span> {member.cities.meetPeople}
-                      </div>
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Ciudad para vacacionar siempre:</span> {member.cities.vacation}
-                      </div>
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Ciudad que soñaría conocer todo pago:</span> {member.cities.allExpensesPaid}
-                      </div>
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Ciudad donde escribiría un libro:</span> {member.cities.writeBook}
-                      </div>
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Ciudad donde grabaría un episodio ideal:</span> {member.cities.recordEpisode}
-                      </div>
-                      <div className="text-soda-fog">
-                        <span className="text-soda-accent">Ciudad que le genera nostalgia sin haber ido:</span> {member.cities.nostalgia}
-                      </div>
-                    </div>
-                  </div>
+                  <AnimatePresence>
+                    {expandedMember === index && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.4, ease: 'easeInOut' }}
+                        className="overflow-hidden"
+                      >
+                        {/* Favoritos — campos configurables desde favoriteFields */}
+                        <div className="mb-6 mt-4">
+                          <h4 className="text-soda-lamp text-xs font-medium mb-3 tracking-wider">PERFIL HUMANO</h4>
+                          <div className="space-y-2 text-xs">
+                            {favoriteFields.map((field) => (
+                              member.favorites[field.key] !== undefined ? (
+                                <div key={field.key} className="text-soda-fog">
+                                  <span className="text-soda-accent">{field.label}:</span> {String(member.favorites[field.key])}
+                                </div>
+                              ) : null
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Ciudades — campos configurables desde cityFields */}
+                        <div>
+                          <h4 className="text-soda-lamp text-xs font-medium mb-3 tracking-wider">CIUDADES</h4>
+                          <div className="space-y-2 text-xs">
+                            {cityFields.map((field) => (
+                              member.cities[field.key] !== undefined ? (
+                                <div key={field.key} className="text-soda-fog">
+                                  <span className="text-soda-accent">{field.label}:</span> {member.cities[field.key]}
+                                </div>
+                              ) : null
+                            ))}
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </div>
             </motion.div>

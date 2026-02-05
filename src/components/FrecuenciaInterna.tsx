@@ -1,54 +1,96 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Check } from 'lucide-react';
+import { Check, Heart } from 'lucide-react';
+
+// ============================================================
+// ADMIN PANEL — CONFIGURACIÓN DE FRECUENCIA INTERNA
+// ============================================================
+// Todos estos valores son editables y se usan para cobrar.
+// Al modificar precios acá, se reflejan en lo que se cobra.
 
 interface SubscriptionPlan {
+  id: string;
   name: string;
   priceARS: number;
   priceUSD: number;
+  description: string;
   featured?: boolean;
 }
 
+// PLANES — editable: nombre, precio ARS, precio USD, descripción
 const plans: SubscriptionPlan[] = [
   {
-    name: 'Suscripción A',
+    id: 'plan-a',
+    name: 'Mate',
     priceARS: 2500,
     priceUSD: 4,
+    description: 'Un empujoncito que suma mucho',
   },
   {
-    name: 'Suscripción B',
+    id: 'plan-b',
+    name: 'Soda',
     priceARS: 5000,
     priceUSD: 8,
+    description: 'El que más eligen los que nos bancan',
     featured: true,
   },
   {
-    name: 'Suscripción C',
+    id: 'plan-c',
+    name: 'Sifón',
     priceARS: 12500,
     priceUSD: 20,
+    description: 'Para los que quieren que esto crezca en serio',
   },
 ];
 
+// BENEFICIOS — editable
 const benefits = [
-  'Episodios exclusivos cada mes',
+  '2 episodios extras por mes',
+  'Sorteos exclusivos entre suscriptores',
   'Historias más profundas e investigadas',
-  'Mapas interactivos extendidos',
-  'Ambientación sonora extendida',
   'Acceso anticipado a lanzamientos',
   'Participación en futuros episodios',
-  'Número de Socio Efervescente único',
-  'Comunidad privada de miembros',
+  'Tu Número de Socio Efervescente',
+  'Comunidad privada',
   'Sin publicidad',
   'RSS privado para tu app favorita',
   'Descuentos en la tienda',
-  'Pertenencia real al proyecto',
+  'Nos ayudás a mejorar el equipo',
+  'Ser parte real del proyecto',
 ];
 
+// TEXTOS — editables desde admin
+const sectionTitle = 'Frecuencia Interna';
+const sectionSubtitle = 'Las historias que se cuentan cuando la noche ya está avanzada';
+const sectionIntro = 'Sodaroja es un proyecto independiente que hacemos con amor, pero también con tiempo, energía y recursos. Cada episodio lleva horas de investigación, edición y producción. Tu aporte nos permite seguir haciéndolo: mejorar el equipamiento, cubrir los gastos de edición, crearnos el tiempo extra que necesitamos aparte de nuestro trabajo, y sobre todo, seguir compartiendo estas historias con vos.';
+const benefitsTitle = 'Qué te llevas al sumarte';
+const cancelNote = 'Cancelá cuando quieras, sin compromiso ni letra chica';
+
+// URLs de pago — configurar cuando estén listos
+const mercadoPagoBaseUrl = '#'; // Suscripción nacional (Argentina) via Mercado Pago
+const internationalBaseUrl = '#'; // Suscripción internacional (USD) - Stripe/PayPal/etc
+// ============================================================
+
 export const FrecuenciaInterna: React.FC = () => {
-  const [selectedPlan, setSelectedPlan] = React.useState<string>('Suscripción B');
+  const [selectedPlan, setSelectedPlan] = React.useState<string>('plan-b');
+
+  const currentPlan = plans.find(p => p.id === selectedPlan) || plans[1];
+
+  const handleNationalSubscribe = () => {
+    // TODO: Integrar con Mercado Pago — usa currentPlan.priceARS
+    alert(`Redirigiendo a Mercado Pago — Plan: ${currentPlan.name} ($${currentPlan.priceARS} ARS/mes)`);
+    // window.location.href = `${mercadoPagoBaseUrl}?plan=${currentPlan.id}&price=${currentPlan.priceARS}`;
+  };
+
+  const handleInternationalSubscribe = () => {
+    // TODO: Integrar con plataforma internacional (Stripe/PayPal) — usa currentPlan.priceUSD
+    alert(`Redirigiendo a suscripción internacional — Plan: ${currentPlan.name} (USD $${currentPlan.priceUSD}/mes)`);
+    // window.location.href = `${internationalBaseUrl}?plan=${currentPlan.id}&price=${currentPlan.priceUSD}`;
+  };
 
   return (
     <section id="frecuencia-interna" className="relative py-32 px-6 bg-gradient-to-b from-soda-night via-soda-deep to-soda-night overflow-hidden">
-      {/* Ondas de frecuencia de fondo */}
+      {/* Ondas de frecuencia de fondo — ESTOS SON LOS QUE TE ENCANTAN, NO SE TOCAN */}
       {[...Array(6)].map((_, i) => (
         <motion.div
           key={`wave-${i}`}
@@ -97,6 +139,7 @@ export const FrecuenciaInterna: React.FC = () => {
       <div className="absolute inset-0 pointer-events-none opacity-5" style={{
         background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px)',
       }} />
+
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
@@ -104,13 +147,10 @@ export const FrecuenciaInterna: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-20"
+          className="text-center mb-12"
         >
           <motion.div
-            animate={{ 
-              scale: [1, 1.05, 1],
-              opacity: [0.8, 1, 0.8]
-            }}
+            animate={{ scale: [1, 1.05, 1], opacity: [0.8, 1, 0.8] }}
             transition={{ duration: 3, repeat: Infinity }}
             className="inline-block mb-8"
           >
@@ -118,11 +158,24 @@ export const FrecuenciaInterna: React.FC = () => {
           </motion.div>
           
           <h2 className="text-5xl md:text-6xl font-serif text-soda-glow mb-6">
-            Frecuencia Interna
+            {sectionTitle}
           </h2>
           <div className="w-32 h-px bg-gradient-to-r from-transparent via-soda-red to-transparent mx-auto mb-8" />
-          <p className="text-soda-lamp text-xl font-light max-w-2xl mx-auto">
-            Las historias que se cuentan cuando la noche ya está avanzada
+          <p className="text-soda-lamp text-xl font-light max-w-2xl mx-auto mb-8">
+            {sectionSubtitle}
+          </p>
+        </motion.div>
+
+        {/* Intro amistosa */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="max-w-3xl mx-auto mb-20"
+        >
+          <p className="text-soda-fog text-base font-light leading-relaxed text-center">
+            {sectionIntro}
           </p>
         </motion.div>
 
@@ -135,71 +188,60 @@ export const FrecuenciaInterna: React.FC = () => {
             transition={{ duration: 0.8 }}
           >
             <h3 className="text-2xl font-serif text-soda-glow mb-8 text-center lg:text-left">
-              Elegí tu plan
+              Elegí cómo querés sumarte
             </h3>
             
             <div className="space-y-6">
               {plans.map((plan, index) => (
                 <motion.div
-                  key={index}
+                  key={plan.id}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  onClick={() => setSelectedPlan(plan.name)}
+                  onClick={() => setSelectedPlan(plan.id)}
                   className={`relative bg-soda-slate bg-opacity-40 backdrop-blur-sm rounded-sm p-8 transition-all duration-300 hoverable cursor-pointer ${
-                    selectedPlan === plan.name
-                      ? 'border-2 border-soda-red shadow-lg shadow-soda-red/20 scale-105'
+                    selectedPlan === plan.id
+                      ? 'border-2 border-soda-red shadow-lg shadow-soda-red/20 scale-[1.02]'
                       : plan.featured
                         ? 'border-2 border-soda-accent shadow-lg shadow-soda-accent/10'
                         : 'border border-soda-mist border-opacity-20 hover:border-soda-accent hover:border-opacity-40'
                   }`}
                 >
+                  {/* Indicador de selección */}
+                  <div className={`absolute top-4 right-4 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
+                    selectedPlan === plan.id 
+                      ? 'border-soda-red bg-soda-red' 
+                      : 'border-soda-mist border-opacity-40'
+                  }`}>
+                    {selectedPlan === plan.id && (
+                      <div className="w-2 h-2 bg-white rounded-full" />
+                    )}
+                  </div>
+
                   {plan.featured && (
-                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-soda-red px-4 py-1 rounded-sm text-xs tracking-wider">
+                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-soda-red px-4 py-1 rounded-sm text-xs tracking-wider text-soda-glow">
                       MÁS ELEGIDO
                     </div>
                   )}
                   
-                  <div className="flex items-end justify-between mb-4">
+                  <div className="flex items-end justify-between mb-4 pr-8">
                     <div>
                       <h4 className="text-2xl font-serif text-soda-glow mb-2">{plan.name}</h4>
-                      <p className="text-soda-fog text-sm">
-                        {plan.name === 'Suscripción A' && 'Nivel de aporte básico'}
-                        {plan.name === 'Suscripción B' && 'Nivel de aporte medio'}
-                        {plan.name === 'Suscripción C' && 'Nivel de aporte alto'}
-                      </p>
+                      <p className="text-soda-fog text-sm">{plan.description}</p>
                     </div>
                     <div className="text-right">
                       <div className="text-3xl font-light text-soda-lamp">
-                        ${plan.priceARS}
+                        ${plan.priceARS.toLocaleString('es-AR')}
                       </div>
                       <div className="text-sm text-soda-fog">
-                        USD ${plan.priceUSD}
+                        USD ${plan.priceUSD}/mes
                       </div>
                     </div>
-                  </div>
-                  
-                  <div className="text-xs text-soda-fog text-center pt-4 border-t border-soda-mist border-opacity-20">
-                    Pagos en ARS (Mercado Pago) o USD (PayPal/Stripe)
                   </div>
                 </motion.div>
               ))}
             </div>
-
-            {/* Info adicional */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="mt-8 text-center lg:text-left"
-            >
-              <p className="text-soda-fog text-sm font-light leading-relaxed">
-                Tu aporte nos permite mejorar equipamiento, dedicar más tiempo al podcast, 
-                investigar mejor y sostener este proyecto independiente.
-              </p>
-            </motion.div>
           </motion.div>
 
           {/* Beneficios */}
@@ -210,7 +252,7 @@ export const FrecuenciaInterna: React.FC = () => {
             transition={{ duration: 0.8 }}
           >
             <h3 className="text-2xl font-serif text-soda-glow mb-8 text-center lg:text-left">
-              Lo que incluye
+              {benefitsTitle}
             </h3>
             
             <div className="space-y-4">
@@ -235,44 +277,69 @@ export const FrecuenciaInterna: React.FC = () => {
           </motion.div>
         </div>
 
-        {/* CTA Button */}
+        {/* Botones de suscripción — Nacional e Internacional */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="text-center mt-16"
+          className="mt-16"
         >
-          <div className="mb-4 text-soda-lamp text-sm">
-            Plan seleccionado: <span className="text-soda-red font-medium">{selectedPlan}</span>
+          <div className="mb-6 text-center">
+            <div className="text-soda-lamp text-sm mb-1">
+              Plan seleccionado: <span className="text-soda-red font-medium">{currentPlan.name}</span>
+            </div>
+            <div className="text-soda-fog text-xs">
+              ${currentPlan.priceARS.toLocaleString('es-AR')} ARS / USD ${currentPlan.priceUSD} por mes
+            </div>
           </div>
           
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => {
-              // TODO: Integrar con Mercado Pago
-              alert(`Redirigiendo a Mercado Pago con plan: ${selectedPlan}`);
-            }}
-            className="glow-button hoverable px-16 py-5 bg-soda-red bg-opacity-20 border-2 border-soda-red text-soda-glow rounded-sm hover:bg-opacity-30 transition-all duration-300 text-lg tracking-wider backdrop-blur-sm relative overflow-hidden group"
-          >
-            {/* Efecto de brillo animado */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-soda-glow to-transparent opacity-0 group-hover:opacity-20"
-              animate={{
-                x: ['-100%', '100%'],
-              }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                ease: "linear"
-              }}
-            />
-            <span className="relative z-10">SUMARTE A LA FRECUENCIA</span>
-          </motion.button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-2xl mx-auto">
+            {/* Botón Nacional — Mercado Pago */}
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={handleNationalSubscribe}
+              className="glow-button hoverable w-full sm:w-auto px-10 py-5 bg-soda-red bg-opacity-20 border-2 border-soda-red text-soda-glow rounded-sm hover:bg-opacity-30 transition-all duration-300 text-base tracking-wider backdrop-blur-sm relative overflow-hidden group"
+            >
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-soda-glow to-transparent opacity-0 group-hover:opacity-20"
+                animate={{ x: ['-100%', '100%'] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+              />
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                <Heart size={18} />
+                SUSCRIBIRME (ARGENTINA)
+              </span>
+              <span className="relative z-10 block text-xs text-soda-lamp mt-1 opacity-80">
+                Mercado Pago · ${currentPlan.priceARS.toLocaleString('es-AR')} ARS/mes
+              </span>
+            </motion.button>
+
+            {/* Botón Internacional */}
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={handleInternationalSubscribe}
+              className="glow-button hoverable w-full sm:w-auto px-10 py-5 bg-soda-accent bg-opacity-15 border-2 border-soda-accent text-soda-glow rounded-sm hover:bg-opacity-25 transition-all duration-300 text-base tracking-wider backdrop-blur-sm relative overflow-hidden group"
+            >
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-soda-glow to-transparent opacity-0 group-hover:opacity-15"
+                animate={{ x: ['-100%', '100%'] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+              />
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                <Heart size={18} />
+                SUSCRIBIRME (INTERNACIONAL)
+              </span>
+              <span className="relative z-10 block text-xs text-soda-lamp mt-1 opacity-80">
+                USD ${currentPlan.priceUSD}/mes
+              </span>
+            </motion.button>
+          </div>
           
-          <p className="text-soda-fog text-xs mt-6 font-light">
-            Cancelá cuando quieras, sin compromiso
+          <p className="text-soda-fog text-xs mt-8 font-light text-center">
+            {cancelNote}
           </p>
         </motion.div>
       </div>
