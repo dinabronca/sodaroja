@@ -63,7 +63,7 @@ export const Navbar: React.FC = () => {
                   >
                     <Link
                       to={item.href}
-                      className="hoverable text-soda-accent hover:text-soda-lamp transition-colors duration-300 text-sm tracking-wide font-medium relative group"
+                      className="hoverable text-soda-accent hover:text-soda-lamp transition-colors duration-300 text-sm tracking-wide font-medium relative group pixel-dispersion"
                     >
                       {item.label}
                       <span className="absolute bottom-0 left-0 w-0 h-px bg-soda-accent group-hover:w-full transition-all duration-300" />
@@ -85,6 +85,10 @@ export const Navbar: React.FC = () => {
                       to={item.href}
                       className="hoverable text-soda-red hover:text-soda-glow transition-colors duration-300 text-sm tracking-wide font-light relative group glitch-text"
                       data-text={item.label}
+                      style={{
+                        textShadow: '0 0 10px rgba(196, 85, 85, 0.5)',
+                        animation: 'pulsing-glow 3s ease-in-out infinite'
+                      }}
                     >
                       {item.label}
                       <span className="absolute bottom-0 left-0 w-0 h-px bg-soda-red group-hover:w-full transition-all duration-300" />

@@ -94,7 +94,7 @@ export const HomePage: React.FC = () => {
             </h2>
             <div className="w-32 h-px bg-gradient-to-r from-transparent via-soda-accent to-transparent mx-auto mb-6" />
             <p className="text-soda-fog font-light tracking-wide">
-              Cada ciudad esconde historias que nunca imaginaste
+              Primeros 6 episodios - Click en "Ver todos" para más
             </p>
           </div>
           

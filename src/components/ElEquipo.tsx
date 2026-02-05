@@ -230,7 +230,7 @@ export const ElEquipo: React.FC = () => {
             >
               <div className="bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm overflow-hidden hover:border-soda-accent hover:border-opacity-40 transition-all duration-300 group">
                 {/* Foto - ratio 3:4 con partículas */}
-                <div className="relative aspect-[3/4] overflow-hidden max-h-80 bg-soda-deep">
+                <div className="relative aspect-[3/4] overflow-hidden max-h-80 bg-soda-deep flex items-center justify-center">
                   {/* Partículas flotantes */}
                   {[...Array(8)].map((_, i) => (
                     <motion.div
@@ -257,7 +257,8 @@ export const ElEquipo: React.FC = () => {
                   <motion.img
                     src={member.photoUrl}
                     alt={member.name}
-                    className="w-full h-full object-cover object-center"
+                    className="absolute inset-0 w-full h-full object-cover"
+                    style={{ objectPosition: 'center center' }}
                     whileHover={{ scale: 1.08 }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
                   />
@@ -323,49 +324,49 @@ export const ElEquipo: React.FC = () => {
                         <span className="text-soda-accent">Helado favorito:</span> {member.favorites.iceCream}
                       </div>
                       <div className="text-soda-fog">
-                        <span className="text-soda-accent">Bebida:</span> {member.favorites.drink}
+                        <span className="text-soda-accent">Bebida favorita:</span> {member.favorites.drink}
                       </div>
                       <div className="text-soda-fog">
-                        <span className="text-soda-accent">Libro:</span> {member.favorites.book}
+                        <span className="text-soda-accent">Libro favorito:</span> {member.favorites.book}
                       </div>
                       <div className="text-soda-fog">
-                        <span className="text-soda-accent">Película:</span> {member.favorites.movie}
+                        <span className="text-soda-accent">Película favorita:</span> {member.favorites.movie}
                       </div>
                       <div className="text-soda-fog">
-                        <span className="text-soda-accent">Serie:</span> {member.favorites.series}
+                        <span className="text-soda-accent">Serie favorita:</span> {member.favorites.series}
                       </div>
                       <div className="text-soda-fog">
-                        <span className="text-soda-accent">Personaje:</span> {member.favorites.character}
+                        <span className="text-soda-accent">Personaje favorito:</span> {member.favorites.character}
                       </div>
                       <div className="text-soda-fog">
                         <span className="text-soda-accent">Famoso favorito:</span> {member.favorites.celebrity}
                       </div>
                       <div className="text-soda-fog">
-                        <span className="text-soda-accent">Álbum:</span> {member.favorites.album}
+                        <span className="text-soda-accent">Álbum musical favorito:</span> {member.favorites.album}
                       </div>
                       <div className="text-soda-fog">
-                        <span className="text-soda-accent">Podcast:</span> {member.favorites.podcast}
+                        <span className="text-soda-accent">Podcast que escucha:</span> {member.favorites.podcast}
                       </div>
                       <div className="text-soda-fog">
-                        <span className="text-soda-accent">Deporte:</span> {member.favorites.sport}
+                        <span className="text-soda-accent">Deporte favorito:</span> {member.favorites.sport}
                       </div>
                       <div className="text-soda-fog">
-                        <span className="text-soda-accent">Comida:</span> {member.favorites.food}
+                        <span className="text-soda-accent">Comida favorita:</span> {member.favorites.food}
                       </div>
                       <div className="text-soda-fog">
                         <span className="text-soda-accent">Olor favorito:</span> {member.favorites.smell}
                       </div>
                       <div className="text-soda-fog">
-                        <span className="text-soda-accent">Sonido que relaja:</span> {member.favorites.sound}
+                        <span className="text-soda-accent">Sonido que le relaja:</span> {member.favorites.sound}
                       </div>
                       <div className="text-soda-fog">
-                        <span className="text-soda-accent">Hora del día:</span> {member.favorites.timeOfDay}
+                        <span className="text-soda-accent">Hora favorita del día:</span> {member.favorites.timeOfDay}
                       </div>
                       <div className="text-soda-fog">
                         <span className="text-soda-accent">Clima favorito:</span> {member.favorites.weather}
                       </div>
                       <div className="text-soda-fog">
-                        <span className="text-soda-accent">Tatuajes:</span> {member.favorites.tattoos}
+                        <span className="text-soda-accent">Cantidad de tatuajes:</span> {member.favorites.tattoos}
                       </div>
                     </div>
                   </div>
@@ -375,40 +376,40 @@ export const ElEquipo: React.FC = () => {
                     <h4 className="text-soda-lamp text-xs font-medium mb-3 tracking-wider">CIUDADES</h4>
                     <div className="space-y-2 text-xs">
                       <div className="text-soda-fog">
-                        <span className="text-soda-accent">Sueña visitar:</span> {member.cities.dreamVisit}
+                        <span className="text-soda-accent">Ciudad que sueña con visitar:</span> {member.cities.dreamVisit}
                       </div>
                       <div className="text-soda-fog">
-                        <span className="text-soda-accent">No visitaría:</span> {member.cities.wouldntVisit}
+                        <span className="text-soda-accent">Ciudad que no visitaría:</span> {member.cities.wouldntVisit}
                       </div>
                       <div className="text-soda-fog">
-                        <span className="text-soda-accent">Viviría en:</span> {member.cities.wouldLive}
+                        <span className="text-soda-accent">Ciudad donde viviría:</span> {member.cities.wouldLive}
                       </div>
                       <div className="text-soda-fog">
-                        <span className="text-soda-accent">Mejor comida:</span> {member.cities.bestFood}
+                        <span className="text-soda-accent">Ciudad donde se come mejor:</span> {member.cities.bestFood}
                       </div>
                       <div className="text-soda-fog">
-                        <span className="text-soda-accent">Propondría casamiento:</span> {member.cities.wouldPropose}
+                        <span className="text-soda-accent">Ciudad donde propondría casamiento:</span> {member.cities.wouldPropose}
                       </div>
                       <div className="text-soda-fog">
-                        <span className="text-soda-accent">Se aislaría:</span> {member.cities.wouldIsolate}
+                        <span className="text-soda-accent">Ciudad donde se aislaría:</span> {member.cities.wouldIsolate}
                       </div>
                       <div className="text-soda-fog">
-                        <span className="text-soda-accent">Conocer gente:</span> {member.cities.meetPeople}
+                        <span className="text-soda-accent">Ciudad donde iría a conocer gente:</span> {member.cities.meetPeople}
                       </div>
                       <div className="text-soda-fog">
-                        <span className="text-soda-accent">Vacacionar siempre:</span> {member.cities.vacation}
+                        <span className="text-soda-accent">Ciudad para vacacionar siempre:</span> {member.cities.vacation}
                       </div>
                       <div className="text-soda-fog">
-                        <span className="text-soda-accent">Todo pago:</span> {member.cities.allExpensesPaid}
+                        <span className="text-soda-accent">Ciudad que soñaría conocer todo pago:</span> {member.cities.allExpensesPaid}
                       </div>
                       <div className="text-soda-fog">
-                        <span className="text-soda-accent">Escribir un libro:</span> {member.cities.writeBook}
+                        <span className="text-soda-accent">Ciudad donde escribiría un libro:</span> {member.cities.writeBook}
                       </div>
                       <div className="text-soda-fog">
-                        <span className="text-soda-accent">Grabar episodio:</span> {member.cities.recordEpisode}
+                        <span className="text-soda-accent">Ciudad donde grabaría un episodio ideal:</span> {member.cities.recordEpisode}
                       </div>
                       <div className="text-soda-fog">
-                        <span className="text-soda-accent">Nostalgia sin haber ido:</span> {member.cities.nostalgia}
+                        <span className="text-soda-accent">Ciudad que le genera nostalgia sin haber ido:</span> {member.cities.nostalgia}
                       </div>
                     </div>
                   </div>

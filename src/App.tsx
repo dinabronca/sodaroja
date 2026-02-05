@@ -47,17 +47,18 @@ function App() {
           <Route path="/mi-cuenta" element={<MiCuentaPage />} />
         </Routes>
 
-        {/* Footer - Versión Minimalista */}
+        {/* Footer - Minimalista y simétrico */}
         <footer className="relative py-8 px-6 border-t border-soda-mist border-opacity-20">
           <div className="max-w-7xl mx-auto">
             <div className="flex justify-between items-center">
-              {/* Logo */}
+              {/* Izquierda: Tagline */}
               <div>
-                <h3 className="text-xl font-serif text-soda-glow">SODAROJA</h3>
+                <h3 className="text-xl font-serif text-soda-glow mb-1">SODAROJA</h3>
+                <p className="text-soda-fog text-xs">Historias reales de ciudades lejanas</p>
                 <p className="text-soda-fog text-xs mt-1">© 2026</p>
               </div>
               
-              {/* Redes sociales */}
+              {/* Derecha: Redes sociales */}
               <div className="flex space-x-3">
                 <a href="#" className="hoverable w-10 h-10 border border-soda-accent border-opacity-40 rounded-sm flex items-center justify-center hover:border-opacity-80 hover:bg-soda-accent hover:bg-opacity-10 transition-all text-xs">
                   <span className="text-soda-accent">IG</span>

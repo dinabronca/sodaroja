@@ -76,40 +76,12 @@ const allEpisodes = [
 ];
 
 export const EpisodiosPage: React.FC = () => {
-  const [displayedEpisodes, setDisplayedEpisodes] = useState(allEpisodes);
-  const [isLoading, setIsLoading] = useState(false);
-
-  // Simular carga de más episodios al hacer scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop >=
-        document.documentElement.offsetHeight - 500
-      ) {
-        if (!isLoading && displayedEpisodes.length < 50) { // Límite de 50 por ahora
-          loadMoreEpisodes();
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [displayedEpisodes, isLoading]);
-
-  const loadMoreEpisodes = () => {
-    setIsLoading(true);
-    
-    // Simular delay de carga
-    setTimeout(() => {
-      const newEpisodes = allEpisodes.map((ep, i) => ({
-        ...ep,
-        id: `${ep.id}-${displayedEpisodes.length + i}`,
-      }));
-      
-      setDisplayedEpisodes([...displayedEpisodes, ...newEpisodes]);
-      setIsLoading(false);
-    }, 800);
-  };
+  // Mostrar solo los primeros 18 episodios (sin scroll infinito por ahora)
+  const allEpisodes = [
+    ...mockEpisodes,
+    ...mockEpisodes.map((ep, i) => ({ ...ep, id: `${ep.id}-2-${i}` })),
+    ...mockEpisodes.map((ep, i) => ({ ...ep, id: `${ep.id}-3-${i}` })),
+  ].slice(0, 18); // Máximo 18 episodios
 
   return (
     <section className="relative pt-32 pb-24 px-6 min-h-screen">
@@ -126,13 +98,13 @@ export const EpisodiosPage: React.FC = () => {
           </h1>
           <div className="w-32 h-px bg-gradient-to-r from-transparent via-soda-accent to-transparent mx-auto mb-6" />
           <p className="text-soda-fog font-light tracking-wide text-lg">
-            {displayedEpisodes.length} viajes narrados
+            {allEpisodes.length} episodios disponibles
           </p>
         </motion.div>
         
         {/* Grid de episodios - 3 columnas */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {displayedEpisodes.map((episode, index) => (
+          {allEpisodes.map((episode, index) => (
             <motion.div
               key={episode.id}
               initial={{ opacity: 0, y: 30 }}
@@ -144,22 +116,12 @@ export const EpisodiosPage: React.FC = () => {
           ))}
         </div>
 
-        {/* Indicador de carga */}
-        {isLoading && (
-          <div className="text-center mt-12">
-            <div className="loader mx-auto"></div>
-            <p className="text-soda-fog text-sm mt-4">Cargando más episodios...</p>
-          </div>
-        )}
-
-        {/* Fin de episodios */}
-        {displayedEpisodes.length >= 50 && (
-          <div className="text-center mt-16">
-            <p className="text-soda-fog text-sm">
-              Has visto todos los episodios disponibles
-            </p>
-          </div>
-        )}
+        {/* Nota: Conectar con backend para más episodios */}
+        <div className="text-center mt-16">
+          <p className="text-soda-fog text-sm">
+            Más episodios próximamente
+          </p>
+        </div>
       </div>
     </section>
   );

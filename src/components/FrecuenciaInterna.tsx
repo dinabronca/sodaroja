@@ -47,7 +47,56 @@ export const FrecuenciaInterna: React.FC = () => {
   const [selectedPlan, setSelectedPlan] = React.useState<string>('Suscripción B');
 
   return (
-    <section id="frecuencia-interna" className="relative py-32 px-6 bg-gradient-to-b from-soda-night via-soda-deep to-soda-night">
+    <section id="frecuencia-interna" className="relative py-32 px-6 bg-gradient-to-b from-soda-night via-soda-deep to-soda-night overflow-hidden">
+      {/* Ondas de frecuencia de fondo */}
+      {[...Array(6)].map((_, i) => (
+        <motion.div
+          key={`wave-${i}`}
+          className="absolute left-1/2 top-1/2 border-2 border-soda-red rounded-full pointer-events-none"
+          style={{
+            width: `${300 + i * 150}px`,
+            height: `${300 + i * 150}px`,
+            marginLeft: `-${150 + i * 75}px`,
+            marginTop: `-${150 + i * 75}px`,
+          }}
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.1, 0.3, 0.1],
+          }}
+          transition={{
+            duration: 4 + i * 0.5,
+            repeat: Infinity,
+            delay: i * 0.5,
+          }}
+        />
+      ))}
+
+      {/* Partículas rojas flotantes */}
+      {[...Array(20)].map((_, i) => (
+        <motion.div
+          key={`particle-${i}`}
+          className="absolute w-1 h-1 bg-soda-red rounded-full opacity-40"
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+          }}
+          animate={{
+            y: [0, -100, 0],
+            x: [0, Math.random() * 50 - 25, 0],
+            opacity: [0.2, 0.8, 0.2],
+          }}
+          transition={{
+            duration: 5 + Math.random() * 5,
+            repeat: Infinity,
+            delay: Math.random() * 5,
+          }}
+        />
+      ))}
+
+      {/* Scanlines */}
+      <div className="absolute inset-0 pointer-events-none opacity-5" style={{
+        background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px)',
+      }} />
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div

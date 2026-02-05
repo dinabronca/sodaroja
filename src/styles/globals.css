@@ -219,7 +219,7 @@ body {
 
 @keyframes glitch-flash {
   0%, 94%, 96%, 98%, 100% {
-    text-shadow: none;
+    text-shadow: 0 0 10px rgba(196, 85, 85, 0.5);
   }
   95% {
     text-shadow: -2px 0 #c45555, 2px 0 #8a9bc4;
@@ -232,6 +232,45 @@ body {
   99% {
     text-shadow: -1px 0 #c45555, 1px 0 #8a9bc4;
     transform: translate(0.5px, -0.5px);
+  }
+}
+
+/* Resplandor pulsante */
+@keyframes pulsing-glow {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(196, 85, 85, 0.5);
+  }
+  50% {
+    text-shadow: 0 0 25px rgba(196, 85, 85, 0.9), 0 0 35px rgba(196, 85, 85, 0.6);
+  }
+}
+
+/* Dispersión de píxeles para Episodios */
+.pixel-dispersion {
+  position: relative;
+  animation: pixel-disperse 5s infinite;
+}
+
+@keyframes pixel-disperse {
+  0%, 92%, 100% {
+    filter: none;
+    transform: none;
+  }
+  93% {
+    filter: blur(0.3px);
+    transform: scale(1.02);
+  }
+  94% {
+    filter: blur(0px);
+    transform: scale(0.98) translateX(1px);
+  }
+  95% {
+    filter: blur(0.2px);
+    transform: scale(1.01) translateX(-1px);
+  }
+  96% {
+    filter: none;
+    transform: none;
   }
 }
 
