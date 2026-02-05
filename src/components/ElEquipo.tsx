@@ -230,7 +230,7 @@ export const ElEquipo: React.FC = () => {
             >
               <div className="bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm overflow-hidden hover:border-soda-accent hover:border-opacity-40 transition-all duration-300 group">
                 {/* Foto - ratio 3:4 con partículas */}
-                <div className="relative aspect-[3/4] overflow-hidden max-h-80 bg-soda-deep flex items-center justify-center">
+                <div className="relative aspect-[3/4] overflow-hidden bg-soda-deep">
                   {/* Partículas flotantes */}
                   {[...Array(8)].map((_, i) => (
                     <motion.div
@@ -257,8 +257,7 @@ export const ElEquipo: React.FC = () => {
                   <motion.img
                     src={member.photoUrl}
                     alt={member.name}
-                    className="absolute inset-0 w-full h-full object-cover"
-                    style={{ objectPosition: 'center center' }}
+                    className="w-full h-full object-cover object-center"
                     whileHover={{ scale: 1.08 }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
                   />

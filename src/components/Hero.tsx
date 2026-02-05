@@ -173,7 +173,7 @@ export const Hero: React.FC = () => {
             className="text-7xl md:text-8xl font-serif font-light tracking-wider text-soda-glow mb-6"
             style={{ textShadow: '0 0 30px rgba(212, 197, 176, 0.3)' }}
           >
-            SODAROJA
+            sodaroja
           </motion.h1>
 
           <motion.div
