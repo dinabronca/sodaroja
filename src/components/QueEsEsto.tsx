@@ -112,8 +112,7 @@ export const QueEsEsto: React.FC = () => {
           </h2>
           <div className="w-32 h-px bg-gradient-to-r from-transparent via-soda-accent to-transparent mx-auto mb-8" />
           <p className="text-soda-lamp text-xl font-light max-w-3xl mx-auto leading-relaxed">
-            Un podcast narrativo argentino que viaja por las ciudades del mundo contando historias reales. 
-            Cada episodio dura entre <span className="text-soda-accent">60 y 80 minutos</span>.
+            Podcast de investigación narrativa. Episodios de 60-80 minutos sobre ciudades del mundo.
           </p>
         </motion.div>
 
@@ -125,9 +124,8 @@ export const QueEsEsto: React.FC = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="prose prose-invert max-w-none mb-20"
         >
-          <p className="text-soda-fog text-lg leading-relaxed font-light text-center">
-            No es periodismo tradicional, no es documental rígido y no es entretenimiento rápido. 
-            Se siente como una charla nocturna entre amigos donde alguien cuenta historias reales que nunca olvidarás.
+          <p className="text-soda-fog text-lg leading-relaxed font-light text-center max-w-3xl mx-auto">
+            Historias reales de ciudades del mundo. Investigación profunda, narrativa cuidada y producción sonora envolvente.
           </p>
         </motion.div>
 
@@ -227,11 +225,11 @@ export const QueEsEsto: React.FC = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-soda-red/5 via-soda-accent/5 to-soda-red/5 rounded-sm blur-xl" />
           <div className="relative bg-soda-night bg-opacity-80 backdrop-blur-sm border border-soda-red border-opacity-30 rounded-sm p-12 text-center">
             <div className="text-6xl mb-6">✨</div>
-            <h3 className="text-3xl font-serif text-soda-glow mb-6">Sensación Final</h3>
-            <p className="text-soda-lamp text-xl mb-6 font-light">El oyente debe sentir que:</p>
+            <h3 className="text-3xl font-serif text-soda-glow mb-6">Resultado</h3>
+            <p className="text-soda-lamp text-xl mb-6 font-light">Formato completo que incluye:</p>
             
             <div className="flex flex-wrap justify-center gap-4 mb-8">
-              {['viajó', 'aprendió', 'estuvo en una charla real', 'no estuvo solo', 'pertenece'].map((item, i) => (
+              {['Actualidad', 'Viaje sonoro', 'Historia investigada', 'Comunidad', 'Cultura'].map((item, i) => (
                 <motion.span
                   key={i}
                   initial={{ opacity: 0, scale: 0.8 }}
@@ -247,8 +245,7 @@ export const QueEsEsto: React.FC = () => {
             </div>
             
             <p className="text-soda-fog text-base italic font-light max-w-2xl mx-auto">
-              Esta estructura permite que SODAROJA tenga: actualidad, viaje, historia, comunidad, culto y cultura. 
-              Todo en un mismo ritual sonoro.
+              Combinación de géneros que construye un ritual sonoro único.
             </p>
           </div>
         </motion.div>
