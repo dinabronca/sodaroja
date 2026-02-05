@@ -171,9 +171,6 @@ const teamMembers: TeamMember[] = [
       youtube: "#",
       tiktok: "#",
     },
-      instagram: '#',
-      youtube: '#',
-    },
     favorites: {
       iceCream: 'Dulce de leche',
       drink: 'Fernet con coca',
