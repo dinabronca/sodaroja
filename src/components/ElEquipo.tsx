@@ -11,11 +11,6 @@ interface TeamMember {
   zodiac: string;
   photoUrl: string;
   socials: {
-      instagram: "#",
-      twitter: "#",
-      youtube: "#",
-      tiktok: "#",
-    },
     instagram?: string;
     twitter?: string;
     youtube?: string;
