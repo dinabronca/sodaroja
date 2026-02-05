@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { EpisodeCard } from '../components/EpisodeCard';
 
 // Mock data extendido
-const allEpisodes = [
+const mockEpisodes = [
   {
     id: '1',
     city: 'PARÍS',
@@ -72,15 +72,14 @@ const allEpisodes = [
     spotifyUrl: '#',
     soundcloudUrl: '#',
   },
-  // Agregar más episodios duplicando estos con IDs distintos para simular scroll infinito
 ];
 
 export const EpisodiosPage: React.FC = () => {
   // Mostrar solo los primeros 18 episodios (sin scroll infinito por ahora)
   const allEpisodes = [
     ...mockEpisodes,
-    ...mockEpisodes.map((ep, i) => ({ ...ep, id: `${ep.id}-2-${i}` })),
-    ...mockEpisodes.map((ep, i) => ({ ...ep, id: `${ep.id}-3-${i}` })),
+    ...mockEpisodes.map((ep: any, i: number) => ({ ...ep, id: `${ep.id}-2-${i}` })),
+    ...mockEpisodes.map((ep: any, i: number) => ({ ...ep, id: `${ep.id}-3-${i}` })),
   ].slice(0, 18); // Máximo 18 episodios
 
   return (
