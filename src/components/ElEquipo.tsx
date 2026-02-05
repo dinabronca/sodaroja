@@ -211,7 +211,7 @@ export const ElEquipo: React.FC = () => {
         </motion.div>
 
         {/* Grid de miembros */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {teamMembers.map((member, index) => (
             <motion.div
               key={index}
@@ -219,16 +219,14 @@ export const ElEquipo: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group cursor-pointer"
-              onClick={() => setSelectedMember(selectedMember === index ? null : index)}
             >
-              <div className="bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm overflow-hidden hover:border-soda-accent hover:border-opacity-40 transition-all duration-300">
-                {/* Foto - ratio 3:4 pero más chica */}
-                <div className="relative aspect-[3/4] overflow-hidden max-h-80">
+              <div className="bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm overflow-hidden">
+                {/* Foto - ratio 3:4 centrada */}
+                <div className="relative aspect-[3/4] overflow-hidden max-h-80 flex items-center justify-center bg-soda-deep">
                   <img
                     src={member.photoUrl}
                     alt={member.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover object-center"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-soda-night via-transparent to-transparent opacity-60" />
                 </div>
@@ -238,19 +236,18 @@ export const ElEquipo: React.FC = () => {
                   <h3 className="text-2xl font-serif text-soda-glow mb-2">{member.name}</h3>
                   <p className="text-soda-accent text-sm mb-4">{member.role}</p>
                   
-                  <div className="space-y-2 text-soda-fog text-xs">
+                  <div className="space-y-2 text-soda-fog text-xs mb-6">
                     <p>Nacido en {member.cityBorn} ({member.birthYear})</p>
                     <p>Vive en {member.cityCurrent}</p>
                     <p>{member.zodiac}</p>
                   </div>
 
                   {/* Redes sociales */}
-                  <div className="flex gap-4 mt-6">
+                  <div className="flex gap-4 mb-6 pb-6 border-b border-soda-mist border-opacity-20">
                     {member.socials.instagram && (
                       <a
                         href={member.socials.instagram}
                         className="hoverable text-soda-accent hover:text-soda-lamp transition-colors"
-                        onClick={(e) => e.stopPropagation()}
                       >
                         <Instagram size={20} />
                       </a>
@@ -259,62 +256,111 @@ export const ElEquipo: React.FC = () => {
                       <a
                         href={member.socials.youtube}
                         className="hoverable text-soda-accent hover:text-soda-lamp transition-colors"
-                        onClick={(e) => e.stopPropagation()}
                       >
                         <Youtube size={20} />
                       </a>
                     )}
                   </div>
 
-                  {/* Indicador de expandir */}
-                  <div className="mt-6 text-soda-accent text-xs text-center">
-                    {selectedMember === index ? 'Click para cerrar' : 'Click para conocer más'}
+                  {/* Favoritos */}
+                  <div className="mb-6">
+                    <h4 className="text-soda-lamp text-xs font-medium mb-3 tracking-wider">PERFIL HUMANO</h4>
+                    <div className="space-y-2 text-xs">
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Helado favorito:</span> {member.favorites.iceCream}
+                      </div>
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Bebida:</span> {member.favorites.drink}
+                      </div>
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Libro:</span> {member.favorites.book}
+                      </div>
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Película:</span> {member.favorites.movie}
+                      </div>
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Serie:</span> {member.favorites.series}
+                      </div>
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Personaje:</span> {member.favorites.character}
+                      </div>
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Famoso favorito:</span> {member.favorites.celebrity}
+                      </div>
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Álbum:</span> {member.favorites.album}
+                      </div>
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Podcast:</span> {member.favorites.podcast}
+                      </div>
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Deporte:</span> {member.favorites.sport}
+                      </div>
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Comida:</span> {member.favorites.food}
+                      </div>
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Olor favorito:</span> {member.favorites.smell}
+                      </div>
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Sonido que relaja:</span> {member.favorites.sound}
+                      </div>
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Hora del día:</span> {member.favorites.timeOfDay}
+                      </div>
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Clima favorito:</span> {member.favorites.weather}
+                      </div>
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Tatuajes:</span> {member.favorites.tattoos}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Ciudades */}
+                  <div>
+                    <h4 className="text-soda-lamp text-xs font-medium mb-3 tracking-wider">CIUDADES</h4>
+                    <div className="space-y-2 text-xs">
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Sueña visitar:</span> {member.cities.dreamVisit}
+                      </div>
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">No visitaría:</span> {member.cities.wouldntVisit}
+                      </div>
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Viviría en:</span> {member.cities.wouldLive}
+                      </div>
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Mejor comida:</span> {member.cities.bestFood}
+                      </div>
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Propondría casamiento:</span> {member.cities.wouldPropose}
+                      </div>
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Se aislaría:</span> {member.cities.wouldIsolate}
+                      </div>
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Conocer gente:</span> {member.cities.meetPeople}
+                      </div>
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Vacacionar siempre:</span> {member.cities.vacation}
+                      </div>
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Todo pago:</span> {member.cities.allExpensesPaid}
+                      </div>
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Escribir un libro:</span> {member.cities.writeBook}
+                      </div>
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Grabar episodio:</span> {member.cities.recordEpisode}
+                      </div>
+                      <div className="text-soda-fog">
+                        <span className="text-soda-accent">Nostalgia sin haber ido:</span> {member.cities.nostalgia}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-
-              {/* Detalles expandibles */}
-              <AnimatePresence>
-                {selectedMember === index && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="mt-4 bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm p-6 overflow-hidden"
-                  >
-                    {/* Favoritos */}
-                    <div className="mb-6">
-                      <h4 className="text-soda-lamp text-sm font-medium mb-4 tracking-wider">PERFIL HUMANO</h4>
-                      <div className="grid grid-cols-2 gap-3 text-xs">
-                        {Object.entries(member.favorites).map(([key, value]) => (
-                          <div key={key} className="text-soda-fog">
-                            <span className="text-soda-accent capitalize">
-                              {key.replace(/([A-Z])/g, ' $1').trim()}:
-                            </span>{' '}
-                            {value}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Ciudades */}
-                    <div>
-                      <h4 className="text-soda-lamp text-sm font-medium mb-4 tracking-wider">CIUDADES</h4>
-                      <div className="grid grid-cols-2 gap-3 text-xs">
-                        {Object.entries(member.cities).map(([key, value]) => (
-                          <div key={key} className="text-soda-fog">
-                            <span className="text-soda-accent capitalize">
-                              {key.replace(/([A-Z])/g, ' $1').trim()}:
-                            </span>{' '}
-                            {value}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
             </motion.div>
           ))}
         </div>

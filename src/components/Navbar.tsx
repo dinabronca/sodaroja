@@ -16,20 +16,14 @@ export const Navbar: React.FC = () => {
     { label: 'Inicio', href: '/' },
     { label: '¿Qué es esto?', href: '/que-es-esto' },
     { label: 'El Equipo', href: '/equipo' },
-    { label: 'Episodios', href: '/#episodios' },
+    { label: 'Episodios', href: '/episodios' },
     { label: 'Frecuencia Interna', href: '/frecuencia-interna' },
     { label: 'Shop', href: '/shop' },
     { label: 'Contacto', href: '/contacto' },
   ];
 
   const handleEpisodiosClick = (e: React.MouseEvent) => {
-    if (location.pathname === '/') {
-      e.preventDefault();
-      const element = document.querySelector('#episodios');
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }
+    // Ya no necesitamos scroll, va directo a /episodios
   };
 
   return (
@@ -56,22 +50,46 @@ export const Navbar: React.FC = () => {
           {/* Menu Desktop */}
           <div className="hidden md:flex items-center space-x-8">
             {menuItems.map((item, index) => {
-              const isEpisodios = item.href === '/#episodios';
+              const isEpisodios = item.label === 'Episodios';
+              const isFrecuencia = item.label === 'Frecuencia Interna';
               
               if (isEpisodios) {
                 return (
-                  <motion.a
+                  <motion.div
                     key={item.href}
-                    href={item.href}
-                    onClick={handleEpisodiosClick}
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 * index, duration: 0.5 }}
-                    className="hoverable text-soda-fog hover:text-soda-lamp transition-colors duration-300 text-sm tracking-wide font-light relative group"
                   >
-                    {item.label}
-                    <span className="absolute bottom-0 left-0 w-0 h-px bg-soda-lamp group-hover:w-full transition-all duration-300" />
-                  </motion.a>
+                    <Link
+                      to={item.href}
+                      className="hoverable text-soda-accent hover:text-soda-lamp transition-colors duration-300 text-sm tracking-wide font-medium relative group"
+                    >
+                      {item.label}
+                      <span className="absolute bottom-0 left-0 w-0 h-px bg-soda-accent group-hover:w-full transition-all duration-300" />
+                    </Link>
+                  </motion.div>
+                );
+              }
+              
+              if (isFrecuencia) {
+                return (
+                  <motion.div
+                    key={item.href}
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 * index, duration: 0.5 }}
+                    className="glitch-container"
+                  >
+                    <Link
+                      to={item.href}
+                      className="hoverable text-soda-red hover:text-soda-glow transition-colors duration-300 text-sm tracking-wide font-light relative group glitch-text"
+                      data-text={item.label}
+                    >
+                      {item.label}
+                      <span className="absolute bottom-0 left-0 w-0 h-px bg-soda-red group-hover:w-full transition-all duration-300" />
+                    </Link>
+                  </motion.div>
                 );
               }
               

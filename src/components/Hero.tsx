@@ -158,22 +158,6 @@ export const Hero: React.FC = () => {
           </motion.p>
         </motion.div>
 
-        {/* Botones de acción */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.8, duration: 0.8 }}
-          className="flex flex-col sm:flex-row gap-6 justify-center items-center"
-        >
-          <button className="glow-button hoverable px-10 py-4 bg-soda-red bg-opacity-20 border border-soda-red text-soda-lamp rounded-sm hover:bg-opacity-30 transition-all duration-300 font-light tracking-wider backdrop-blur-sm">
-            ESCUCHAR EPISODIOS
-          </button>
-          
-          <button className="glow-button hoverable px-10 py-4 border border-soda-accent border-opacity-40 text-soda-accent rounded-sm hover:border-opacity-60 hover:bg-soda-accent hover:bg-opacity-10 transition-all duration-300 font-light tracking-wider backdrop-blur-sm">
-            FRECUENCIA INTERNA
-          </button>
-        </motion.div>
-
         {/* Indicador de scroll */}
         <motion.div
           initial={{ opacity: 0 }}

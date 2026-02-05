@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Hero } from '../components/Hero';
 import { EpisodeCard } from '../components/EpisodeCard';
 
@@ -75,6 +76,9 @@ const mockEpisodes = [
 ];
 
 export const HomePage: React.FC = () => {
+  // Solo mostrar los primeros 6 en home
+  const featuredEpisodes = mockEpisodes.slice(0, 6);
+
   return (
     <>
       {/* Hero Section */}
@@ -96,16 +100,19 @@ export const HomePage: React.FC = () => {
           
           {/* Grid de episodios - 3 columnas */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {mockEpisodes.map((episode) => (
+            {featuredEpisodes.map((episode) => (
               <EpisodeCard key={episode.id} episode={episode} />
             ))}
           </div>
 
           {/* Botón ver todos */}
           <div className="text-center mt-16">
-            <button className="glow-button hoverable px-12 py-4 border border-soda-lamp border-opacity-30 text-soda-lamp rounded-sm hover:border-opacity-60 hover:bg-soda-lamp hover:bg-opacity-5 transition-all duration-300 font-light tracking-wider">
+            <Link 
+              to="/episodios"
+              className="glow-button hoverable inline-block px-12 py-4 border border-soda-lamp border-opacity-30 text-soda-lamp rounded-sm hover:border-opacity-60 hover:bg-soda-lamp hover:bg-opacity-5 transition-all duration-300 font-light tracking-wider"
+            >
               VER TODOS LOS EPISODIOS
-            </button>
+            </Link>
           </div>
         </div>
       </section>

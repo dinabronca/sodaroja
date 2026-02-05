@@ -211,6 +211,30 @@ body {
   animation: glitch 2s infinite linear alternate-reverse;
 }
 
+/* Glitch para navbar - Frecuencia Interna */
+.glitch-text {
+  position: relative;
+  animation: glitch-flash 4s infinite;
+}
+
+@keyframes glitch-flash {
+  0%, 94%, 96%, 98%, 100% {
+    text-shadow: none;
+  }
+  95% {
+    text-shadow: -2px 0 #c45555, 2px 0 #8a9bc4;
+    transform: translate(1px, -1px);
+  }
+  97% {
+    text-shadow: 2px 0 #c45555, -2px 0 #8a9bc4;
+    transform: translate(-1px, 1px);
+  }
+  99% {
+    text-shadow: -1px 0 #c45555, 1px 0 #8a9bc4;
+    transform: translate(0.5px, -0.5px);
+  }
+}
+
 /* Interferencia de TV estática */
 .static-noise {
   position: absolute;
