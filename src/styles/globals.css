@@ -409,3 +409,14 @@ body {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+/* Animaciones VHS */
+@keyframes vhs-lines {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(4px); }
+}
+
+@keyframes color-shift {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(5px); }
+}

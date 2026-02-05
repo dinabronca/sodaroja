@@ -8,6 +8,7 @@ import { EpisodiosPage } from './pages/EpisodiosPage';
 import { FrecuenciaInternaPage } from './pages/FrecuenciaInternaPage';
 import { ShopPage } from './pages/ShopPage';
 import { ContactoPage } from './pages/ContactoPage';
+import { MiCuentaPage } from './pages/MiCuentaPage';
 import { CustomCursor } from './effects/CustomCursor';
 import { FloatingParticles } from './effects/FloatingParticles';
 import { Bokeh } from './effects/Bokeh';
@@ -43,33 +44,32 @@ function App() {
           <Route path="/frecuencia-interna" element={<FrecuenciaInternaPage />} />
           <Route path="/shop" element={<ShopPage />} />
           <Route path="/contacto" element={<ContactoPage />} />
+          <Route path="/mi-cuenta" element={<MiCuentaPage />} />
         </Routes>
 
-        {/* Footer - Versión Compacta */}
-        <footer className="relative py-12 px-6 border-t border-soda-mist border-opacity-20">
+        {/* Footer - Versión Minimalista */}
+        <footer className="relative py-8 px-6 border-t border-soda-mist border-opacity-20">
           <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="flex justify-between items-center">
               {/* Logo */}
               <div>
                 <h3 className="text-xl font-serif text-soda-glow">SODAROJA</h3>
-                <p className="text-soda-fog text-xs mt-2">Un proyecto independiente argentino</p>
+                <p className="text-soda-fog text-xs mt-1">© 2026</p>
               </div>
               
-              {/* Links rápidos */}
-              <div className="flex gap-6 text-soda-fog text-sm">
-                <a href="/que-es-esto" className="hoverable hover:text-soda-lamp transition-colors">¿Qué es?</a>
-                <a href="/equipo" className="hoverable hover:text-soda-lamp transition-colors">Equipo</a>
-                <a href="/episodios" className="hoverable hover:text-soda-lamp transition-colors">Episodios</a>
-                <a href="/contacto" className="hoverable hover:text-soda-lamp transition-colors">Contacto</a>
-              </div>
-              
-              {/* Redes */}
+              {/* Redes sociales */}
               <div className="flex space-x-3">
-                <a href="#" className="hoverable w-8 h-8 border border-soda-accent border-opacity-40 rounded-sm flex items-center justify-center hover:border-opacity-80 hover:bg-soda-accent hover:bg-opacity-10 transition-all text-xs">
+                <a href="#" className="hoverable w-10 h-10 border border-soda-accent border-opacity-40 rounded-sm flex items-center justify-center hover:border-opacity-80 hover:bg-soda-accent hover:bg-opacity-10 transition-all text-xs">
                   <span className="text-soda-accent">IG</span>
                 </a>
-                <a href="#" className="hoverable w-8 h-8 border border-soda-accent border-opacity-40 rounded-sm flex items-center justify-center hover:border-opacity-80 hover:bg-soda-accent hover:bg-opacity-10 transition-all text-xs">
+                <a href="#" className="hoverable w-10 h-10 border border-soda-accent border-opacity-40 rounded-sm flex items-center justify-center hover:border-opacity-80 hover:bg-soda-accent hover:bg-opacity-10 transition-all text-xs">
+                  <span className="text-soda-accent">X</span>
+                </a>
+                <a href="#" className="hoverable w-10 h-10 border border-soda-accent border-opacity-40 rounded-sm flex items-center justify-center hover:border-opacity-80 hover:bg-soda-accent hover:bg-opacity-10 transition-all text-xs">
                   <span className="text-soda-accent">YT</span>
+                </a>
+                <a href="#" className="hoverable w-10 h-10 border border-soda-accent border-opacity-40 rounded-sm flex items-center justify-center hover:border-opacity-80 hover:bg-soda-accent hover:bg-opacity-10 transition-all text-xs">
+                  <span className="text-soda-accent">SP</span>
                 </a>
               </div>
             </div>

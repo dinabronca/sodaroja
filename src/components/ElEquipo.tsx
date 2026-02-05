@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Instagram, Youtube } from 'lucide-react';
+import { Instagram, Youtube, Twitter } from 'lucide-react';
 
 interface TeamMember {
   name: string;
@@ -11,8 +11,15 @@ interface TeamMember {
   zodiac: string;
   photoUrl: string;
   socials: {
+      instagram: "#",
+      twitter: "#",
+      youtube: "#",
+      tiktok: "#",
+    },
     instagram?: string;
+    twitter?: string;
     youtube?: string;
+    tiktok?: string;
   };
   favorites: {
     iceCream: string;
@@ -59,6 +66,11 @@ const teamMembers: TeamMember[] = [
     zodiac: 'Escorpio',
     photoUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80',
     socials: {
+      instagram: "#",
+      twitter: "#",
+      youtube: "#",
+      tiktok: "#",
+    },
       instagram: '#',
       youtube: '#',
     },
@@ -104,6 +116,11 @@ const teamMembers: TeamMember[] = [
     zodiac: 'Piscis',
     photoUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80',
     socials: {
+      instagram: "#",
+      twitter: "#",
+      youtube: "#",
+      tiktok: "#",
+    },
       instagram: '#',
       youtube: '#',
     },
@@ -149,6 +166,11 @@ const teamMembers: TeamMember[] = [
     zodiac: 'Capricornio',
     photoUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80',
     socials: {
+      instagram: "#",
+      twitter: "#",
+      youtube: "#",
+      tiktok: "#",
+    },
       instagram: '#',
       youtube: '#',
     },
@@ -220,15 +242,40 @@ export const ElEquipo: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
             >
-              <div className="bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm overflow-hidden">
-                {/* Foto - ratio 3:4 centrada */}
-                <div className="relative aspect-[3/4] overflow-hidden max-h-80 flex items-center justify-center bg-soda-deep">
-                  <img
+              <div className="bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm overflow-hidden hover:border-soda-accent hover:border-opacity-40 transition-all duration-300 group">
+                {/* Foto - ratio 3:4 con partículas */}
+                <div className="relative aspect-[3/4] overflow-hidden max-h-80 bg-soda-deep">
+                  {/* Partículas flotantes */}
+                  {[...Array(8)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute w-1 h-1 bg-soda-lamp rounded-full pointer-events-none z-10"
+                      style={{
+                        left: `${15 + Math.random() * 70}%`,
+                        top: `${15 + Math.random() * 70}%`,
+                      }}
+                      animate={{
+                        y: [0, -25, 0],
+                        opacity: [0, 0.7, 0],
+                        scale: [0.5, 1, 0.5],
+                      }}
+                      transition={{
+                        duration: 3 + Math.random() * 2,
+                        repeat: Infinity,
+                        delay: Math.random() * 3,
+                        ease: "easeInOut"
+                      }}
+                    />
+                  ))}
+                  
+                  <motion.img
                     src={member.photoUrl}
                     alt={member.name}
                     className="w-full h-full object-cover object-center"
+                    whileHover={{ scale: 1.08 }}
+                    transition={{ duration: 0.6, ease: "easeOut" }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-soda-night via-transparent to-transparent opacity-60" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-soda-night via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
                 </div>
 
                 {/* Info básica */}
@@ -242,22 +289,42 @@ export const ElEquipo: React.FC = () => {
                     <p>{member.zodiac}</p>
                   </div>
 
-                  {/* Redes sociales */}
+                  {/* Redes sociales - 4 redes (IG y Twitter obligatorias) */}
                   <div className="flex gap-4 mb-6 pb-6 border-b border-soda-mist border-opacity-20">
                     {member.socials.instagram && (
                       <a
                         href={member.socials.instagram}
                         className="hoverable text-soda-accent hover:text-soda-lamp transition-colors"
+                        title="Instagram"
                       >
                         <Instagram size={20} />
+                      </a>
+                    )}
+                    {member.socials.twitter && (
+                      <a
+                        href={member.socials.twitter}
+                        className="hoverable text-soda-accent hover:text-soda-lamp transition-colors"
+                        title="Twitter/X"
+                      >
+                        <Twitter size={20} />
                       </a>
                     )}
                     {member.socials.youtube && (
                       <a
                         href={member.socials.youtube}
                         className="hoverable text-soda-accent hover:text-soda-lamp transition-colors"
+                        title="YouTube"
                       >
                         <Youtube size={20} />
+                      </a>
+                    )}
+                    {member.socials.tiktok && (
+                      <a
+                        href={member.socials.tiktok}
+                        className="hoverable text-soda-accent hover:text-soda-lamp transition-colors text-sm"
+                        title="TikTok"
+                      >
+                        TT
                       </a>
                     )}
                   </div>

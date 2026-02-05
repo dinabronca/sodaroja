@@ -12,6 +12,30 @@ export const Hero: React.FC = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Ondas sonoras de fondo */}
+      {[...Array(5)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute inset-0 border-2 border-soda-red opacity-10 rounded-full"
+          style={{
+            width: `${100 + i * 20}%`,
+            height: `${100 + i * 20}%`,
+            left: '50%',
+            top: '50%',
+            transform: 'translate(-50%, -50%)',
+          }}
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.1, 0.3, 0.1],
+          }}
+          transition={{
+            duration: 4 + i,
+            repeat: Infinity,
+            delay: i * 0.5,
+          }}
+        />
+      ))}
+      
       {/* Luz volumétrica de fondo */}
       <div className="light-rays" />
       
@@ -20,6 +44,28 @@ export const Hero: React.FC = () => {
         className="absolute inset-0 bg-gradient-to-b from-soda-deep via-soda-night to-soda-deep"
         style={{ transform: `translateY(${scrollY * 0.5}px)` }}
       />
+
+      {/* Partículas adicionales flotantes */}
+      {[...Array(15)].map((_, i) => (
+        <motion.div
+          key={`particle-${i}`}
+          className="absolute w-2 h-2 bg-soda-red rounded-full opacity-40"
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+          }}
+          animate={{
+            y: [0, -100, 0],
+            x: [0, Math.random() * 50 - 25, 0],
+            opacity: [0.2, 0.6, 0.2],
+          }}
+          transition={{
+            duration: 5 + Math.random() * 5,
+            repeat: Infinity,
+            delay: Math.random() * 5,
+          }}
+        />
+      ))}
 
       {/* Contenido principal */}
       <div className="relative z-10 text-center px-6 max-w-6xl mx-auto">

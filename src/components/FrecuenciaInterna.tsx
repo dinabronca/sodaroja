@@ -44,6 +44,8 @@ const benefits = [
 ];
 
 export const FrecuenciaInterna: React.FC = () => {
+  const [selectedPlan, setSelectedPlan] = React.useState<string>('Suscripción B');
+
   return (
     <section id="frecuencia-interna" className="relative py-32 px-6 bg-gradient-to-b from-soda-night via-soda-deep to-soda-night">
       <div className="max-w-7xl mx-auto">
@@ -95,10 +97,13 @@ export const FrecuenciaInterna: React.FC = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className={`relative bg-soda-slate bg-opacity-40 backdrop-blur-sm rounded-sm p-8 transition-all duration-300 hoverable ${
-                    plan.featured
-                      ? 'border-2 border-soda-red shadow-lg shadow-soda-red/20'
-                      : 'border border-soda-mist border-opacity-20 hover:border-soda-accent hover:border-opacity-40'
+                  onClick={() => setSelectedPlan(plan.name)}
+                  className={`relative bg-soda-slate bg-opacity-40 backdrop-blur-sm rounded-sm p-8 transition-all duration-300 hoverable cursor-pointer ${
+                    selectedPlan === plan.name
+                      ? 'border-2 border-soda-red shadow-lg shadow-soda-red/20 scale-105'
+                      : plan.featured
+                        ? 'border-2 border-soda-accent shadow-lg shadow-soda-accent/10'
+                        : 'border border-soda-mist border-opacity-20 hover:border-soda-accent hover:border-opacity-40'
                   }`}
                 >
                   {plan.featured && (
@@ -189,9 +194,33 @@ export const FrecuenciaInterna: React.FC = () => {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="text-center mt-16"
         >
-          <button className="glow-button hoverable px-16 py-5 bg-soda-red bg-opacity-20 border-2 border-soda-red text-soda-glow rounded-sm hover:bg-opacity-30 transition-all duration-300 text-lg tracking-wider backdrop-blur-sm">
-            SUMARTE A LA FRECUENCIA
-          </button>
+          <div className="mb-4 text-soda-lamp text-sm">
+            Plan seleccionado: <span className="text-soda-red font-medium">{selectedPlan}</span>
+          </div>
+          
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => {
+              // TODO: Integrar con Mercado Pago
+              alert(`Redirigiendo a Mercado Pago con plan: ${selectedPlan}`);
+            }}
+            className="glow-button hoverable px-16 py-5 bg-soda-red bg-opacity-20 border-2 border-soda-red text-soda-glow rounded-sm hover:bg-opacity-30 transition-all duration-300 text-lg tracking-wider backdrop-blur-sm relative overflow-hidden group"
+          >
+            {/* Efecto de brillo animado */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-soda-glow to-transparent opacity-0 group-hover:opacity-20"
+              animate={{
+                x: ['-100%', '100%'],
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+            />
+            <span className="relative z-10">SUMARTE A LA FRECUENCIA</span>
+          </motion.button>
           
           <p className="text-soda-fog text-xs mt-6 font-light">
             Cancelá cuando quieras, sin compromiso

@@ -93,6 +93,57 @@ export const EpisodeCard: React.FC<EpisodeCardProps> = ({ episode }) => {
             <div className="absolute inset-0 bg-gradient-to-br from-soda-red/40 via-soda-night/60 to-soda-accent/40 backdrop-blur-md flex items-center justify-center overflow-hidden">
               <div className="static-noise opacity-20" />
               
+              {/* Efecto VHS - líneas horizontales */}
+              <div className="absolute inset-0 pointer-events-none" style={{
+                background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px)',
+                animation: 'vhs-lines 0.1s linear infinite'
+              }} />
+              
+              {/* Interferencia de color */}
+              <div className="absolute inset-0 pointer-events-none opacity-30" style={{
+                background: 'linear-gradient(90deg, transparent 0%, rgba(255,0,100,0.1) 25%, transparent 50%, rgba(0,255,255,0.1) 75%, transparent 100%)',
+                animation: 'color-shift 3s ease-in-out infinite'
+              }} />
+              
+              {/* Rayos eléctricos animados */}
+              <svg className="absolute inset-0 w-full h-full opacity-40 pointer-events-none" style={{ mixBlendMode: 'screen' }}>
+                <motion.path
+                  d="M 50 0 L 55 30 L 45 35 L 52 60 L 48 90 L 50 100"
+                  stroke="rgba(196, 85, 85, 0.8)"
+                  strokeWidth="2"
+                  fill="none"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ 
+                    pathLength: [0, 1, 0],
+                    opacity: [0, 1, 0]
+                  }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    repeatDelay: 2,
+                    ease: "easeInOut"
+                  }}
+                />
+                <motion.path
+                  d="M 150 0 L 145 40 L 155 45 L 148 70 L 152 100"
+                  stroke="rgba(138, 155, 196, 0.8)"
+                  strokeWidth="2"
+                  fill="none"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ 
+                    pathLength: [0, 1, 0],
+                    opacity: [0, 1, 0]
+                  }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    repeatDelay: 2.5,
+                    ease: "easeInOut",
+                    delay: 0.5
+                  }}
+                />
+              </svg>
+              
               {/* Efecto de ondas de frecuencia */}
               {[...Array(5)].map((_, i) => (
                 <motion.div
