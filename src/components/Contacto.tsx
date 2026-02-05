@@ -1,10 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Instagram } from 'lucide-react';
-import { contentData } from '../data/content';
+import { Mail, Instagram, Youtube } from 'lucide-react';
 
 export const Contacto: React.FC = () => {
-  const { contacto } = contentData;
   const [formData, setFormData] = React.useState({
     name: '',
     email: '',
@@ -13,7 +11,9 @@ export const Contacto: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    window.location.href = `mailto:${contacto.email}?subject=Contacto de ${formData.name}&body=${formData.message}`;
+    // TODO: Integrar con backend cuando esté listo
+    // Por ahora abre el cliente de email
+    window.location.href = `mailto:hola@sodaroja.com?subject=Contacto de ${formData.name}&body=${formData.message}`;
   };
 
   return (
@@ -98,25 +98,35 @@ export const Contacto: React.FC = () => {
             className="space-y-6"
           >
             <div className="bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm p-8">
-              <h3 className="text-xl font-serif text-soda-glow mb-6">Líneas directas</h3>
+              <h3 className="text-xl font-serif text-soda-glow mb-6">También podés encontrarnos en</h3>
               
               <div className="space-y-4">
                 <a
-                  href={`mailto:${contacto.email}`}
+                  href="mailto:hola@sodaroja.com"
                   className="hoverable flex items-center gap-4 text-soda-lamp hover:text-soda-glow transition-colors group"
                 >
                   <Mail size={24} className="text-soda-accent group-hover:text-soda-lamp transition-colors" />
-                  <span>{contacto.email}</span>
+                  <span>hola@sodaroja.com</span>
                 </a>
 
                 <a
-                  href={`https://instagram.com/${contacto.instagram.replace('@', '')}`}
+                  href="https://instagram.com/sodaroja"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hoverable flex items-center gap-4 text-soda-lamp hover:text-soda-glow transition-colors group"
                 >
                   <Instagram size={24} className="text-soda-accent group-hover:text-soda-lamp transition-colors" />
-                  <span>{contacto.instagram}</span>
+                  <span>@sodaroja</span>
+                </a>
+
+                <a
+                  href="https://youtube.com/@sodaroja"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hoverable flex items-center gap-4 text-soda-lamp hover:text-soda-glow transition-colors group"
+                >
+                  <Youtube size={24} className="text-soda-accent group-hover:text-soda-lamp transition-colors" />
+                  <span>@sodaroja</span>
                 </a>
               </div>
             </div>

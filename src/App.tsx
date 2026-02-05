@@ -81,7 +81,7 @@ function App() {
                 </svg>
                 
                 <div>
-                  <h3 className="text-lg font-serif text-soda-glow mb-1">sodaroja</h3>
+                  <h3 className="text-lg font-serif text-soda-glow mb-1">SODAROJA</h3>
                   <p className="text-soda-fog text-xs">© 2026</p>
                 </div>
               </div>
