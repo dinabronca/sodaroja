@@ -66,9 +66,6 @@ const teamMembers: TeamMember[] = [
       youtube: "#",
       tiktok: "#",
     },
-      instagram: '#',
-      youtube: '#',
-    },
     favorites: {
       iceCream: 'Chocolate amargo',
       drink: 'Café negro',
@@ -115,9 +112,6 @@ const teamMembers: TeamMember[] = [
       twitter: "#",
       youtube: "#",
       tiktok: "#",
-    },
-      instagram: '#',
-      youtube: '#',
     },
     favorites: {
       iceCream: 'Limón',
