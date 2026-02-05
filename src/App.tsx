@@ -9,6 +9,7 @@ import { FrecuenciaInternaPage } from './pages/FrecuenciaInternaPage';
 import { ShopPage } from './pages/ShopPage';
 import { ContactoPage } from './pages/ContactoPage';
 import { MiCuentaPage } from './pages/MiCuentaPage';
+import { AdminPage } from './pages/AdminPage';
 import { CustomCursor } from './effects/CustomCursor';
 import { FloatingParticles } from './effects/FloatingParticles';
 import './styles/globals.css';
@@ -41,72 +42,74 @@ function App() {
           <Route path="/shop" element={<ShopPage />} />
           <Route path="/contacto" element={<ContactoPage />} />
           <Route path="/mi-cuenta" element={<MiCuentaPage />} />
+          <Route path="/admin" element={<AdminPage />} />
         </Routes>
 
         {/* Footer - Sifón vintage + Grid de redes */}
         <footer className="relative py-12 px-6 border-t border-soda-mist border-opacity-20">
           <div className="max-w-7xl mx-auto">
             <div className="flex justify-between items-center gap-12">
-              {/* Izquierda: Sifón de soda argentino — ilustración estilo página */}
+              {/* Izquierda: Sifón de soda argentino — ilustración fiel al producto */}
               <div className="flex items-center gap-4">
                 <svg
-                  width="50"
-                  height="95"
-                  viewBox="0 0 50 95"
-                  className="opacity-70"
-                  style={{ filter: 'drop-shadow(0 0 12px rgba(196, 85, 85, 0.25))' }}
+                  width="48"
+                  height="100"
+                  viewBox="0 0 48 100"
+                  className="opacity-75"
+                  style={{ filter: 'drop-shadow(0 0 10px rgba(196, 85, 85, 0.3))' }}
                 >
-                  {/* Palanca / gatillo — plástico rojo */}
-                  <path d="M 24 8 L 24 4 L 34 2 L 34 5 L 26 7 Z" fill="#c45555" opacity="0.85" />
-                  <path d="M 34 2 L 38 1 L 38 4 L 34 5 Z" fill="#a04040" opacity="0.8" />
+                  {/* ===== PICO / BOQUILLA — sale hacia la derecha ===== */}
+                  {/* Tubo vertical del pico */}
+                  <rect x="22" y="2" width="4" height="10" rx="1" fill="#c45555" opacity="0.9" />
+                  {/* Boquilla que sale hacia la derecha en ángulo */}
+                  <path d="M 26 4 L 36 2 L 37 4.5 L 26 7" fill="#c45555" opacity="0.85" />
+                  {/* Punta de la boquilla */}
+                  <path d="M 36 2 L 40 1.5 L 40 3 L 37 4.5 Z" fill="#a04040" opacity="0.9" />
+                  {/* Gatillo / palanca que baja */}
+                  <path d="M 26 6 L 30 7 L 30 12 L 27 11 Z" fill="#c45555" opacity="0.75" />
                   
-                  {/* Cabezal del sifón — plástico rojo */}
-                  <path d="M 21 14 L 21 8 Q 21 5 25 5 Q 29 5 29 8 L 29 14 Z" fill="#c45555" opacity="0.9" />
-                  <ellipse cx="25" cy="14" rx="4.5" ry="1.5" fill="#a04040" opacity="0.6" />
-                  {/* Piquito del cabezal */}
-                  <rect x="23.5" y="3" width="3" height="4" rx="1" fill="#c45555" opacity="0.9" />
+                  {/* ===== CABEZAL CÓNICO — plástico rojo ===== */}
+                  <path d="M 19 18 L 21 12 L 27 12 L 29 18 Z" fill="#c45555" opacity="0.9" />
+                  {/* Borde inferior del cabezal */}
+                  <ellipse cx="24" cy="18" rx="5.5" ry="1.8" fill="#a04040" opacity="0.65" />
                   
-                  {/* Cuello de vidrio — transparente */}
-                  <path d="M 22 15 L 20 22 L 30 22 L 28 15 Z" fill="rgba(200, 210, 225, 0.25)" stroke="rgba(200, 210, 225, 0.4)" strokeWidth="0.5" />
-                  {/* Brillo en cuello */}
-                  <path d="M 23 16 L 22 21" stroke="rgba(255,255,255,0.2)" strokeWidth="0.5" fill="none" />
+                  {/* ===== CUELLO DE VIDRIO ===== */}
+                  <path d="M 20 19 L 18 26 L 30 26 L 28 19 Z" fill="rgba(200, 215, 230, 0.2)" stroke="rgba(200, 215, 230, 0.35)" strokeWidth="0.5" />
+                  <path d="M 21 20 L 20 25" stroke="rgba(255,255,255,0.15)" strokeWidth="0.4" fill="none" />
                   
-                  {/* Cuerpo de vidrio — botella transparente con forma bulbosa */}
-                  <path d="M 19 22 Q 14 30 13 40 Q 12 50 13 58 L 37 58 Q 38 50 37 40 Q 36 30 31 22 Z" 
-                    fill="rgba(200, 210, 225, 0.15)" 
-                    stroke="rgba(200, 210, 225, 0.35)" 
-                    strokeWidth="0.8" />
+                  {/* ===== CUERPO DE VIDRIO — forma bulbosa ===== */}
+                  <path d="M 17 26 Q 12 34 11 44 Q 10 54 11 62 L 37 62 Q 38 54 37 44 Q 36 34 31 26 Z" 
+                    fill="rgba(200, 215, 230, 0.12)" 
+                    stroke="rgba(200, 215, 230, 0.3)" 
+                    strokeWidth="0.7" />
                   
                   {/* Brillos en el vidrio */}
-                  <path d="M 18 28 Q 17 38 17 50" stroke="rgba(255,255,255,0.18)" strokeWidth="1.2" fill="none" />
-                  <path d="M 20 30 Q 19 40 19 48" stroke="rgba(255,255,255,0.1)" strokeWidth="0.6" fill="none" />
-                  <ellipse cx="20" cy="35" rx="1.5" ry="3" fill="rgba(255,255,255,0.12)" />
+                  <path d="M 16 32 Q 14 42 15 55" stroke="rgba(255,255,255,0.15)" strokeWidth="1" fill="none" />
+                  <path d="M 18 34 Q 17 42 17 52" stroke="rgba(255,255,255,0.08)" strokeWidth="0.5" fill="none" />
+                  <ellipse cx="17" cy="40" rx="1.2" ry="4" fill="rgba(255,255,255,0.08)" />
                   
-                  {/* Agua carbonatada dentro del vidrio */}
-                  <path d="M 14 42 Q 13 50 14 57 L 36 57 Q 37 50 36 42 Z" fill="rgba(180, 200, 220, 0.08)" />
+                  {/* Agua dentro */}
+                  <path d="M 12 46 Q 11 54 12 61 L 36 61 Q 37 54 36 46 Z" fill="rgba(180, 200, 225, 0.06)" />
+                  
                   {/* Burbujitas */}
-                  <circle cx="22" cy="50" r="0.8" fill="rgba(255,255,255,0.2)" />
-                  <circle cx="27" cy="46" r="0.6" fill="rgba(255,255,255,0.15)" />
-                  <circle cx="24" cy="53" r="0.5" fill="rgba(255,255,255,0.18)" />
-                  <circle cx="29" cy="51" r="0.7" fill="rgba(255,255,255,0.12)" />
+                  <circle cx="20" cy="54" r="0.7" fill="rgba(255,255,255,0.18)" />
+                  <circle cx="26" cy="50" r="0.5" fill="rgba(255,255,255,0.14)" />
+                  <circle cx="23" cy="57" r="0.4" fill="rgba(255,255,255,0.16)" />
+                  <circle cx="28" cy="55" r="0.6" fill="rgba(255,255,255,0.1)" />
                   
-                  {/* Rejilla/jaula de plástico rojo — bandas horizontales */}
-                  <rect x="13" y="35" width="24" height="3" rx="0.5" fill="#c45555" opacity="0.7" />
-                  <rect x="13" y="42" width="24" height="3" rx="0.5" fill="#c45555" opacity="0.7" />
-                  <rect x="13" y="49" width="24" height="3" rx="0.5" fill="#c45555" opacity="0.7" />
+                  {/* ===== JAULA DE PLÁSTICO ROJO — 3 bandas horizontales ===== */}
+                  <rect x="11" y="38" width="26" height="2.5" rx="0.5" fill="#c45555" opacity="0.65" />
+                  <rect x="11" y="46" width="26" height="2.5" rx="0.5" fill="#c45555" opacity="0.65" />
+                  <rect x="11" y="54" width="26" height="2.5" rx="0.5" fill="#c45555" opacity="0.65" />
                   
-                  {/* Base de plástico rojo — sólida */}
-                  <path d="M 12 58 Q 11 60 11 65 Q 11 72 13 74 L 37 74 Q 39 72 39 65 Q 39 60 38 58 Z" 
+                  {/* ===== BASE SÓLIDA DE PLÁSTICO ROJO ===== */}
+                  <path d="M 10 62 Q 9 65 9 70 Q 9 78 12 80 L 36 80 Q 39 78 39 70 Q 39 65 38 62 Z" 
                     fill="#c45555" opacity="0.85" />
-                  {/* Sombra en la base */}
-                  <path d="M 13 65 Q 12 70 14 73 L 36 73 Q 38 70 37 65" 
-                    fill="#8b3030" opacity="0.4" />
-                  
+                  {/* Degradado oscuro en base */}
+                  <path d="M 12 70 Q 10 75 13 79 L 35 79 Q 38 75 36 70" 
+                    fill="#8b3030" opacity="0.35" />
                   {/* Fondo de la base */}
-                  <ellipse cx="25" cy="74" rx="13" ry="3" fill="#a04040" opacity="0.7" />
-                  
-                  {/* Reflejo sutil general */}
-                  <path d="M 16 25 Q 15 35 15 55" stroke="rgba(212, 197, 176, 0.12)" strokeWidth="0.4" fill="none" />
+                  <ellipse cx="24" cy="80" rx="14" ry="3" fill="#a04040" opacity="0.6" />
                 </svg>
                 
                 <div>

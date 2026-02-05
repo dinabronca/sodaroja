@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Instagram, Youtube, Twitter, ChevronDown, ChevronUp } from 'lucide-react';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Instagram, Youtube, Twitter } from 'lucide-react';
 
 interface TeamMember {
   name: string;
@@ -23,7 +23,7 @@ interface TeamMember {
 // ============================================================
 // ADMIN PANEL — CONFIGURACIÓN DE "EL EQUIPO"
 // ============================================================
-// 
+//
 // TÍTULO Y SUBTÍTULO DE LA SECCIÓN (editable):
 const sectionTitle = 'El Equipo';
 const sectionSubtitle = 'Las personas detrás de cada historia';
@@ -34,7 +34,6 @@ const sectionSubtitle = 'Las personas detrás de cada historia';
 //
 // CATEGORÍAS EDITABLES — "Perfil Humano"
 // Podés agregar, quitar o renombrar cualquier campo.
-// Cada campo tiene: { key: string, label: string }
 const favoriteFields: { key: string; label: string }[] = [
   { key: 'iceCream', label: 'Helado favorito' },
   { key: 'drink', label: 'Bebida favorita' },
@@ -55,7 +54,6 @@ const favoriteFields: { key: string; label: string }[] = [
 ];
 
 // CATEGORÍAS EDITABLES — "Ciudades"
-// Podés agregar, quitar o renombrar cualquier campo.
 const cityFields: { key: string; label: string }[] = [
   { key: 'dreamVisit', label: 'Ciudad que sueña con visitar' },
   { key: 'wouldntVisit', label: 'Ciudad que no visitaría' },
@@ -80,7 +78,6 @@ const teamMembers: TeamMember[] = [
     cityBorn: 'Buenos Aires',
     cityCurrent: 'Buenos Aires',
     zodiac: 'Escorpio',
-    // Resolución recomendada: 600×800px (3:4), JPG/WebP, max 500KB
     photoUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80',
     socials: { instagram: "#", twitter: "#", youtube: "#", tiktok: "#" },
     favorites: {
@@ -147,12 +144,10 @@ const teamMembers: TeamMember[] = [
 // ============================================================
 
 export const ElEquipo: React.FC = () => {
-  const [expandedMember, setExpandedMember] = useState<number | null>(null);
-
   return (
     <section id="equipo" className="relative py-32 px-6">
       <div className="max-w-7xl mx-auto">
-        {/* Título — editable desde admin (sectionTitle, sectionSubtitle) */}
+        {/* Título */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -180,9 +175,9 @@ export const ElEquipo: React.FC = () => {
               transition={{ duration: 0.6, delay: index * 0.1 }}
             >
               <div className="bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm overflow-hidden hover:border-soda-accent hover:border-opacity-40 transition-all duration-300 group">
-                {/* Foto - ratio 3:4 con partículas doradas Y negras */}
+                {/* Foto - ratio 3:4 con partículas doradas, negras y efecto shimmer */}
                 <div className="relative aspect-[3/4] overflow-hidden bg-soda-deep">
-                  {/* Partículas doradas (originales) */}
+                  {/* Partículas doradas */}
                   {[...Array(8)].map((_, i) => (
                     <motion.div
                       key={`gold-${i}`}
@@ -204,7 +199,7 @@ export const ElEquipo: React.FC = () => {
                       }}
                     />
                   ))}
-                  {/* Partículas negras (nuevas) */}
+                  {/* Partículas negras */}
                   {[...Array(6)].map((_, i) => (
                     <motion.div
                       key={`black-${i}`}
@@ -230,8 +225,25 @@ export const ElEquipo: React.FC = () => {
                       }}
                     />
                   ))}
+
+                  {/* Efecto shimmer — rayo de luz que cruza la foto suavemente */}
+                  <motion.div
+                    className="absolute inset-0 z-10 pointer-events-none"
+                    style={{
+                      background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.04) 45%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 55%, transparent 60%)',
+                      backgroundSize: '200% 100%',
+                    }}
+                    animate={{
+                      backgroundPosition: ['200% 0', '-200% 0'],
+                    }}
+                    transition={{
+                      duration: 6 + index * 2,
+                      repeat: Infinity,
+                      repeatDelay: 4,
+                      ease: "easeInOut"
+                    }}
+                  />
                   
-                  {/* Imagen del integrante — editable, resolución recomendada: 600×800px (3:4) */}
                   <motion.img
                     src={member.photoUrl}
                     alt={member.name}
@@ -242,7 +254,7 @@ export const ElEquipo: React.FC = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-soda-night via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
                 </div>
 
-                {/* Info básica */}
+                {/* Info completa — sin botón, todo visible */}
                 <div className="p-6">
                   <h3 className="text-2xl font-serif text-soda-glow mb-2">{member.name}</h3>
                   <p className="text-soda-accent text-sm mb-4">{member.role}</p>
@@ -277,54 +289,33 @@ export const ElEquipo: React.FC = () => {
                     )}
                   </div>
 
-                  {/* Botón expandir/colapsar */}
-                  <button
-                    onClick={() => setExpandedMember(expandedMember === index ? null : index)}
-                    className="w-full flex items-center justify-center gap-2 py-2 text-soda-accent hover:text-soda-lamp transition-colors text-sm hoverable"
-                  >
-                    <span>{expandedMember === index ? 'Ocultar perfil' : 'Conocer más'}</span>
-                    {expandedMember === index ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                  </button>
-
-                  <AnimatePresence>
-                    {expandedMember === index && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.4, ease: 'easeInOut' }}
-                        className="overflow-hidden"
-                      >
-                        {/* Favoritos — campos configurables desde favoriteFields */}
-                        <div className="mb-6 mt-4">
-                          <h4 className="text-soda-lamp text-xs font-medium mb-3 tracking-wider">PERFIL HUMANO</h4>
-                          <div className="space-y-2 text-xs">
-                            {favoriteFields.map((field) => (
-                              member.favorites[field.key] !== undefined ? (
-                                <div key={field.key} className="text-soda-fog">
-                                  <span className="text-soda-accent">{field.label}:</span> {String(member.favorites[field.key])}
-                                </div>
-                              ) : null
-                            ))}
+                  {/* Favoritos — todo visible directamente */}
+                  <div className="mb-6">
+                    <h4 className="text-soda-lamp text-xs font-medium mb-3 tracking-wider">PERFIL HUMANO</h4>
+                    <div className="space-y-2 text-xs">
+                      {favoriteFields.map((field) => (
+                        member.favorites[field.key] !== undefined ? (
+                          <div key={field.key} className="text-soda-fog">
+                            <span className="text-soda-accent">{field.label}:</span> {String(member.favorites[field.key])}
                           </div>
-                        </div>
+                        ) : null
+                      ))}
+                    </div>
+                  </div>
 
-                        {/* Ciudades — campos configurables desde cityFields */}
-                        <div>
-                          <h4 className="text-soda-lamp text-xs font-medium mb-3 tracking-wider">CIUDADES</h4>
-                          <div className="space-y-2 text-xs">
-                            {cityFields.map((field) => (
-                              member.cities[field.key] !== undefined ? (
-                                <div key={field.key} className="text-soda-fog">
-                                  <span className="text-soda-accent">{field.label}:</span> {member.cities[field.key]}
-                                </div>
-                              ) : null
-                            ))}
+                  {/* Ciudades — todo visible directamente */}
+                  <div>
+                    <h4 className="text-soda-lamp text-xs font-medium mb-3 tracking-wider">CIUDADES</h4>
+                    <div className="space-y-2 text-xs">
+                      {cityFields.map((field) => (
+                        member.cities[field.key] !== undefined ? (
+                          <div key={field.key} className="text-soda-fog">
+                            <span className="text-soda-accent">{field.label}:</span> {member.cities[field.key]}
                           </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                        ) : null
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>

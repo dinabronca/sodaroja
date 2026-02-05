@@ -275,7 +275,7 @@ export const EpisodeCard: React.FC<EpisodeCardProps> = ({ episode }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[10000] flex items-center justify-center p-4 md:p-8"
+            className="fixed inset-0 z-[10000] flex items-center justify-center p-4 md:p-8 restore-cursor"
             onClick={() => setIsExpanded(false)}
             style={{ cursor: 'auto' }}
           >

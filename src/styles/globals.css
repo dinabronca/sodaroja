@@ -26,6 +26,17 @@ body {
   cursor: none !important;
 }
 
+/* Restaurar cursor en modales */
+.restore-cursor,
+.restore-cursor * {
+  cursor: auto !important;
+}
+
+.restore-cursor button,
+.restore-cursor a {
+  cursor: pointer !important;
+}
+
 #custom-cursor {
   position: fixed;
   width: 20px;
