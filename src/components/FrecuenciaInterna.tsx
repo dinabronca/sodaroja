@@ -11,20 +11,20 @@ interface SubscriptionPlan {
 
 const plans: SubscriptionPlan[] = [
   {
-    name: 'Mensual',
-    priceARS: 3000,
-    priceUSD: 5,
+    name: 'Suscripción A',
+    priceARS: 2500,
+    priceUSD: 4,
   },
   {
-    name: 'Trimestral',
-    priceARS: 8000,
-    priceUSD: 13,
+    name: 'Suscripción B',
+    priceARS: 5000,
+    priceUSD: 8,
     featured: true,
   },
   {
-    name: 'Anual',
-    priceARS: 28000,
-    priceUSD: 45,
+    name: 'Suscripción C',
+    priceARS: 12500,
+    priceUSD: 20,
   },
 ];
 
@@ -111,9 +111,9 @@ export const FrecuenciaInterna: React.FC = () => {
                     <div>
                       <h4 className="text-2xl font-serif text-soda-glow mb-2">{plan.name}</h4>
                       <p className="text-soda-fog text-sm">
-                        {plan.name === 'Trimestral' && 'Ahorrás un 11%'}
-                        {plan.name === 'Anual' && 'Ahorrás un 22%'}
-                        {plan.name === 'Mensual' && 'Sin compromiso'}
+                        {plan.name === 'Suscripción A' && 'Nivel de aporte básico'}
+                        {plan.name === 'Suscripción B' && 'Nivel de aporte medio'}
+                        {plan.name === 'Suscripción C' && 'Nivel de aporte alto'}
                       </p>
                     </div>
                     <div className="text-right">

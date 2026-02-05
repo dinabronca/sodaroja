@@ -146,10 +146,12 @@ function App() {
             <div>
               <h4 className="text-soda-lamp text-sm tracking-wider mb-4">NAVEGACIÓN</h4>
               <ul className="space-y-2 text-soda-fog text-sm">
-                <li><a href="/episodios" className="hoverable hover:text-soda-lamp transition-colors">Episodios</a></li>
-                <li><a href="/sobre" className="hoverable hover:text-soda-lamp transition-colors">¿Qué es esto?</a></li>
-                <li><a href="/voces" className="hoverable hover:text-soda-lamp transition-colors">Las Tres Voces</a></li>
-                <li><a href="/tienda" className="hoverable hover:text-soda-lamp transition-colors">Objetos Encontrados</a></li>
+                <li><a href="#que-es-esto" className="hoverable hover:text-soda-lamp transition-colors">¿Qué es esto?</a></li>
+                <li><a href="#equipo" className="hoverable hover:text-soda-lamp transition-colors">El Equipo</a></li>
+                <li><a href="#episodios" className="hoverable hover:text-soda-lamp transition-colors">Episodios</a></li>
+                <li><a href="#frecuencia-interna" className="hoverable hover:text-soda-lamp transition-colors">Frecuencia Interna</a></li>
+                <li><a href="#shop" className="hoverable hover:text-soda-lamp transition-colors">Shop</a></li>
+                <li><a href="#contacto" className="hoverable hover:text-soda-lamp transition-colors">Contacto</a></li>
               </ul>
             </div>
             

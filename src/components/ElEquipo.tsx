@@ -51,13 +51,13 @@ interface TeamMember {
 // DATOS DE EJEMPLO - Reemplazar con datos reales desde admin
 const teamMembers: TeamMember[] = [
   {
-    name: 'Nombre 1',
-    role: 'Narrador',
-    birthYear: 1990,
+    name: 'Mikasa',
+    role: 'Narradora Principal',
+    birthYear: 1995,
     cityBorn: 'Buenos Aires',
     cityCurrent: 'Buenos Aires',
     zodiac: 'Escorpio',
-    photoUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80',
+    photoUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80',
     socials: {
       instagram: '#',
       youtube: '#',
@@ -95,7 +95,96 @@ const teamMembers: TeamMember[] = [
       nostalgia: 'Lisboa',
     },
   },
-  // Agregar más miembros aquí
+  {
+    name: 'Violet',
+    role: 'Co-Narradora',
+    birthYear: 1992,
+    cityBorn: 'Rosario',
+    cityCurrent: 'Barcelona',
+    zodiac: 'Piscis',
+    photoUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80',
+    socials: {
+      instagram: '#',
+      youtube: '#',
+    },
+    favorites: {
+      iceCream: 'Limón',
+      drink: 'Té verde',
+      book: 'El principito',
+      movie: 'Your Name',
+      series: 'Stranger Things',
+      character: 'Hermione Granger',
+      celebrity: 'Björk',
+      album: 'The Dark Side of the Moon',
+      podcast: 'Radiolab',
+      sport: 'Yoga',
+      food: 'Sushi',
+      smell: 'Jazmín',
+      sound: 'Viento',
+      timeOfDay: '6:00 AM',
+      weather: 'Niebla matinal',
+      tattoos: 5,
+    },
+    cities: {
+      dreamVisit: 'Kioto',
+      wouldntVisit: 'Las Vegas',
+      wouldLive: 'Ámsterdam',
+      bestFood: 'Bangkok',
+      wouldPropose: 'Santorini',
+      wouldIsolate: 'Noruega',
+      meetPeople: 'Lisboa',
+      vacation: 'Bali',
+      allExpensesPaid: 'Tokio',
+      writeBook: 'Edimburgo',
+      recordEpisode: 'Praga',
+      nostalgia: 'París',
+    },
+  },
+  {
+    name: 'Levi',
+    role: 'Editor y Productor',
+    birthYear: 1988,
+    cityBorn: 'Córdoba',
+    cityCurrent: 'Buenos Aires',
+    zodiac: 'Capricornio',
+    photoUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80',
+    socials: {
+      instagram: '#',
+      youtube: '#',
+    },
+    favorites: {
+      iceCream: 'Dulce de leche',
+      drink: 'Fernet con coca',
+      book: 'Rayuela',
+      movie: 'Inception',
+      series: 'Breaking Bad',
+      character: 'Tyler Durden',
+      celebrity: 'Thom Yorke',
+      album: 'In Rainbows',
+      podcast: '99% Invisible',
+      sport: 'Escalada',
+      food: 'Asado',
+      smell: 'Tierra mojada',
+      sound: 'Tormenta',
+      timeOfDay: '11:00 PM',
+      weather: 'Tormenta eléctrica',
+      tattoos: 0,
+    },
+    cities: {
+      dreamVisit: 'Reikiavik',
+      wouldntVisit: 'Mumbai',
+      wouldLive: 'Copenhague',
+      bestFood: 'Ciudad de México',
+      wouldPropose: 'Venecia',
+      wouldIsolate: 'Patagonia',
+      meetPeople: 'Berlín',
+      vacation: 'Noruega',
+      allExpensesPaid: 'Islandia',
+      writeBook: 'San Sebastián',
+      recordEpisode: 'Berlín',
+      nostalgia: 'Montevideo',
+    },
+  },
 ];
 
 export const ElEquipo: React.FC = () => {
@@ -134,8 +223,8 @@ export const ElEquipo: React.FC = () => {
               onClick={() => setSelectedMember(selectedMember === index ? null : index)}
             >
               <div className="bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm overflow-hidden hover:border-soda-accent hover:border-opacity-40 transition-all duration-300">
-                {/* Foto - ratio 3:4 */}
-                <div className="relative aspect-[3/4] overflow-hidden">
+                {/* Foto - ratio 3:4 pero más chica */}
+                <div className="relative aspect-[3/4] overflow-hidden max-h-80">
                   <img
                     src={member.photoUrl}
                     alt={member.name}

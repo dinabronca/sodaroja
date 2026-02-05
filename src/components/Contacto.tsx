@@ -3,6 +3,19 @@ import { motion } from 'framer-motion';
 import { Mail, Instagram, Youtube } from 'lucide-react';
 
 export const Contacto: React.FC = () => {
+  const [formData, setFormData] = React.useState({
+    name: '',
+    email: '',
+    message: '',
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // TODO: Integrar con backend cuando esté listo
+    // Por ahora abre el cliente de email
+    window.location.href = `mailto:hola@sodaroja.com?subject=Contacto de ${formData.name}&body=${formData.message}`;
+  };
+
   return (
     <section id="contacto" className="relative py-32 px-6 bg-gradient-to-b from-soda-night to-soda-deep">
       <div className="max-w-5xl mx-auto">
@@ -22,66 +35,107 @@ export const Contacto: React.FC = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Email */}
-          <motion.a
-            href="mailto:hola@sodaroja.com"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Formulario */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="hoverable bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm p-8 text-center hover:border-soda-accent hover:border-opacity-40 transition-all group"
+            transition={{ duration: 0.8 }}
           >
-            <Mail size={32} className="mx-auto mb-4 text-soda-accent group-hover:text-soda-lamp transition-colors" />
-            <h3 className="text-xl font-serif text-soda-glow mb-2">Email</h3>
-            <p className="text-soda-fog text-sm">hola@sodaroja.com</p>
-          </motion.a>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label className="block text-soda-lamp text-sm mb-2">Tu nombre</label>
+                <input
+                  type="text"
+                  required
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  className="w-full bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm px-4 py-3 text-soda-lamp focus:border-soda-accent focus:outline-none transition-colors"
+                  placeholder="Juan Pérez"
+                />
+              </div>
 
-          {/* Instagram */}
-          <motion.a
-            href="https://instagram.com/sodaroja"
-            target="_blank"
-            rel="noopener noreferrer"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="hoverable bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm p-8 text-center hover:border-soda-accent hover:border-opacity-40 transition-all group"
-          >
-            <Instagram size={32} className="mx-auto mb-4 text-soda-accent group-hover:text-soda-lamp transition-colors" />
-            <h3 className="text-xl font-serif text-soda-glow mb-2">Instagram</h3>
-            <p className="text-soda-fog text-sm">@sodaroja</p>
-          </motion.a>
+              <div>
+                <label className="block text-soda-lamp text-sm mb-2">Tu email</label>
+                <input
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  className="w-full bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm px-4 py-3 text-soda-lamp focus:border-soda-accent focus:outline-none transition-colors"
+                  placeholder="tu@email.com"
+                />
+              </div>
 
-          {/* YouTube */}
-          <motion.a
-            href="https://youtube.com/@sodaroja"
-            target="_blank"
-            rel="noopener noreferrer"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+              <div>
+                <label className="block text-soda-lamp text-sm mb-2">Mensaje</label>
+                <textarea
+                  required
+                  value={formData.message}
+                  onChange={(e) => setFormData({...formData, message: e.target.value})}
+                  rows={6}
+                  className="w-full bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm px-4 py-3 text-soda-lamp focus:border-soda-accent focus:outline-none transition-colors resize-none"
+                  placeholder="Contanos tu idea..."
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="glow-button hoverable w-full py-4 bg-soda-accent bg-opacity-20 border border-soda-accent text-soda-lamp rounded-sm hover:bg-opacity-30 transition-all duration-300 tracking-wider"
+              >
+                ENVIAR MENSAJE
+              </button>
+            </form>
+          </motion.div>
+
+          {/* Info de contacto */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="hoverable bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm p-8 text-center hover:border-soda-accent hover:border-opacity-40 transition-all group"
+            transition={{ duration: 0.8 }}
+            className="space-y-6"
           >
-            <Youtube size={32} className="mx-auto mb-4 text-soda-accent group-hover:text-soda-lamp transition-colors" />
-            <h3 className="text-xl font-serif text-soda-glow mb-2">YouTube</h3>
-            <p className="text-soda-fog text-sm">@sodaroja</p>
-          </motion.a>
+            <div className="bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm p-8">
+              <h3 className="text-xl font-serif text-soda-glow mb-6">También podés encontrarnos en</h3>
+              
+              <div className="space-y-4">
+                <a
+                  href="mailto:hola@sodaroja.com"
+                  className="hoverable flex items-center gap-4 text-soda-lamp hover:text-soda-glow transition-colors group"
+                >
+                  <Mail size={24} className="text-soda-accent group-hover:text-soda-lamp transition-colors" />
+                  <span>hola@sodaroja.com</span>
+                </a>
+
+                <a
+                  href="https://instagram.com/sodaroja"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hoverable flex items-center gap-4 text-soda-lamp hover:text-soda-glow transition-colors group"
+                >
+                  <Instagram size={24} className="text-soda-accent group-hover:text-soda-lamp transition-colors" />
+                  <span>@sodaroja</span>
+                </a>
+
+                <a
+                  href="https://youtube.com/@sodaroja"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hoverable flex items-center gap-4 text-soda-lamp hover:text-soda-glow transition-colors group"
+                >
+                  <Youtube size={24} className="text-soda-accent group-hover:text-soda-lamp transition-colors" />
+                  <span>@sodaroja</span>
+                </a>
+              </div>
+            </div>
+
+            <p className="text-soda-fog text-sm font-light">
+              Respondemos todos los mensajes. Puede que tarde un poco, pero llegamos.
+            </p>
+          </motion.div>
         </div>
-
-        {/* Mensaje adicional */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="mt-16 text-center"
-        >
-          <p className="text-soda-fog text-sm font-light">
-            Respondemos todos los mensajes. Puede que tarde un poco, pero llegamos.
-          </p>
-        </motion.div>
       </div>
     </section>
   );
