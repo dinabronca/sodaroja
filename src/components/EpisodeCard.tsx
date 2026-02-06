@@ -103,7 +103,7 @@ export const EpisodeCard: React.FC<EpisodeCardProps> = ({ episode }) => {
         className="relative group"
         onClick={handleCardClick}
       >
-        <div className={`relative overflow-hidden rounded-sm bg-soda-deep border border-soda-mist border-opacity-30 transition-all duration-500 ${
+        <div className={`relative overflow-hidden rounded-sm bg-soda-deep border border-soda-mist border-opacity-30 transition-all duration-500 h-full flex flex-col ${
           episode.isPremium ? 'cursor-not-allowed' : 'cursor-pointer card-hover'
         }`}>
           
@@ -223,7 +223,7 @@ export const EpisodeCard: React.FC<EpisodeCardProps> = ({ episode }) => {
           </div>
 
           {/* Contenido */}
-          <div className="p-6 space-y-4">
+          <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-2">
                 <div className="text-soda-accent text-xs tracking-widest uppercase font-light">
