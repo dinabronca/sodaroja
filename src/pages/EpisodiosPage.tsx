@@ -2,132 +2,37 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { EpisodeCard } from '../components/EpisodeCard';
 import { FloatingAsh } from '../effects/SectionBackgrounds';
-
-// Mock data extendido — cada episodio ahora incluye publishDate
-const mockEpisodes = [
-  {
-    id: '1',
-    city: 'PARÍS',
-    title: 'Las Catacumbas Olvidadas',
-    description: 'Bajo las calles más elegantes del mundo, seis millones de esqueletos guardan secretos que nadie quiere recordar.',
-    imageUrl: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&q=80',
-    isPremium: false,
-    lat: 48.8566,
-    lng: 2.3522,
-    spotifyUrl: '#',
-    soundcloudUrl: '#',
-    publishDate: '2025-11-15',
-    // Para embed real, reemplazar con URL de Spotify embed tipo:
-    // spotifyEmbedUrl: 'https://open.spotify.com/embed/episode/XXXXX?theme=0',
-  },
-  {
-    id: '2',
-    city: 'TOKIO',
-    title: 'El Último Samurái Digital',
-    description: 'En los callejones de Akihabara, un hombre programa códigos que nadie puede descifrar. Su identidad: un misterio de 20 años.',
-    imageUrl: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80',
-    isPremium: true,
-    lat: 35.6762,
-    lng: 139.6503,
-    publishDate: '2025-12-01',
-  },
-  {
-    id: '3',
-    city: 'BUENOS AIRES',
-    title: 'La Dama de Blanco',
-    description: 'Cada noche de tormenta, una figura cruza el Cementerio de la Recoleta. Los que la siguieron... nunca contaron la historia completa.',
-    imageUrl: 'https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=800&q=80',
-    isPremium: false,
-    lat: -34.6037,
-    lng: -58.3816,
-    spotifyUrl: '#',
-    soundcloudUrl: '#',
-    publishDate: '2025-12-20',
-  },
-  {
-    id: '4',
-    city: 'ESTAMBUL',
-    title: 'Los Tesoros Hundidos del Bósforo',
-    description: 'Tres imperios. Mil naufragios. Un buzo que encontró algo que no debía encontrar.',
-    imageUrl: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=800&q=80',
-    isPremium: false,
-    lat: 41.0082,
-    lng: 28.9784,
-    spotifyUrl: '#',
-    soundcloudUrl: '#',
-    publishDate: '2026-01-10',
-  },
-  {
-    id: '5',
-    city: 'PRAGA',
-    title: 'El Reloj que Predijo la Guerra',
-    description: 'En la plaza más antigua de Europa, un reloj astronómico medieval guarda una profecía que nadie quiso escuchar.',
-    imageUrl: 'https://images.unsplash.com/photo-1541849546-216549ae216d?w=800&q=80',
-    isPremium: true,
-    lat: 50.0875,
-    lng: 14.4214,
-    publishDate: '2026-01-25',
-  },
-  {
-    id: '6',
-    city: 'NUEVA YORK',
-    title: 'El Fantasma del Metro',
-    description: 'Línea 6, estación City Hall. Clausurada en 1945. Pero algunos conductores juran que alguien sigue esperando allí.',
-    imageUrl: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=800&q=80',
-    isPremium: false,
-    lat: 40.7128,
-    lng: -74.0060,
-    spotifyUrl: '#',
-    soundcloudUrl: '#',
-    publishDate: '2026-02-05',
-  },
-];
+import { demoEpisodes } from '../data/episodes';
 
 export const EpisodiosPage: React.FC = () => {
-  const allEpisodes = [
-    ...mockEpisodes,
-    ...mockEpisodes.map((ep: any, i: number) => ({ ...ep, id: `${ep.id}-2-${i}` })),
-    ...mockEpisodes.map((ep: any, i: number) => ({ ...ep, id: `${ep.id}-3-${i}` })),
-  ].slice(0, 18);
+  // Ya vienen ordenados del más reciente al más viejo
+  const allEpisodes = demoEpisodes;
 
   return (
     <section className="relative pt-32 pb-24 px-6 min-h-screen">
       <FloatingAsh />
       <div className="max-w-7xl mx-auto">
-        {/* Título */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h1 className="text-6xl md:text-7xl font-serif text-soda-glow mb-6">
-            Todos los Episodios
-          </h1>
+          <h1 className="text-6xl md:text-7xl font-serif text-soda-glow mb-6">Todos los Episodios</h1>
           <div className="w-32 h-px bg-gradient-to-r from-transparent via-soda-accent to-transparent mx-auto mb-6" />
-          <p className="text-soda-fog font-light tracking-wide text-lg">
-            {allEpisodes.length} episodios disponibles
-          </p>
+          <p className="text-soda-fog font-light tracking-wide text-lg">{allEpisodes.length} episodios disponibles</p>
         </motion.div>
         
-        {/* Grid de episodios */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {allEpisodes.map((episode, index) => (
-            <motion.div
-              key={episode.id}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.05 }}
-            >
+            <motion.div key={episode.id} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.05 }}>
               <EpisodeCard episode={episode} />
             </motion.div>
           ))}
         </div>
 
         <div className="text-center mt-16">
-          <p className="text-soda-fog text-sm">
-            Más episodios próximamente
-          </p>
+          <p className="text-soda-fog text-sm">Más episodios próximamente</p>
         </div>
       </div>
     </section>

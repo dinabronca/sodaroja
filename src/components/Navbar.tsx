@@ -2,15 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { getContent } from '../data/content';
+import { getCurrentUser } from '../data/auth';
 
 export const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const content = getContent();
   const names = content.sectionNames;
-
-  // Simular estado de auth — en producción vendrá de un contexto/provider real
-  const isLoggedIn = localStorage.getItem('sodaroja-user') !== null;
+  const isLoggedIn = getCurrentUser() !== null;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
