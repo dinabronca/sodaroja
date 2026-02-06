@@ -1,6 +1,21 @@
 // Episodios de demo con embeds reales de podcasts famosos para testing
 // Ordenados por fecha descendente (más reciente primero)
-export const demoEpisodes = [
+
+interface DemoEpisode {
+  id: string;
+  city: string;
+  title: string;
+  description: string;
+  imageUrl: string;
+  isPremium: boolean;
+  lat: number;
+  lng: number;
+  publishDate: string;
+  links: Record<string, string>;
+  embeds: Record<string, string>;
+}
+
+export const demoEpisodes: DemoEpisode[] = [
   {
     id: '6',
     city: 'NUEVA YORK',
