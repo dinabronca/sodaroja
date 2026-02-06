@@ -11,6 +11,14 @@ export interface DemoUser {
   createdAt: string;
 }
 
+const generateMemberNumber = (): string => {
+  const vowels = 'AEIOU';
+  const v1 = vowels[Math.floor(Math.random() * 5)];
+  const v2 = vowels[Math.floor(Math.random() * 5)];
+  const nums = Array.from({ length: 5 }, () => Math.floor(Math.random() * 10)).join('');
+  return `${v1}${v2}-${nums}`;
+};
+
 export const demoUsers: DemoUser[] = [
   {
     name: 'Mikasa Ackerman',
@@ -18,7 +26,7 @@ export const demoUsers: DemoUser[] = [
     password: 'sodaroja1',
     photoUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop',
     isPremium: true,
-    memberNumber: 'EF-000001',
+    memberNumber: generateMemberNumber(),
     createdAt: '2025-10-01T00:00:00.000Z',
   },
   {

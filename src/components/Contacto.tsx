@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Instagram } from 'lucide-react';
 import { getContent } from '../data/content';
+import { MailEffects } from '../effects/SectionBackgrounds';
 
 export const Contacto: React.FC = () => {
   const contacto = getContent().contacto;
@@ -17,7 +18,8 @@ export const Contacto: React.FC = () => {
   };
 
   return (
-    <section id="contacto" className="relative py-32 px-6 bg-gradient-to-b from-soda-night to-soda-deep">
+    <section id="contacto" className="relative py-32 px-6 bg-gradient-to-b from-soda-night to-soda-deep overflow-hidden">
+      <MailEffects />
       <div className="max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
