@@ -4,8 +4,41 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="SODAROJA - Un podcast narrativo argentino que viaja por las ciudades del mundo contando historias reales" />
-    <title>SODAROJA — Podcast Narrativo</title>
+    <meta name="description" content="sodaroja - un podcast que viaja por el mundo" />
+    <title>sodaroja</title>
+    <script>
+      // Aplicar meta desde el store
+      try {
+        var stored = localStorage.getItem('sodaroja-content');
+        if (stored) {
+          var c = JSON.parse(stored);
+          if (c.meta) {
+            if (c.meta.pageTitle) document.title = c.meta.pageTitle;
+            if (c.meta.faviconUrl) {
+              var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+              link.type = 'image/x-icon';
+              link.rel = 'shortcut icon';
+              link.href = c.meta.faviconUrl;
+              document.head.appendChild(link);
+            }
+            if (c.meta.description) {
+              var meta = document.querySelector("meta[name='description']");
+              if (meta) meta.setAttribute('content', c.meta.description);
+            }
+            if (c.meta.analyticsId) {
+              var s = document.createElement('script');
+              s.async = true;
+              s.src = 'https://www.googletagmanager.com/gtag/js?id=' + c.meta.analyticsId;
+              document.head.appendChild(s);
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', c.meta.analyticsId);
+            }
+          }
+        }
+      } catch(e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>
