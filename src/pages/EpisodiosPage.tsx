@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { EpisodeCard } from '../components/EpisodeCard';
-import { EpicSoundWaves } from '../effects/SectionBackgrounds';
+import { EpisodeVibes } from '../effects/SectionBackgrounds';
 import { demoEpisodes } from '../data/episodes';
 
 export const EpisodiosPage: React.FC = () => {
@@ -9,7 +9,7 @@ export const EpisodiosPage: React.FC = () => {
 
   return (
     <section className="relative pt-32 pb-24 px-6 min-h-screen overflow-hidden">
-      <EpicSoundWaves />
+      <EpisodeVibes />
       <div className="relative z-10 max-w-7xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-center mb-16">
           <h1 className="text-6xl md:text-7xl font-serif text-soda-glow mb-6">Todos los Episodios</h1>

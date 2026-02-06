@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Package, Mail } from 'lucide-react';
 import { getContent } from '../data/content';
-import { ConstructionEffects } from '../effects/SectionBackgrounds';
+import { BlueprintEffects } from '../effects/SectionBackgrounds';
 
 export const Shop: React.FC = () => {
   const shop = getContent().shop;
@@ -13,7 +13,7 @@ export const Shop: React.FC = () => {
 
   return (
     <section id="shop" className="relative py-32 px-6 overflow-hidden">
-      <ConstructionEffects />
+      <BlueprintEffects />
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

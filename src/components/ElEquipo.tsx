@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Instagram, Youtube, Twitter } from 'lucide-react';
-import { LightningFlickers } from '../effects/SectionBackgrounds';
+import { TeamAmbience } from '../effects/SectionBackgrounds';
 
 interface TeamMember {
   name: string;
@@ -147,7 +147,7 @@ const teamMembers: TeamMember[] = [
 export const ElEquipo: React.FC = () => {
   return (
     <section id="equipo" className="relative py-32 px-6 overflow-hidden">
-      <LightningFlickers />
+      <TeamAmbience />
       <div className="max-w-7xl mx-auto">
         {/* Título */}
         <motion.div

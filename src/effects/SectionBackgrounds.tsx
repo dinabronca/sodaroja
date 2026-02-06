@@ -2,227 +2,218 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 // ============================================================
-// EL EQUIPO - Tormenta electrica + lluvia
+// EL EQUIPO — Fireflies/luciérnagas + bokeh suave (aesthetic/pinterest)
 // ============================================================
-export const LightningFlickers: React.FC = () => (
-  <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 1 }}>
-    {/* Flashes de relampago - MUY VISIBLES */}
-    {[...Array(3)].map((_, i) => (
-      <motion.div
-        key={`flash-${i}`}
-        className="absolute"
-        style={{
-          left: `${15 + i * 30}%`,
-          top: `${10 + i * 15}%`,
-          width: '500px',
-          height: '500px',
-          background: 'radial-gradient(ellipse, rgba(196, 85, 85, 0.25) 0%, transparent 65%)',
-          filter: 'blur(40px)',
-        }}
-        animate={{ opacity: [0, 0, 0, 1, 0, 0.6, 0, 0, 0] }}
-        transition={{ duration: 6 + i * 4, repeat: Infinity, delay: i * 3 }}
-      />
-    ))}
-    {/* Lluvia diagonal - lineas visibles */}
-    {[...Array(35)].map((_, i) => (
-      <motion.div
-        key={`rain-${i}`}
-        className="absolute"
-        style={{
-          left: `${(i / 35) * 120 - 10}%`,
-          top: '-5%',
-          width: '1.5px',
-          height: `${50 + Math.random() * 70}px`,
-          background: 'linear-gradient(to bottom, transparent, rgba(138, 155, 196, 0.35), transparent)',
-          transform: 'rotate(15deg)',
-        }}
-        animate={{ y: ['0vh', '110vh'] }}
-        transition={{ duration: 1.8 + Math.random() * 1.5, repeat: Infinity, delay: Math.random() * 4, ease: 'linear' }}
-      />
-    ))}
-    {/* Neblina baja */}
-    <motion.div
-      className="absolute bottom-0 left-0 right-0 h-64"
-      style={{ background: 'linear-gradient(to top, rgba(10, 14, 26, 0.7), transparent)' }}
-      animate={{ opacity: [0.5, 0.8, 0.5] }}
-      transition={{ duration: 5, repeat: Infinity }}
-    />
-  </div>
-);
-
-// ============================================================
-// EPISODIOS - Ondas sonicas + ecualizador + cenizas
-// ============================================================
-export const EpicSoundWaves: React.FC = () => (
-  <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 1 }}>
-    {/* Ondas sonicas grandes desde el centro */}
-    {[...Array(4)].map((_, i) => (
-      <motion.div
-        key={`sw-${i}`}
-        className="absolute rounded-full"
-        style={{
-          left: '50%',
-          top: '25%',
-          marginLeft: '-60px',
-          marginTop: '-60px',
-          width: '120px',
-          height: '120px',
-          border: '2px solid rgba(196, 85, 85, 0.25)',
-        }}
-        animate={{ scale: [0.5, 12], opacity: [0.4, 0] }}
-        transition={{ duration: 8 + i * 2, repeat: Infinity, delay: i * 2, ease: 'easeOut' }}
-      />
-    ))}
-    {/* Barras de ecualizador verticales */}
-    {[...Array(16)].map((_, i) => (
-      <motion.div
-        key={`eq-${i}`}
-        className="absolute"
-        style={{
-          left: `${3 + i * 6}%`,
-          bottom: '5%',
-          width: '3px',
-          borderRadius: '2px',
-          background: i % 2 === 0
-            ? 'linear-gradient(to top, rgba(196, 85, 85, 0.3), transparent)'
-            : 'linear-gradient(to top, rgba(138, 155, 196, 0.2), transparent)',
-        }}
-        animate={{
-          height: [`${15 + Math.random() * 25}px`, `${50 + Math.random() * 80}px`, `${15 + Math.random() * 25}px`],
-        }}
-        transition={{ duration: 1 + Math.random() * 1.5, repeat: Infinity, delay: Math.random() * 2 }}
-      />
-    ))}
-    {/* Cenizas/particulas subiendo */}
-    {[...Array(25)].map((_, i) => {
-      const size = 2 + Math.random() * 3;
+export const TeamAmbience: React.FC = () => (
+  <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
+    {/* Luciérnagas — puntos suaves flotando */}
+    {[...Array(18)].map((_, i) => {
+      const size = 3 + Math.random() * 4;
+      const colors = [
+        'rgba(196, 85, 85, 0.15)',
+        'rgba(212, 197, 176, 0.12)',
+        'rgba(138, 155, 196, 0.10)',
+        'rgba(196, 85, 85, 0.10)',
+      ];
       return (
         <motion.div
-          key={`ash-${i}`}
+          key={`fly-${i}`}
           className="absolute rounded-full"
           style={{
             left: `${Math.random() * 100}%`,
-            bottom: '-3%',
+            top: `${Math.random() * 100}%`,
             width: `${size}px`,
             height: `${size}px`,
-            background: i % 3 === 0
-              ? 'rgba(196, 85, 85, 0.4)'
-              : i % 3 === 1
-                ? 'rgba(212, 197, 176, 0.3)'
-                : 'rgba(138, 155, 196, 0.25)',
+            background: colors[i % 4],
+            boxShadow: `0 0 ${size * 3}px ${colors[i % 4]}`,
+            filter: 'blur(1px)',
           }}
           animate={{
-            y: [0, -(300 + Math.random() * 400)],
-            x: [0, (Math.random() - 0.5) * 50],
-            opacity: [0, 0.7, 0],
-            rotate: [0, 360],
+            x: [0, (Math.random() - 0.5) * 80, (Math.random() - 0.5) * 60, 0],
+            y: [0, (Math.random() - 0.5) * 60, (Math.random() - 0.5) * 80, 0],
+            opacity: [0, 0.6, 0.3, 0.7, 0],
           }}
-          transition={{ duration: 6 + Math.random() * 6, repeat: Infinity, delay: Math.random() * 8, ease: 'linear' }}
+          transition={{
+            duration: 10 + Math.random() * 15,
+            repeat: Infinity,
+            delay: Math.random() * 10,
+            ease: 'easeInOut',
+          }}
         />
       );
     })}
-    {/* Pulso rojo grande */}
-    <motion.div
-      className="absolute"
-      style={{
-        left: '50%',
-        top: '35%',
-        width: '600px',
-        height: '600px',
-        marginLeft: '-300px',
-        marginTop: '-300px',
-        background: 'radial-gradient(ellipse, rgba(196, 85, 85, 0.08) 0%, transparent 50%)',
-      }}
-      animate={{ opacity: [0.3, 0.8, 0.3], scale: [0.9, 1.15, 0.9] }}
-      transition={{ duration: 4, repeat: Infinity }}
-    />
-  </div>
-);
-
-// ============================================================
-// SHOP - Construccion: rayas precaucion + engranajes + chispas
-// ============================================================
-export const ConstructionEffects: React.FC = () => (
-  <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 1 }}>
-    {/* Rayas de precaucion amarillas */}
+    {/* Bokeh suave — circulos grandes desenfocados */}
     {[...Array(5)].map((_, i) => (
       <motion.div
-        key={`stripe-${i}`}
-        className="absolute"
-        style={{
-          left: '-5%',
-          top: `${8 + i * 18}%`,
-          width: '110%',
-          height: '2px',
-          background: `repeating-linear-gradient(90deg, transparent, transparent 15px, rgba(212, 197, 176, 0.15) 15px, rgba(212, 197, 176, 0.15) 30px)`,
-          transform: `rotate(${-3 + i}deg)`,
-        }}
-        animate={{ x: [0, 30, 0] }}
-        transition={{ duration: 6 + i * 2, repeat: Infinity }}
-      />
-    ))}
-    {/* Engranajes girando */}
-    {[...Array(4)].map((_, i) => (
-      <motion.div
-        key={`gear-${i}`}
-        className="absolute"
-        style={{
-          right: `${3 + i * 25}%`,
-          top: `${10 + i * 20}%`,
-          width: '80px',
-          height: '80px',
-          border: '2px solid rgba(196, 85, 85, 0.12)',
-          borderRadius: '50%',
-        }}
-        animate={{ rotate: [0, 360] }}
-        transition={{ duration: 20 + i * 8, repeat: Infinity, ease: 'linear' }}
-      >
-        {[...Array(8)].map((_, j) => (
-          <div key={j} className="absolute" style={{ left: '50%', top: '-5px', width: '3px', height: '10px', marginLeft: '-1.5px', background: 'rgba(196, 85, 85, 0.12)', transformOrigin: '50% 45px', transform: `rotate(${j * 45}deg)` }} />
-        ))}
-      </motion.div>
-    ))}
-    {/* Chispas brillantes */}
-    {[...Array(12)].map((_, i) => (
-      <motion.div
-        key={`spark-${i}`}
+        key={`bokeh-${i}`}
         className="absolute rounded-full"
         style={{
-          left: `${15 + Math.random() * 70}%`,
-          top: `${15 + Math.random() * 70}%`,
-          width: '3px',
-          height: '3px',
-          background: 'rgba(255, 200, 100, 0.6)',
-          boxShadow: '0 0 6px rgba(255, 200, 100, 0.4)',
+          left: `${10 + i * 20}%`,
+          top: `${20 + (i % 3) * 25}%`,
+          width: `${100 + i * 30}px`,
+          height: `${100 + i * 30}px`,
+          background: i % 2 === 0
+            ? 'radial-gradient(circle, rgba(196, 85, 85, 0.04) 0%, transparent 70%)'
+            : 'radial-gradient(circle, rgba(138, 155, 196, 0.03) 0%, transparent 70%)',
+          filter: 'blur(30px)',
         }}
-        animate={{ opacity: [0, 1, 0], scale: [0, 2, 0] }}
-        transition={{ duration: 0.4, repeat: Infinity, repeatDelay: 2 + Math.random() * 6, delay: Math.random() * 5 }}
+        animate={{
+          opacity: [0.3, 0.6, 0.3],
+          scale: [0.9, 1.1, 0.9],
+        }}
+        transition={{ duration: 8 + i * 3, repeat: Infinity, delay: i * 2 }}
       />
     ))}
-    {/* Cono naranja pulsante */}
+  </div>
+);
+
+// ============================================================
+// EPISODIOS — Emojis cayendo muy transparentes + niebla mistica
+// ============================================================
+const cityEmojis = ['🏛️', '🗺️', '✈️', '🌍', '🏔️', '⛩️', '🗼', '🌙', '🔮', '📻', '🎭', '🏰', '⚓', '🕯️', '📖', '🧭'];
+
+export const EpisodeVibes: React.FC = () => (
+  <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
+    {/* Emojis cayendo como lluvia suave */}
+    {[...Array(14)].map((_, i) => (
+      <motion.div
+        key={`emoji-${i}`}
+        className="absolute select-none"
+        style={{
+          left: `${(i / 14) * 100 + Math.random() * 5}%`,
+          top: '-5%',
+          fontSize: `${16 + Math.random() * 10}px`,
+          opacity: 0,
+        }}
+        animate={{
+          y: ['0vh', '110vh'],
+          opacity: [0, 0.08, 0.06, 0],
+          rotate: [0, (Math.random() - 0.5) * 40],
+        }}
+        transition={{
+          duration: 15 + Math.random() * 10,
+          repeat: Infinity,
+          delay: Math.random() * 20,
+          ease: 'linear',
+        }}
+      >
+        {cityEmojis[i % cityEmojis.length]}
+      </motion.div>
+    ))}
+    {/* Niebla mistica — gradientes que flotan */}
+    <motion.div
+      className="absolute left-0 right-0 bottom-0 h-72"
+      style={{ background: 'linear-gradient(to top, rgba(10, 14, 26, 0.5), transparent)' }}
+      animate={{ opacity: [0.3, 0.5, 0.3] }}
+      transition={{ duration: 8, repeat: Infinity }}
+    />
     <motion.div
       className="absolute"
       style={{
-        left: '75%',
-        bottom: '15%',
-        width: '0',
-        height: '0',
-        borderLeft: '15px solid transparent',
-        borderRight: '15px solid transparent',
-        borderBottom: '30px solid rgba(212, 150, 80, 0.15)',
+        left: '-10%',
+        top: '30%',
+        width: '50%',
+        height: '200px',
+        background: 'radial-gradient(ellipse, rgba(196, 85, 85, 0.04) 0%, transparent 70%)',
+        filter: 'blur(40px)',
       }}
-      animate={{ opacity: [0.3, 0.7, 0.3] }}
-      transition={{ duration: 3, repeat: Infinity }}
+      animate={{ x: [0, 100, 0], opacity: [0.3, 0.5, 0.3] }}
+      transition={{ duration: 20, repeat: Infinity }}
+    />
+    <motion.div
+      className="absolute"
+      style={{
+        right: '-10%',
+        top: '60%',
+        width: '40%',
+        height: '180px',
+        background: 'radial-gradient(ellipse, rgba(138, 155, 196, 0.03) 0%, transparent 70%)',
+        filter: 'blur(40px)',
+      }}
+      animate={{ x: [0, -80, 0], opacity: [0.2, 0.4, 0.2] }}
+      transition={{ duration: 16, repeat: Infinity, delay: 5 }}
     />
   </div>
 );
 
 // ============================================================
-// CONTACTO - Sobres flotando + ondas + lineas de texto
+// SHOP — Blueprints suaves + cuadricula tecnica
+// ============================================================
+export const BlueprintEffects: React.FC = () => (
+  <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
+    {/* Cuadricula blueprint */}
+    <div
+      className="absolute inset-0"
+      style={{
+        backgroundImage: `
+          linear-gradient(rgba(138, 155, 196, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(138, 155, 196, 0.03) 1px, transparent 1px)
+        `,
+        backgroundSize: '40px 40px',
+      }}
+    />
+    {/* Lineas de medida horizontales */}
+    {[...Array(4)].map((_, i) => (
+      <motion.div
+        key={`measure-${i}`}
+        className="absolute"
+        style={{
+          left: `${10 + i * 20}%`,
+          top: `${20 + i * 18}%`,
+          height: '1px',
+          background: 'rgba(138, 155, 196, 0.06)',
+        }}
+        animate={{
+          width: ['0px', `${80 + Math.random() * 120}px`, '0px'],
+          opacity: [0, 0.4, 0],
+        }}
+        transition={{ duration: 6 + i * 2, repeat: Infinity, delay: i * 3 }}
+      />
+    ))}
+    {/* Marcas de cota (flechitas) */}
+    {[...Array(3)].map((_, i) => (
+      <motion.div
+        key={`cota-${i}`}
+        className="absolute"
+        style={{
+          left: `${15 + i * 30}%`,
+          top: `${30 + i * 20}%`,
+          width: '6px',
+          height: '6px',
+          border: '1px solid rgba(138, 155, 196, 0.08)',
+          borderRadius: '50%',
+        }}
+        animate={{ opacity: [0, 0.5, 0], scale: [0.5, 1.2, 0.5] }}
+        transition={{ duration: 4, repeat: Infinity, delay: i * 2 }}
+      />
+    ))}
+    {/* Texto tecnico fantasma */}
+    {[...Array(3)].map((_, i) => (
+      <motion.div
+        key={`spec-${i}`}
+        className="absolute font-mono select-none"
+        style={{
+          right: `${5 + i * 15}%`,
+          bottom: `${15 + i * 20}%`,
+          fontSize: '9px',
+          color: 'rgba(138, 155, 196, 0.06)',
+          letterSpacing: '2px',
+        }}
+        animate={{ opacity: [0, 0.15, 0] }}
+        transition={{ duration: 5, repeat: Infinity, delay: i * 3 }}
+      >
+        {['REV.03 // EN CONSTRUCCION', 'PLANO GENERAL // v2.1', 'PROXIMAMENTE'][i]}
+      </motion.div>
+    ))}
+  </div>
+);
+
+// ============================================================
+// CONTACTO — Cartitas flotando + lineas de texto
 // ============================================================
 export const MailEffects: React.FC = () => (
-  <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 1 }}>
-    {/* Sobres que flotan */}
+  <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
+    {/* Sobres que flotan suavemente */}
     {[...Array(8)].map((_, i) => (
       <motion.div
         key={`env-${i}`}
@@ -230,53 +221,46 @@ export const MailEffects: React.FC = () => (
         style={{ left: `${8 + Math.random() * 84}%`, top: `${8 + Math.random() * 84}%` }}
       >
         <motion.svg
-          width="30"
-          height="22"
-          viewBox="0 0 30 22"
-          animate={{ y: [0, -20, 0], rotate: [0, 8, -5, 0], opacity: [0.12, 0.25, 0.12] }}
-          transition={{ duration: 7 + Math.random() * 5, repeat: Infinity, delay: Math.random() * 6 }}
+          width="28"
+          height="20"
+          viewBox="0 0 28 20"
+          animate={{
+            y: [0, -18, 0],
+            rotate: [0, 6, -4, 0],
+            opacity: [0.08, 0.18, 0.08],
+          }}
+          transition={{ duration: 8 + Math.random() * 6, repeat: Infinity, delay: Math.random() * 8 }}
         >
-          <rect x="1" y="1" width="28" height="20" rx="2" fill="none" stroke="rgba(138, 155, 196, 0.35)" strokeWidth="1.5" />
-          <path d="M 1 1 L 15 12 L 29 1" fill="none" stroke="rgba(138, 155, 196, 0.35)" strokeWidth="1.5" />
+          <rect x="1" y="1" width="26" height="18" rx="2" fill="none" stroke="rgba(138, 155, 196, 0.3)" strokeWidth="1" />
+          <path d="M 1 1 L 14 11 L 27 1" fill="none" stroke="rgba(138, 155, 196, 0.3)" strokeWidth="1" />
         </motion.svg>
       </motion.div>
     ))}
-    {/* Ondas de senal expandiendose */}
-    {[...Array(4)].map((_, i) => (
-      <motion.div
-        key={`cw-${i}`}
-        className="absolute rounded-full"
-        style={{
-          left: '50%',
-          top: '35%',
-          marginLeft: '-50px',
-          marginTop: '-50px',
-          width: '100px',
-          height: '100px',
-          border: '2px solid rgba(138, 155, 196, 0.15)',
-        }}
-        animate={{ scale: [0.5, 8], opacity: [0.3, 0] }}
-        transition={{ duration: 7 + i * 2, repeat: Infinity, delay: i * 2, ease: 'easeOut' }}
-      />
-    ))}
     {/* Lineas de texto simuladas */}
-    {[...Array(6)].map((_, i) => (
+    {[...Array(5)].map((_, i) => (
       <motion.div
         key={`txt-${i}`}
         className="absolute"
         style={{
-          right: '5%',
-          top: `${15 + i * 10}%`,
-          height: '2px',
-          background: 'rgba(212, 197, 176, 0.1)',
+          right: '6%',
+          top: `${18 + i * 12}%`,
+          height: '1px',
+          background: 'rgba(212, 197, 176, 0.06)',
           borderRadius: '1px',
         }}
         animate={{
-          width: [`${30 + Math.random() * 40}px`, `${80 + Math.random() * 60}px`, `${30 + Math.random() * 40}px`],
-          opacity: [0.15, 0.4, 0.15],
+          width: [`${25 + Math.random() * 30}px`, `${60 + Math.random() * 50}px`, `${25 + Math.random() * 30}px`],
+          opacity: [0.1, 0.3, 0.1],
         }}
-        transition={{ duration: 5 + i * 1.5, repeat: Infinity, delay: i * 1 }}
+        transition={{ duration: 5 + i * 1.5, repeat: Infinity, delay: i * 1.2 }}
       />
     ))}
+    {/* Niebla suave abajo */}
+    <motion.div
+      className="absolute bottom-0 left-0 right-0 h-40"
+      style={{ background: 'linear-gradient(to top, rgba(10, 14, 26, 0.3), transparent)' }}
+      animate={{ opacity: [0.2, 0.4, 0.2] }}
+      transition={{ duration: 6, repeat: Infinity }}
+    />
   </div>
 );
