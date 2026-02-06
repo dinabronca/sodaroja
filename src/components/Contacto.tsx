@@ -1,10 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Instagram } from 'lucide-react';
-import { contentData } from '../data/content';
+import { getContent } from '../data/content';
 
 export const Contacto: React.FC = () => {
-  const { contacto } = contentData;
+  const contacto = getContent().contacto;
   const [formData, setFormData] = React.useState({
     name: '',
     email: '',

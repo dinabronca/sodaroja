@@ -1,10 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Package, Mail } from 'lucide-react';
-import { contentData } from '../data/content';
+import { getContent } from '../data/content';
 
 export const Shop: React.FC = () => {
-  const { shop } = contentData;
+  const shop = getContent().shop;
   
   const comingSoonItems = [
     { icon: Package, name: 'Pack de Stickers', desc: 'Colección de stickers del culto' },
