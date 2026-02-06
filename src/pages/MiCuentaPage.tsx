@@ -1,31 +1,31 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { User, CreditCard, Settings, LogOut, Save } from 'lucide-react';
+import { User, CreditCard, Settings, LogOut, Save, ExternalLink } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { getContent } from '../data/content';
 
 export const MiCuentaPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'perfil' | 'suscripcion' | 'config'>('perfil');
   const content = getContent();
   const fields = content.userProfileFields.filter(f => f.visible);
+  const navigate = useNavigate();
+
+  // Cargar usuario de localStorage
+  const storedUser = localStorage.getItem('sodaroja-user');
+  const user = storedUser ? JSON.parse(storedUser) : null;
 
   const [formData, setFormData] = useState<Record<string, string>>({
-    name: 'Juan Pérez',
-    nickname: 'Juancho',
-    email: 'juan@email.com',
-    birth_month: '03',
-    birth_year: '1995',
-    pronouns: 'Él',
-    city: 'Buenos Aires',
-    country: 'Argentina',
-    howFoundUs: 'Instagram',
+    name: user?.name || '',
+    email: user?.email || '',
+    photoUrl: user?.photoUrl || '',
   });
 
-  const userData = {
+  const subData = {
     memberNumber: 'EF-000128',
     isPremium: true,
     subscriptionPlan: 'Soda',
     subscriptionEndDate: '15 de Marzo, 2026',
-    joinedDate: '15 de Diciembre, 2025',
+    joinedDate: user?.createdAt ? new Date(user.createdAt).toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Hoy',
   };
 
   const months = [
@@ -37,13 +37,31 @@ export const MiCuentaPage: React.FC = () => {
   const years = Array.from({ length: 80 }, (_, i) => String(2010 - i));
 
   const ic = "w-full bg-soda-night bg-opacity-60 border border-soda-mist border-opacity-20 rounded-sm px-4 py-3 text-soda-lamp focus:border-soda-accent focus:outline-none transition-colors text-sm";
-  const lc = "block text-soda-lamp text-sm mb-2";
+
+  const handleLogout = () => {
+    localStorage.removeItem('sodaroja-user');
+    navigate('/');
+    window.location.reload();
+  };
+
+  const handleSave = () => {
+    const updated = { ...user, name: formData.name, email: formData.email, photoUrl: formData.photoUrl };
+    localStorage.setItem('sodaroja-user', JSON.stringify(updated));
+    alert('Cambios guardados');
+  };
+
+  // Redirect si no está logueado
+  if (!user) {
+    navigate('/unirse');
+    return null;
+  }
 
   const renderField = (field: typeof fields[0]) => {
+    if (field.id === 'name' || field.id === 'email') return null; // Ya están arriba
     if (field.type === 'month-year') {
       return (
         <div key={field.id}>
-          <label className={lc}>{field.label}</label>
+          <label className="block text-soda-lamp text-sm mb-2">{field.label}</label>
           <div className="grid grid-cols-2 gap-3">
             <select value={formData[`${field.id}_month`] || ''} onChange={(e) => setFormData({ ...formData, [`${field.id}_month`]: e.target.value })} className={ic}>
               <option value="">Mes</option>
@@ -60,7 +78,7 @@ export const MiCuentaPage: React.FC = () => {
     if (field.type === 'select' && field.options) {
       return (
         <div key={field.id}>
-          <label className={lc}>{field.label}</label>
+          <label className="block text-soda-lamp text-sm mb-2">{field.label}</label>
           <select value={formData[field.id] || ''} onChange={(e) => setFormData({ ...formData, [field.id]: e.target.value })} className={ic}>
             <option value="">Elegí una opción</option>
             {field.options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
@@ -70,8 +88,8 @@ export const MiCuentaPage: React.FC = () => {
     }
     return (
       <div key={field.id}>
-        <label className={lc}>{field.label}</label>
-        <input type={field.id === 'email' ? 'email' : 'text'} value={formData[field.id] || ''} onChange={(e) => setFormData({ ...formData, [field.id]: e.target.value })} className={ic} placeholder={field.placeholder || ''} />
+        <label className="block text-soda-lamp text-sm mb-2">{field.label}</label>
+        <input type="text" value={formData[field.id] || ''} onChange={(e) => setFormData({ ...formData, [field.id]: e.target.value })} className={ic} placeholder={field.placeholder || ''} />
       </div>
     );
   };
@@ -89,22 +107,26 @@ export const MiCuentaPage: React.FC = () => {
           <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
             <div className="bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm p-6">
               <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 rounded-full bg-soda-red bg-opacity-20 flex items-center justify-center border-2 border-soda-red">
-                  <User size={32} className="text-soda-red" />
-                </div>
+                {user.photoUrl ? (
+                  <img src={user.photoUrl} alt="Perfil" className="w-16 h-16 rounded-full object-cover border-2 border-soda-red" />
+                ) : (
+                  <div className="w-16 h-16 rounded-full bg-soda-red bg-opacity-20 flex items-center justify-center border-2 border-soda-red">
+                    <User size={32} className="text-soda-red" />
+                  </div>
+                )}
                 <div>
-                  <h3 className="text-soda-glow font-serif text-xl">{formData.nickname || formData.name || 'Usuario'}</h3>
-                  <p className="text-soda-fog text-sm">{formData.email}</p>
+                  <h3 className="text-soda-glow font-serif text-xl">{user.name || 'Usuario'}</h3>
+                  <p className="text-soda-fog text-sm">{user.email}</p>
                 </div>
               </div>
 
-              {userData.isPremium && (
+              {subData.isPremium && (
                 <div className="bg-soda-red bg-opacity-10 border border-soda-red border-opacity-30 rounded-sm p-4 mb-4">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="text-2xl">◉</div>
                     <span className="text-soda-red text-sm font-medium">FRECUENCIA INTERNA</span>
                   </div>
-                  <p className="text-soda-lamp text-xs">N° de Socio: {userData.memberNumber}</p>
+                  <p className="text-soda-lamp text-xs">N° de Socio: {subData.memberNumber}</p>
                 </div>
               )}
 
@@ -118,7 +140,7 @@ export const MiCuentaPage: React.FC = () => {
                     {tab.icon}<span>{tab.label}</span>
                   </button>
                 ))}
-                <button className="w-full flex items-center gap-3 px-4 py-3 text-soda-red hover:bg-soda-red hover:bg-opacity-10 rounded-sm transition-all text-left mt-4 text-sm">
+                <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 text-soda-red hover:bg-soda-red hover:bg-opacity-10 rounded-sm transition-all text-left mt-4 text-sm">
                   <LogOut size={18} /><span>Cerrar Sesión</span>
                 </button>
               </nav>
@@ -130,10 +152,23 @@ export const MiCuentaPage: React.FC = () => {
             {activeTab === 'perfil' && (
               <div className="bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm p-8">
                 <h2 className="text-2xl font-serif text-soda-glow mb-2">Información Personal</h2>
-                <p className="text-soda-fog text-xs mb-8">Solo pedimos lo necesario. Nada sensible, nada raro.</p>
+                <p className="text-soda-fog text-xs mb-8">Solo pedimos lo necesario. Nada sensible.</p>
                 <div className="space-y-5">
+                  <div>
+                    <label className="block text-soda-lamp text-sm mb-2">Nombre</label>
+                    <input type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className={ic} />
+                  </div>
+                  <div>
+                    <label className="block text-soda-lamp text-sm mb-2">Email</label>
+                    <input type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className={ic} />
+                  </div>
+                  <div>
+                    <label className="block text-soda-lamp text-sm mb-2">Foto de perfil (URL)</label>
+                    <input type="url" value={formData.photoUrl} onChange={(e) => setFormData({ ...formData, photoUrl: e.target.value })} className={ic} placeholder="https://... (máx 200×200px)" />
+                    <p className="text-soda-fog text-xs mt-1">Pegá un link a tu foto. No almacenamos imágenes.</p>
+                  </div>
                   {fields.map(renderField)}
-                  <button onClick={() => alert('Guardado (conectar backend)')} className="w-full py-3 bg-soda-accent bg-opacity-20 border border-soda-accent text-soda-lamp rounded-sm hover:bg-opacity-30 transition-all mt-4 flex items-center justify-center gap-2 text-sm">
+                  <button onClick={handleSave} className="w-full py-3 bg-soda-accent bg-opacity-20 border border-soda-accent text-soda-lamp rounded-sm hover:bg-opacity-30 transition-all mt-4 flex items-center justify-center gap-2 text-sm">
                     <Save size={16} />Guardar Cambios
                   </button>
                 </div>
@@ -145,10 +180,10 @@ export const MiCuentaPage: React.FC = () => {
                 <h2 className="text-2xl font-serif text-soda-glow mb-6">Tu Suscripción</h2>
                 <div className="space-y-4">
                   {[
-                    { label: 'Plan actual', value: userData.subscriptionPlan },
-                    { label: 'Próxima renovación', value: userData.subscriptionEndDate },
-                    { label: 'Miembro desde', value: userData.joinedDate },
-                    { label: 'N° de Socio', value: userData.memberNumber },
+                    { label: 'Plan actual', value: subData.subscriptionPlan },
+                    { label: 'Próxima renovación', value: subData.subscriptionEndDate },
+                    { label: 'Miembro desde', value: subData.joinedDate },
+                    { label: 'N° de Socio', value: subData.memberNumber },
                   ].map((row, i) => (
                     <div key={i} className="flex justify-between items-center pb-4 border-b border-soda-mist border-opacity-20">
                       <span className="text-soda-fog text-sm">{row.label}:</span>
@@ -156,9 +191,15 @@ export const MiCuentaPage: React.FC = () => {
                     </div>
                   ))}
                 </div>
-                <div className="mt-6 flex gap-4">
-                  <button className="flex-1 py-3 border border-soda-accent text-soda-accent rounded-sm hover:bg-soda-accent hover:bg-opacity-10 transition-all text-sm">Cambiar Plan</button>
-                  <button className="flex-1 py-3 border border-soda-red text-soda-red rounded-sm hover:bg-soda-red hover:bg-opacity-10 transition-all text-sm">Cancelar Suscripción</button>
+                <div className="mt-6 space-y-3">
+                  <div className="flex gap-3">
+                    <button className="flex-1 py-3 border border-soda-accent text-soda-accent rounded-sm hover:bg-soda-accent hover:bg-opacity-10 transition-all text-sm">Cambiar Plan</button>
+                    <button className="flex-1 py-3 border border-soda-red text-soda-red rounded-sm hover:bg-soda-red hover:bg-opacity-10 transition-all text-sm">Cancelar Suscripción</button>
+                  </div>
+                  <a href={content.frecuenciaInterna.paymentUrls.mercadoPago || '#'} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full py-3 border border-soda-mist border-opacity-30 text-soda-lamp rounded-sm hover:bg-soda-mist hover:bg-opacity-10 transition-all text-sm">
+                    <ExternalLink size={14} />Gestionar método de pago
+                  </a>
+                  <p className="text-soda-fog text-xs text-center">Se abre en la plataforma de pago (Mercado Pago / PayPal). No almacenamos datos de tarjeta.</p>
                 </div>
               </div>
             )}
@@ -167,20 +208,15 @@ export const MiCuentaPage: React.FC = () => {
               <div className="bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm p-8">
                 <h2 className="text-2xl font-serif text-soda-glow mb-6">Configuración</h2>
                 <div className="space-y-6">
-                  {[
-                    { title: 'Notificaciones por email', desc: 'Nuevos episodios y novedades' },
-                    { title: 'Newsletter del culto', desc: 'Resúmenes mensuales y contenido especial' },
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-center justify-between pb-4 border-b border-soda-mist border-opacity-20">
-                      <div>
-                        <p className="text-soda-lamp text-sm">{item.title}</p>
-                        <p className="text-soda-fog text-xs">{item.desc}</p>
-                      </div>
-                      <button className="w-12 h-6 bg-soda-accent bg-opacity-30 rounded-full relative">
-                        <div className="absolute top-0.5 right-0.5 w-5 h-5 bg-soda-accent rounded-full" />
-                      </button>
+                  <div className="flex items-center justify-between pb-4 border-b border-soda-mist border-opacity-20">
+                    <div>
+                      <p className="text-soda-lamp text-sm">Notificaciones por email</p>
+                      <p className="text-soda-fog text-xs">Nuevos episodios y novedades</p>
                     </div>
-                  ))}
+                    <button className="w-12 h-6 bg-soda-accent bg-opacity-30 rounded-full relative">
+                      <div className="absolute top-0.5 right-0.5 w-5 h-5 bg-soda-accent rounded-full" />
+                    </button>
+                  </div>
                   <div className="pt-4">
                     <button className="text-soda-red text-sm hover:underline">Eliminar mi cuenta</button>
                     <p className="text-soda-fog text-xs mt-2">Esta acción es irreversible</p>

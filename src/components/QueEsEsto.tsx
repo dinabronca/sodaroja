@@ -119,8 +119,8 @@ export const QueEsEsto: React.FC = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.05 }}
-                whileHover={{ scale: 1.05, borderColor: 'rgba(138, 155, 196, 0.6)' }}
-                className="px-4 py-3 bg-soda-night bg-opacity-60 border border-soda-accent border-opacity-30 rounded-sm text-soda-accent text-sm text-center hover:bg-opacity-80 transition-all cursor-default"
+                whileHover={undefined}
+                className="px-4 py-3 bg-soda-night bg-opacity-60 border border-soda-accent border-opacity-30 rounded-sm text-soda-accent text-sm text-center cursor-default"
               >
                 {tema}
               </motion.div>

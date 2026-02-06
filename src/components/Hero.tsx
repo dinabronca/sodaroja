@@ -58,8 +58,37 @@ export const Hero: React.FC = () => {
           transition={{ duration: 1.2, ease: [0.6, 0.05, 0.01, 0.9] }}
           className="mb-12"
         >
-          {/* Dial de frecuencia — reemplaza el sifón */}
-          <div className="relative inline-block mb-10">
+          {/* Imagen principal O dial de frecuencia */}
+          {hero.imageUrl ? (
+            <div className="relative inline-block mb-10 max-w-md mx-auto">
+              {/* Efecto 1: Shimmer — rayo de luz que cruza */}
+              <motion.div
+                className="absolute inset-0 z-20 pointer-events-none rounded-sm overflow-hidden"
+                style={{ background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.04) 45%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.04) 55%, transparent 60%)', backgroundSize: '200% 100%' }}
+                animate={{ backgroundPosition: ['200% 0', '-200% 0'] }}
+                transition={{ duration: 5, repeat: Infinity, repeatDelay: 3, ease: "easeInOut" }}
+              />
+              {/* Efecto 2: Glow pulsante alrededor */}
+              <motion.div
+                className="absolute -inset-4 z-0 rounded-sm"
+                style={{ background: 'radial-gradient(ellipse, rgba(196, 85, 85, 0.15) 0%, transparent 70%)' }}
+                animate={{ opacity: [0.3, 0.7, 0.3], scale: [0.95, 1.05, 0.95] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              />
+              {/* Efecto 3: Partículas flotando desde la imagen */}
+              {[...Array(8)].map((_, i) => (
+                <motion.div
+                  key={`img-particle-${i}`}
+                  className="absolute w-1 h-1 bg-soda-red rounded-full z-30 pointer-events-none"
+                  style={{ left: `${15 + Math.random() * 70}%`, bottom: '10%' }}
+                  animate={{ y: [0, -(80 + Math.random() * 120)], opacity: [0, 0.6, 0], x: [0, (Math.random() - 0.5) * 40] }}
+                  transition={{ duration: 3 + Math.random() * 3, repeat: Infinity, delay: Math.random() * 4 }}
+                />
+              ))}
+              <img src={hero.imageUrl} alt={hero.title} className="relative z-10 w-full rounded-sm shadow-2xl" style={{ filter: 'brightness(0.9) contrast(1.05)' }} />
+            </div>
+          ) : (
+            <div className="relative inline-block mb-10">
             {/* Círculo exterior pulsante */}
             <motion.div
               className="w-32 h-32 md:w-40 md:h-40 mx-auto relative"
@@ -115,6 +144,7 @@ export const Hero: React.FC = () => {
             {/* Resplandor */}
             <div className="absolute inset-0 bg-soda-red rounded-full opacity-10 blur-3xl animate-pulse-slow" />
           </div>
+          )}
 
           <motion.h1
             initial={{ opacity: 0 }}

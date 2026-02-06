@@ -339,6 +339,7 @@ export const AdminPage: React.FC = () => {
                 <div><label className={lc}>Título</label><input type="text" value={content.frecuenciaInterna.title} onChange={(e) => update('frecuenciaInterna.title', e.target.value)} className={ic} /></div>
                 <div><label className={lc}>Subtítulo</label><input type="text" value={content.frecuenciaInterna.subtitle} onChange={(e) => update('frecuenciaInterna.subtitle', e.target.value)} className={ic} /></div>
                 <div><label className={lc}>Texto introductorio</label><textarea rows={4} value={content.frecuenciaInterna.introText} onChange={(e) => update('frecuenciaInterna.introText', e.target.value)} className={ic + ' resize-y'} /></div>
+                <div><label className={lc}>Título de beneficios ("Qué te llevas al sumarte")</label><input type="text" value={content.frecuenciaInterna.benefitsTitle} onChange={(e) => update('frecuenciaInterna.benefitsTitle', e.target.value)} className={ic} /></div>
               </div>
             </div>
             <div className={cc}>
@@ -472,13 +473,13 @@ export const AdminPage: React.FC = () => {
               </div>
               <p className={nc + ' mb-4'}>Elegí cuáles mostrar, cambiá las siglas (2 letras que aparecen en el footer), y agregá o quitá redes.</p>
               {content.socialLinks.map((link, idx) => (
-                <div key={link.id} className="flex items-center gap-3 mb-3">
+                <div key={link.id} className="flex items-center gap-2 mb-3">
                   <button onClick={() => { const arr = [...content.socialLinks]; arr[idx] = { ...arr[idx], visible: !arr[idx].visible }; update('socialLinks', arr); }} className="flex-shrink-0">
                     {link.visible ? <ToggleRight size={24} className="text-green-400" /> : <ToggleLeft size={24} className="text-soda-fog" />}
                   </button>
-                  <input type="text" value={link.platform} onChange={(e) => { const arr = [...content.socialLinks]; arr[idx] = { ...arr[idx], platform: e.target.value }; update('socialLinks', arr); }} className={ic + ' w-40'} placeholder="Nombre" />
-                  <input type="text" value={link.abbr} onChange={(e) => { const arr = [...content.socialLinks]; arr[idx] = { ...arr[idx], abbr: e.target.value.substring(0, 3) }; update('socialLinks', arr); }} className={ic + ' w-20'} placeholder="XX" maxLength={3} />
-                  <input type="text" value={link.url} onChange={(e) => { const arr = [...content.socialLinks]; arr[idx] = { ...arr[idx], url: e.target.value }; update('socialLinks', arr); }} className={ic + ' flex-1'} placeholder="https://..." />
+                  <input type="text" value={link.platform} onChange={(e) => { const arr = [...content.socialLinks]; arr[idx] = { ...arr[idx], platform: e.target.value }; update('socialLinks', arr); }} className={ic + ' w-28'} placeholder="Nombre" />
+                  <input type="text" value={link.abbr} onChange={(e) => { const arr = [...content.socialLinks]; arr[idx] = { ...arr[idx], abbr: e.target.value.substring(0, 3) }; update('socialLinks', arr); }} className={ic + ' w-14 text-center'} placeholder="XX" maxLength={3} />
+                  <input type="text" value={link.url} onChange={(e) => { const arr = [...content.socialLinks]; arr[idx] = { ...arr[idx], url: e.target.value }; update('socialLinks', arr); }} className={ic + ' flex-1 min-w-0'} placeholder="https://..." />
                   <button onClick={() => update('socialLinks', content.socialLinks.filter((_, i) => i !== idx))} className="text-soda-red flex-shrink-0"><Trash2 size={14} /></button>
                 </div>
               ))}
