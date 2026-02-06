@@ -465,24 +465,78 @@ export const AdminPage: React.FC = () => {
 
         {/* ======== GENERAL / REDES ======== */}
         {activeTab === 'general' && (
-          <div>
+          <div className="space-y-6">
+            {/* Meta / SEO */}
+            <div className={cc}>
+              <h2 className="text-xl font-serif text-soda-glow mb-4">Meta / Pestaña del navegador</h2>
+              <div className="space-y-3">
+                <div><label className={lc}>Titulo de la pestaña</label><input type="text" value={content.meta?.pageTitle || 'sodaroja'} onChange={(e) => update('meta.pageTitle', e.target.value)} className={ic} placeholder="sodaroja" /></div>
+                <div><label className={lc}>Favicon URL (icono de la pestaña, 32x32 o .ico)</label><input type="text" value={content.meta?.faviconUrl || ''} onChange={(e) => update('meta.faviconUrl', e.target.value)} className={ic} placeholder="https://...favicon.ico" /></div>
+                <div><label className={lc}>Descripcion SEO</label><textarea rows={2} value={content.meta?.description || ''} onChange={(e) => update('meta.description', e.target.value)} className={ic + ' resize-y'} placeholder="Descripcion para motores de busqueda" /></div>
+              </div>
+            </div>
+
+            {/* Google Analytics */}
+            <div className={cc}>
+              <h2 className="text-xl font-serif text-soda-glow mb-4">Google Analytics</h2>
+              <p className={nc + ' mb-3'}>Pega tu ID de medicion de Google Analytics (formato: G-XXXXXXXXXX).</p>
+              <input type="text" value={content.meta?.analyticsId || ''} onChange={(e) => update('meta.analyticsId', e.target.value)} className={ic} placeholder="G-XXXXXXXXXX" />
+            </div>
+
+            {/* Redes Sociales */}
             <div className={cc}>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-serif text-soda-glow">Redes Sociales (Footer)</h2>
-                <button onClick={() => update('socialLinks', [...content.socialLinks, { id: `social-${Date.now()}`, platform: 'Nueva red', abbr: 'NR', url: '#', visible: true }])} className="flex items-center gap-1 px-3 py-2 border border-soda-accent text-soda-accent rounded-sm text-xs"><Plus size={14} />Agregar red</button>
+                <button onClick={() => update('socialLinks', [...content.socialLinks, { id: `social-${Date.now()}`, platform: 'Nueva red', abbr: 'NR', url: '#', iconUrl: '', visible: true }])} className="flex items-center gap-1 px-3 py-2 border border-soda-accent text-soda-accent rounded-sm text-xs"><Plus size={14} />Agregar red</button>
               </div>
-              <p className={nc + ' mb-4'}>Elegí cuáles mostrar, cambiá las siglas (2 letras que aparecen en el footer), y agregá o quitá redes.</p>
-              {content.socialLinks.map((link, idx) => (
-                <div key={link.id} className="flex items-center gap-2 mb-3">
-                  <button onClick={() => { const arr = [...content.socialLinks]; arr[idx] = { ...arr[idx], visible: !arr[idx].visible }; update('socialLinks', arr); }} className="flex-shrink-0">
-                    {link.visible ? <ToggleRight size={24} className="text-green-400" /> : <ToggleLeft size={24} className="text-soda-fog" />}
+              <p className={nc + ' mb-4'}>Toggle = mostrar/ocultar. Nombre corto. URL completa. Icono opcional (URL imagen).</p>
+              {/* Header */}
+              <div className="flex items-center gap-2 mb-2 text-soda-fog text-xs px-1">
+                <div className="w-8"></div>
+                <div className="w-24">Nombre</div>
+                <div className="w-10 text-center">Sigla</div>
+                <div className="flex-1">URL de la red social</div>
+                <div className="w-40">URL icono (opcional)</div>
+                <div className="w-5"></div>
+              </div>
+              {content.socialLinks.map((link: any, idx: number) => (
+                <div key={link.id} className="flex items-center gap-2 mb-2">
+                  <button onClick={() => { const arr = [...content.socialLinks]; arr[idx] = { ...arr[idx], visible: !arr[idx].visible }; update('socialLinks', arr); }} className="flex-shrink-0 w-8">
+                    {link.visible ? <ToggleRight size={22} className="text-green-400" /> : <ToggleLeft size={22} className="text-soda-fog" />}
                   </button>
-                  <input type="text" value={link.platform} onChange={(e) => { const arr = [...content.socialLinks]; arr[idx] = { ...arr[idx], platform: e.target.value }; update('socialLinks', arr); }} className={ic + ' w-28'} placeholder="Nombre" />
-                  <input type="text" value={link.abbr} onChange={(e) => { const arr = [...content.socialLinks]; arr[idx] = { ...arr[idx], abbr: e.target.value.substring(0, 3) }; update('socialLinks', arr); }} className={ic + ' w-14 text-center'} placeholder="XX" maxLength={3} />
-                  <input type="text" value={link.url} onChange={(e) => { const arr = [...content.socialLinks]; arr[idx] = { ...arr[idx], url: e.target.value }; update('socialLinks', arr); }} className={ic + ' flex-1 min-w-0'} placeholder="https://..." />
-                  <button onClick={() => update('socialLinks', content.socialLinks.filter((_, i) => i !== idx))} className="text-soda-red flex-shrink-0"><Trash2 size={14} /></button>
+                  <input type="text" value={link.platform} onChange={(e) => { const arr = [...content.socialLinks]; arr[idx] = { ...arr[idx], platform: e.target.value }; update('socialLinks', arr); }} className={ic + ' w-24'} placeholder="Nombre" />
+                  <input type="text" value={link.abbr} onChange={(e) => { const arr = [...content.socialLinks]; arr[idx] = { ...arr[idx], abbr: e.target.value.substring(0, 3) }; update('socialLinks', arr); }} className={ic + ' w-10 text-center text-xs'} placeholder="XX" maxLength={3} />
+                  <input type="text" value={link.url} onChange={(e) => { const arr = [...content.socialLinks]; arr[idx] = { ...arr[idx], url: e.target.value }; update('socialLinks', arr); }} className={ic + ' flex-1 min-w-0'} placeholder="https://instagram.com/..." />
+                  <input type="text" value={link.iconUrl || ''} onChange={(e) => { const arr = [...content.socialLinks]; arr[idx] = { ...arr[idx], iconUrl: e.target.value }; update('socialLinks', arr); }} className={ic + ' w-40'} placeholder="URL icono" />
+                  <button onClick={() => update('socialLinks', content.socialLinks.filter((_: any, i: number) => i !== idx))} className="text-soda-red flex-shrink-0 w-5"><Trash2 size={14} /></button>
                 </div>
               ))}
+            </div>
+
+            {/* Prompt para iconos por IA */}
+            <div className={cc}>
+              <h2 className="text-xl font-serif text-soda-glow mb-4">Prompt para generar iconos de redes con IA</h2>
+              <p className={nc + ' mb-3'}>Copia este prompt en ChatGPT, Midjourney, DALL-E o Leonardo para generar iconos que peguen con la web:</p>
+              <div className="bg-soda-night bg-opacity-80 border border-soda-mist border-opacity-30 rounded-sm p-4 text-soda-lamp text-sm font-mono leading-relaxed select-all cursor-text">
+                Genera un icono circular minimalista para la red social [NOMBRE]. Fondo solido de un solo color (elegir entre #c45555 rojo, #8b3a3a borgona, o #6b7a9e azul acento). Simbolo simple y abstracto de la red social en color crema #d4c5b0 centrado. Sin gradientes, sin sombras, sin texto. Estilo flat, trazo fino. Fondo transparente fuera del circulo. 200x200 pixeles. PNG. Que combine con caritas redondas sonrientes minimalistas de la misma paleta de colores.
+              </div>
+              <p className={nc + ' mt-2'}>Subi la imagen generada a un hosting (imgur, cloudinary) y pega la URL en el campo "URL icono" de cada red.</p>
+            </div>
+
+            {/* Seguridad */}
+            <div className={cc}>
+              <h2 className="text-xl font-serif text-soda-glow mb-4">Seguridad</h2>
+              <p className={nc + ' mb-3'}>Contrasena del panel admin (cambiar aca no actualiza la contrasena hardcodeada, se necesita cambiar en el codigo. En produccion esto se mueve a variables de entorno del servidor).</p>
+              <p className="text-soda-fog text-xs">Contrasena actual: sodaroja2026</p>
+              <p className={nc + ' mt-4'}>Notas de seguridad para produccion:</p>
+              <ul className="text-soda-fog text-xs mt-2 space-y-1 list-disc list-inside">
+                <li>Mover autenticacion a Supabase Auth o Firebase Auth</li>
+                <li>Guardar contenido en base de datos (no localStorage)</li>
+                <li>Variables de entorno para API keys (no hardcoded)</li>
+                <li>HTTPS obligatorio</li>
+                <li>Rate limiting en endpoints de login</li>
+                <li>Pagos: Mercado Pago API + Stripe/PayPal webhooks</li>
+              </ul>
             </div>
           </div>
         )}

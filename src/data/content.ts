@@ -6,6 +6,14 @@
 // ============================================================
 
 export interface SiteContent {
+  // Meta / SEO / Analytics
+  meta: {
+    pageTitle: string;
+    faviconUrl: string;
+    description: string;
+    analyticsId: string;
+  };
+
   // Nombres de las secciones (aparecen en el header/navbar)
   sectionNames: {
     inicio: string;
@@ -144,8 +152,9 @@ export interface SiteContent {
   socialLinks: {
     id: string;
     platform: string;
-    abbr: string; // 2 letras para el footer
+    abbr: string;
     url: string;
+    iconUrl?: string;
     visible: boolean;
   }[];
 
@@ -165,6 +174,13 @@ export interface SiteContent {
 // DATOS POR DEFECTO
 // ============================================================
 export const defaultContent: SiteContent = {
+  meta: {
+    pageTitle: 'sodaroja',
+    faviconUrl: '',
+    description: 'sodaroja - un podcast que viaja por el mundo contando historias que nadie mas cuenta.',
+    analyticsId: '',
+  },
+
   sectionNames: {
     inicio: 'Inicio',
     queEsEsto: '¿Qué es esto?',

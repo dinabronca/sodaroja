@@ -40,8 +40,12 @@ export const demoUsers: DemoUser[] = [
 ];
 
 export const initDemoUsers = () => {
-  if (!localStorage.getItem('sodaroja-users-db')) {
-    localStorage.setItem('sodaroja-users-db', JSON.stringify(demoUsers));
+  // Siempre re-crear las cuentas demo para aplicar actualizaciones
+  const db = JSON.parse(localStorage.getItem('sodaroja-users-db') || '[]') as DemoUser[];
+  const hasDemo = db.some(u => u.email === 'premium@sodaroja.com');
+  if (!hasDemo) {
+    const merged = [...db, ...demoUsers];
+    localStorage.setItem('sodaroja-users-db', JSON.stringify(merged));
   }
 };
 
