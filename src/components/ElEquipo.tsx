@@ -145,6 +145,7 @@ const teamMembers: TeamMember[] = [
 // ============================================================
 
 export const ElEquipo: React.FC = () => {
+  const isMobileDevice = typeof window !== 'undefined' && (window.innerWidth < 768 || 'ontouchstart' in window);
   return (
     <section id="equipo" className="relative py-32 px-6 overflow-hidden">
       <TeamAmbience />
@@ -183,7 +184,7 @@ export const ElEquipo: React.FC = () => {
                 {/* Foto - ratio 3:4 con partículas doradas, negras y efecto shimmer */}
                 <div className="relative aspect-[3/4] overflow-hidden bg-soda-deep">
                   {/* Partículas doradas */}
-                  {[...Array(8)].map((_, i) => (
+                  {[...Array(isMobileDevice ? 2 : 8)].map((_, i) => (
                     <motion.div
                       key={`gold-${i}`}
                       className="absolute w-1 h-1 bg-soda-lamp rounded-full pointer-events-none z-10"
@@ -205,7 +206,7 @@ export const ElEquipo: React.FC = () => {
                     />
                   ))}
                   {/* Partículas negras */}
-                  {[...Array(6)].map((_, i) => (
+                  {[...Array(isMobileDevice ? 2 : 6)].map((_, i) => (
                     <motion.div
                       key={`black-${i}`}
                       className="absolute rounded-full pointer-events-none z-10"
@@ -231,8 +232,8 @@ export const ElEquipo: React.FC = () => {
                     />
                   ))}
 
-                  {/* Efecto shimmer — rayo de luz que cruza la foto suavemente */}
-                  <motion.div
+                  {/* Efecto shimmer — solo desktop */}
+                  {!isMobileDevice && <motion.div
                     className="absolute inset-0 z-10 pointer-events-none"
                     style={{
                       background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.04) 45%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 55%, transparent 60%)',
@@ -247,7 +248,7 @@ export const ElEquipo: React.FC = () => {
                       repeatDelay: 4,
                       ease: "easeInOut"
                     }}
-                  />
+                  />}
                   
                   <motion.img
                     src={member.photoUrl}

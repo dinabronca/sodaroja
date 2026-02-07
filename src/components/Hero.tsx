@@ -6,17 +6,22 @@ export const Hero: React.FC = () => {
   const [scrollY, setScrollY] = useState(0);
   const content = getContent();
   const { hero } = content;
+  const isMobile = typeof window !== 'undefined' && (window.innerWidth < 768 || 'ontouchstart' in window);
 
   useEffect(() => {
+    if (isMobile) return; // Skip parallax on mobile
     const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const waveCount = isMobile ? 2 : 5;
+  const particleCount = isMobile ? 4 : 15;
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Ondas sonoras de fondo */}
-      {[...Array(5)].map((_, i) => (
+      {[...Array(waveCount)].map((_, i) => (
         <motion.div
           key={i}
           className="absolute inset-0 border-2 border-soda-red opacity-10 rounded-full"
@@ -40,7 +45,7 @@ export const Hero: React.FC = () => {
       />
 
       {/* Partículas rojas flotantes */}
-      {[...Array(15)].map((_, i) => (
+      {[...Array(particleCount)].map((_, i) => (
         <motion.div
           key={`p-${i}`}
           className="absolute w-2 h-2 bg-soda-red rounded-full opacity-40"

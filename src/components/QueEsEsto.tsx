@@ -12,11 +12,16 @@ const colorMap: Record<string, { border: string; text: string }> = {
 export const QueEsEsto: React.FC = () => {
   const content = getContent();
   const { queEsEsto } = content;
+  const isMobile = typeof window !== 'undefined' && (window.innerWidth < 768 || 'ontouchstart' in window);
+
+  const smokeCount = isMobile ? 1 : 4;
+  const bokehCount = isMobile ? 3 : 10;
+  const lineCount = isMobile ? 0 : 20;
 
   return (
     <section id="que-es-esto" className="relative py-32 px-6 bg-gradient-to-b from-soda-night via-soda-deep to-soda-night overflow-hidden">
       {/* Humo / niebla flotando */}
-      {[...Array(4)].map((_, i) => (
+      {[...Array(smokeCount)].map((_, i) => (
         <motion.div
           key={`smoke-${i}`}
           className="absolute pointer-events-none"
@@ -39,7 +44,7 @@ export const QueEsEsto: React.FC = () => {
       ))}
 
       {/* Bokeh sutil de fondo */}
-      {[...Array(10)].map((_, i) => (
+      {[...Array(bokehCount)].map((_, i) => (
         <motion.div
           key={`qbk-${i}`}
           className="absolute rounded-full pointer-events-none"
@@ -66,8 +71,8 @@ export const QueEsEsto: React.FC = () => {
       ))}
 
       {/* Efectos de fondo — lineas verticales sutiles */}
-      <div className="absolute inset-0 opacity-10">
-        {[...Array(20)].map((_, i) => (
+      {lineCount > 0 && <div className="absolute inset-0 opacity-10">
+        {[...Array(lineCount)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute w-px h-32 bg-gradient-to-b from-transparent via-soda-accent to-transparent"
@@ -76,7 +81,7 @@ export const QueEsEsto: React.FC = () => {
             transition={{ duration: 4 + Math.random() * 4, repeat: Infinity, delay: Math.random() * 4 }}
           />
         ))}
-      </div>
+      </div>}
 
       <div className="max-w-5xl mx-auto relative z-10">
         <motion.div

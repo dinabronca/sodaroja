@@ -19,7 +19,11 @@ export const FloatingParticles: React.FC<FloatingParticlesProps> = ({
   }>>([]);
 
   useEffect(() => {
-    const newParticles = Array.from({ length: count }, (_, i) => ({
+    // Reduce heavily on mobile
+    const isMobile = window.innerWidth < 768 || 'ontouchstart' in window;
+    const actualCount = isMobile ? Math.min(8, Math.floor(count / 5)) : count;
+    
+    const newParticles = Array.from({ length: actualCount }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,

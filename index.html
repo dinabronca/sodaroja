@@ -5,6 +5,12 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="sodaroja - un podcast que viaja por el mundo" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="sodaroja" />
+    <meta property="og:description" content="Un podcast que viaja por el mundo contando historias que nadie mas cuenta." />
+    <meta property="og:image" content="" />
+    <meta property="og:url" content="" />
+    <meta name="twitter:card" content="summary_large_image" />
     <title>sodaroja</title>
     <script>
       // Aplicar meta desde el store
@@ -24,6 +30,12 @@
             if (c.meta.description) {
               var meta = document.querySelector("meta[name='description']");
               if (meta) meta.setAttribute('content', c.meta.description);
+              var ogDesc = document.querySelector("meta[property='og:description']");
+              if (ogDesc) ogDesc.setAttribute('content', c.meta.description);
+            }
+            if (c.meta.pageTitle) {
+              var ogTitle = document.querySelector("meta[property='og:title']");
+              if (ogTitle) ogTitle.setAttribute('content', c.meta.pageTitle);
             }
             if (c.meta.analyticsId) {
               var s = document.createElement('script');

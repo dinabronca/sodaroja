@@ -72,6 +72,7 @@ export const EpisodeCard: React.FC<{ episode: Episode }> = ({ episode }) => {
   const isPremiumUser = user?.isPremium === true;
   const isLocked = episode.isPremium && !isPremiumUser;
   const isUnlockedPremium = episode.isPremium && isPremiumUser;
+  const isMobile = typeof window !== 'undefined' && (window.innerWidth < 768 || 'ontouchstart' in window);
 
   useEffect(() => {
     if (isExpanded) document.body.style.overflow = 'hidden';
@@ -164,8 +165,8 @@ export const EpisodeCard: React.FC<{ episode: Episode }> = ({ episode }) => {
                   transition={{ duration: 3, repeat: Infinity, delay: 1, ease: 'easeOut' }}
                 />
 
-                {/* BORDE ELECTRICO — linea que recorre el borde */}
-                <motion.div
+                {/* BORDE ELECTRICO — solo desktop */}
+                {!isMobile && <motion.div
                   className="absolute inset-0 pointer-events-none"
                   style={{ border: '1px solid transparent' }}
                 >
@@ -181,10 +182,10 @@ export const EpisodeCard: React.FC<{ episode: Episode }> = ({ episode }) => {
                     animate={{ right: ['0%', '70%', '0%'] }}
                     transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
                   />
-                </motion.div>
+                </motion.div>}
 
-                {/* RUIDO ESTATICO — flashes rapidos random */}
-                {[...Array(6)].map((_, i) => (
+                {/* RUIDO ESTATICO — solo desktop */}
+                {!isMobile && [...Array(6)].map((_, i) => (
                   <motion.div
                     key={`noise-${i}`}
                     className="absolute"
@@ -200,8 +201,8 @@ export const EpisodeCard: React.FC<{ episode: Episode }> = ({ episode }) => {
                   />
                 ))}
 
-                {/* RAYOS — lineas electricas que flashean */}
-                {[...Array(3)].map((_, i) => (
+                {/* RAYOS — solo desktop */}
+                {!isMobile && [...Array(3)].map((_, i) => (
                   <motion.div
                     key={`ray-${i}`}
                     className="absolute"
@@ -215,7 +216,7 @@ export const EpisodeCard: React.FC<{ episode: Episode }> = ({ episode }) => {
                 ))}
 
                 {/* PARTICULAS DE COLORES flotando */}
-                {[...Array(12)].map((_, i) => {
+                {[...Array(isMobile ? 4 : 12)].map((_, i) => {
                   const colors = ['#ff4444', '#44aaff', '#ffaa00', '#ff44aa', '#44ffaa', '#aa44ff'];
                   const size = 2 + Math.random() * 3;
                   return (

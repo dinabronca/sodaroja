@@ -92,16 +92,21 @@ const Footer: React.FC = () => {
   );
 };
 
+const isMobileDevice = () => typeof window !== 'undefined' && (window.innerWidth < 768 || 'ontouchstart' in window);
+
 function App() {
+  const mobile = isMobileDevice();
+
   return (
     <Router>
       <ScrollToTop />
       <div className="relative min-h-screen bg-soda-night overflow-x-hidden">
-        <div className="film-grain" />
-        <div className="vignette" />
-        <div className="scanlines" />
-        <CustomCursor />
-        <FloatingParticles count={40} />
+        {/* GPU-heavy overlays: skip on mobile */}
+        {!mobile && <div className="film-grain" />}
+        {!mobile && <div className="vignette" />}
+        {!mobile && <div className="scanlines" />}
+        {!mobile && <CustomCursor />}
+        <FloatingParticles count={mobile ? 8 : 35} />
         <Navbar />
 
         <Suspense fallback={<PageLoader />}>
