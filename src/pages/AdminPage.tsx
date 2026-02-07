@@ -314,18 +314,58 @@ export const AdminPage: React.FC = () => {
                 </div>
               )}
 
-              {content.episodios.items.map((ep, idx) => (
-                <div key={ep.id} className="flex items-center justify-between border border-soda-mist border-opacity-15 rounded-sm p-4 mb-3">
-                  <div className="flex items-center gap-4">
-                    <span className="text-soda-accent text-xs font-mono w-8">{idx + 1}</span>
-                    <div>
-                      <p className="text-soda-lamp text-sm">{ep.city} — {ep.title}</p>
-                      <p className="text-soda-fog text-xs">{ep.publishDate} {ep.isPremium && '• 🔒 Premium'}</p>
+              {content.episodios.items.map((ep: any, idx: number) => {
+                const isEditing = expandedMember === idx + 1000; // offset to not collide with team member index
+                return (
+                <div key={ep.id} className="border border-soda-mist border-opacity-15 rounded-sm mb-3 overflow-hidden">
+                  <div className="flex items-center justify-between p-4">
+                    <div className="flex items-center gap-4 flex-1 min-w-0">
+                      <span className="text-soda-accent text-xs font-mono w-8 flex-shrink-0">{idx + 1}</span>
+                      {ep.imageUrl && <img src={ep.imageUrl} alt="" className="w-10 h-10 rounded-sm object-cover flex-shrink-0" />}
+                      <div className="min-w-0">
+                        <p className="text-soda-lamp text-sm truncate">{ep.city} — "{ep.title}"</p>
+                        <p className="text-soda-fog text-xs">{ep.publishDate} {ep.isPremium && '• 🔒 Premium'}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3 flex-shrink-0">
+                      <button onClick={() => setExpandedMember(isEditing ? null : idx + 1000)} className="text-soda-accent text-xs hover:underline">{isEditing ? 'Cerrar' : 'Editar'}</button>
+                      <button onClick={() => update('episodios.items', content.episodios.items.filter((_: any, i: number) => i !== idx))} className="text-soda-red text-xs hover:underline">Eliminar</button>
                     </div>
                   </div>
-                  <button onClick={() => update('episodios.items', content.episodios.items.filter((_, i) => i !== idx))} className="text-soda-red text-xs hover:underline">Eliminar</button>
+                  {isEditing && (
+                    <div className="px-4 pb-4 border-t border-soda-mist border-opacity-10 pt-4 bg-soda-night bg-opacity-30">
+                      <div className="grid grid-cols-2 gap-3 mb-3">
+                        <div><label className={lc}>Ciudad</label><input type="text" value={ep.city} onChange={(e) => { const arr = [...content.episodios.items]; arr[idx] = { ...arr[idx], city: e.target.value }; update('episodios.items', arr); }} className={ic} /></div>
+                        <div><label className={lc}>Titulo</label><input type="text" value={ep.title} onChange={(e) => { const arr = [...content.episodios.items]; arr[idx] = { ...arr[idx], title: e.target.value }; update('episodios.items', arr); }} className={ic} /></div>
+                      </div>
+                      <div className="mb-3"><label className={lc}>Descripcion</label><textarea rows={2} value={ep.description} onChange={(e) => { const arr = [...content.episodios.items]; arr[idx] = { ...arr[idx], description: e.target.value }; update('episodios.items', arr); }} className={ic + ' resize-y'} /></div>
+                      <div className="grid grid-cols-3 gap-3 mb-3">
+                        <div><label className={lc}>Fecha</label><input type="date" value={ep.publishDate} onChange={(e) => { const arr = [...content.episodios.items]; arr[idx] = { ...arr[idx], publishDate: e.target.value }; update('episodios.items', arr); }} className={ic} /></div>
+                        <div><label className={lc}>URL Imagen</label><input type="text" value={ep.imageUrl} onChange={(e) => { const arr = [...content.episodios.items]; arr[idx] = { ...arr[idx], imageUrl: e.target.value }; update('episodios.items', arr); }} className={ic} /></div>
+                        <div><label className={lc}>Premium</label>
+                          <button onClick={() => { const arr = [...content.episodios.items]; arr[idx] = { ...arr[idx], isPremium: !arr[idx].isPremium }; update('episodios.items', arr); }} className="flex items-center gap-2 text-xs mt-1">
+                            {ep.isPremium ? <ToggleRight size={20} className="text-soda-red" /> : <ToggleLeft size={20} className="text-soda-fog" />}
+                            <span className="text-soda-fog">{ep.isPremium ? 'Premium' : 'Publico'}</span>
+                          </button>
+                        </div>
+                      </div>
+                      <h4 className="text-soda-lamp text-xs mb-2 mt-1">Links</h4>
+                      <div className="grid grid-cols-2 gap-2 mb-3">
+                        {['youtube','spotify','soundcloud','ivoox','applePodcasts'].map(lk => (
+                          <div key={lk}><label className={lc}>{lk}</label><input type="text" value={(ep.links || {})[lk] || ''} onChange={(e) => { const arr = [...content.episodios.items]; arr[idx] = { ...arr[idx], links: { ...(arr[idx].links || {}), [lk]: e.target.value } }; update('episodios.items', arr); }} className={ic} placeholder="https://..." /></div>
+                        ))}
+                      </div>
+                      <h4 className="text-soda-lamp text-xs mb-2">Embeds</h4>
+                      <div className="grid grid-cols-2 gap-2">
+                        {['spotify','soundcloud','ivoox','applePodcasts'].map(lk => (
+                          <div key={lk}><label className={lc}>Embed {lk}</label><input type="text" value={(ep.embeds || {})[lk] || ''} onChange={(e) => { const arr = [...content.episodios.items]; arr[idx] = { ...arr[idx], embeds: { ...(arr[idx].embeds || {}), [lk]: e.target.value } }; update('episodios.items', arr); }} className={ic} placeholder="URL del iframe..." /></div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
@@ -481,6 +521,18 @@ export const AdminPage: React.FC = () => {
               <h2 className="text-xl font-serif text-soda-glow mb-4">Google Analytics</h2>
               <p className={nc + ' mb-3'}>Pega tu ID de medicion de Google Analytics (formato: G-XXXXXXXXXX).</p>
               <input type="text" value={content.meta?.analyticsId || ''} onChange={(e) => update('meta.analyticsId', e.target.value)} className={ic} placeholder="G-XXXXXXXXXX" />
+            </div>
+
+            {/* EmailJS */}
+            <div className={cc}>
+              <h2 className="text-xl font-serif text-soda-glow mb-4">EmailJS (Formulario de contacto)</h2>
+              <p className={nc + ' mb-3'}>Configura EmailJS para que el formulario envie emails sin abrir el cliente de correo. Registrate gratis en emailjs.com</p>
+              <div className="grid grid-cols-3 gap-3">
+                <div><label className={lc}>Service ID</label><input type="text" value={content.meta?.emailjsServiceId || ''} onChange={(e) => update('meta.emailjsServiceId', e.target.value)} className={ic} placeholder="service_xxx" /></div>
+                <div><label className={lc}>Template ID</label><input type="text" value={content.meta?.emailjsTemplateId || ''} onChange={(e) => update('meta.emailjsTemplateId', e.target.value)} className={ic} placeholder="template_xxx" /></div>
+                <div><label className={lc}>Public Key</label><input type="text" value={content.meta?.emailjsPublicKey || ''} onChange={(e) => update('meta.emailjsPublicKey', e.target.value)} className={ic} placeholder="xxxxx" /></div>
+              </div>
+              <p className={nc + ' mt-2'}>Sin estos datos, el formulario usa mailto (abre el cliente de correo del usuario).</p>
             </div>
 
             {/* Redes Sociales */}

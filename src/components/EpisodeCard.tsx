@@ -109,7 +109,7 @@ export const EpisodeCard: React.FC<{ episode: Episode }> = ({ episode }) => {
           : 'bg-soda-deep border border-soda-mist border-opacity-30 cursor-pointer card-hover'
         }`}>
           <div className="relative h-64 overflow-hidden">
-            <motion.img src={episode.imageUrl} alt={episode.city} className="w-full h-full object-cover" whileHover={isLocked ? undefined : { scale: 1.05 }} transition={{ duration: 0.6 }} />
+            <motion.img src={episode.imageUrl} alt={episode.city} className="w-full h-full object-cover" whileHover={isLocked ? undefined : { scale: 1.05 }} transition={{ duration: 0.6 }} loading="lazy" />
 
             {/* ===== PREMIUM DESBLOQUEADO: scan effect sobre imagen ===== */}
             {isUnlockedPremium && (
@@ -133,7 +133,7 @@ export const EpisodeCard: React.FC<{ episode: Episode }> = ({ episode }) => {
               </div>
             )}
 
-            {/* ===== PREMIUM BLOQUEADO: TODOS LOS EFECTOS ORIGINALES ===== */}
+            {/* ===== PREMIUM BLOQUEADO: EFECTOS COMPLETOS ===== */}
             {isLocked && (
               <div className="absolute inset-0 z-20 flex items-center justify-center overflow-hidden">
                 {/* Fondo gradient con blur */}
@@ -142,16 +142,71 @@ export const EpisodeCard: React.FC<{ episode: Episode }> = ({ episode }) => {
                 {/* Scan lines */}
                 <div className="absolute inset-0 pointer-events-none" style={{ background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px)' }} />
 
+                {/* PULSO DE ENERGIA RADIAL */}
+                <motion.div
+                  className="absolute rounded-full"
+                  style={{
+                    left: '50%', top: '50%', marginLeft: '-80px', marginTop: '-80px',
+                    width: '160px', height: '160px',
+                    border: '1px solid rgba(196, 85, 85, 0.15)',
+                  }}
+                  animate={{ scale: [0.3, 2.5], opacity: [0.4, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: 'easeOut' }}
+                />
+                <motion.div
+                  className="absolute rounded-full"
+                  style={{
+                    left: '50%', top: '50%', marginLeft: '-60px', marginTop: '-60px',
+                    width: '120px', height: '120px',
+                    border: '1px solid rgba(138, 155, 196, 0.12)',
+                  }}
+                  animate={{ scale: [0.3, 2], opacity: [0.3, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, delay: 1, ease: 'easeOut' }}
+                />
+
+                {/* BORDE ELECTRICO — linea que recorre el borde */}
+                <motion.div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{ border: '1px solid transparent' }}
+                >
+                  <motion.div
+                    className="absolute"
+                    style={{ width: '30%', height: '2px', background: 'linear-gradient(90deg, transparent, rgba(196, 85, 85, 0.6), transparent)', top: 0, left: 0 }}
+                    animate={{ left: ['0%', '70%', '0%'] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                  />
+                  <motion.div
+                    className="absolute"
+                    style={{ width: '30%', height: '2px', background: 'linear-gradient(90deg, transparent, rgba(138, 155, 196, 0.4), transparent)', bottom: 0, right: 0 }}
+                    animate={{ right: ['0%', '70%', '0%'] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+                  />
+                </motion.div>
+
+                {/* RUIDO ESTATICO — flashes rapidos random */}
+                {[...Array(6)].map((_, i) => (
+                  <motion.div
+                    key={`noise-${i}`}
+                    className="absolute"
+                    style={{
+                      left: `${Math.random() * 80 + 10}%`,
+                      top: `${Math.random() * 80 + 10}%`,
+                      width: `${4 + Math.random() * 12}px`,
+                      height: '1px',
+                      background: 'rgba(255,255,255,0.15)',
+                    }}
+                    animate={{ opacity: [0, 0.6, 0], scaleX: [0.5, 1.5, 0.5] }}
+                    transition={{ duration: 0.15, repeat: Infinity, repeatDelay: 2 + Math.random() * 5, delay: Math.random() * 3 }}
+                  />
+                ))}
+
                 {/* RAYOS — lineas electricas que flashean */}
                 {[...Array(3)].map((_, i) => (
                   <motion.div
                     key={`ray-${i}`}
                     className="absolute"
                     style={{
-                      left: `${20 + i * 25}%`,
-                      top: '0',
-                      width: '1px',
-                      height: '100%',
+                      left: `${20 + i * 25}%`, top: '0', width: '1px', height: '100%',
                       background: `linear-gradient(to bottom, transparent 20%, rgba(196, 85, 85, 0.4) 50%, transparent 80%)`,
                     }}
                     animate={{ opacity: [0, 0, 0, 0.8, 0, 0.4, 0], x: [0, 2, -1, 0] }}
@@ -168,33 +223,20 @@ export const EpisodeCard: React.FC<{ episode: Episode }> = ({ episode }) => {
                       key={`p-${i}`}
                       className="absolute rounded-full"
                       style={{
-                        left: `${Math.random() * 100}%`,
-                        top: `${Math.random() * 100}%`,
-                        width: `${size}px`,
-                        height: `${size}px`,
+                        left: `${Math.random() * 100}%`, top: `${Math.random() * 100}%`,
+                        width: `${size}px`, height: `${size}px`,
                         background: colors[i % colors.length],
                         boxShadow: `0 0 ${size * 2}px ${colors[i % colors.length]}`,
                       }}
-                      animate={{
-                        y: [0, (Math.random() - 0.5) * 60],
-                        x: [0, (Math.random() - 0.5) * 40],
-                        opacity: [0, 0.7, 0],
-                        scale: [0, 1.2, 0],
-                      }}
+                      animate={{ y: [0, (Math.random()-0.5)*60], x: [0, (Math.random()-0.5)*40], opacity: [0, 0.7, 0], scale: [0, 1.2, 0] }}
                       transition={{ duration: 3 + Math.random() * 3, repeat: Infinity, delay: Math.random() * 4 }}
                     />
                   );
                 })}
 
-                {/* INTERFERENCIA — bandas horizontales que se mueven */}
+                {/* INTERFERENCIA — bandas horizontales */}
                 {[...Array(4)].map((_, i) => (
-                  <motion.div
-                    key={`intf-${i}`}
-                    className="absolute left-0 right-0"
-                    style={{ height: '2px', background: 'rgba(255,255,255,0.06)', top: `${20 + i * 20}%` }}
-                    animate={{ y: [0, 30, -20, 0], opacity: [0.1, 0.4, 0.1] }}
-                    transition={{ duration: 3 + i, repeat: Infinity, delay: i * 0.5 }}
-                  />
+                  <motion.div key={`intf-${i}`} className="absolute left-0 right-0" style={{ height: '2px', background: 'rgba(255,255,255,0.06)', top: `${20 + i * 20}%` }} animate={{ y: [0, 30, -20, 0], opacity: [0.1, 0.4, 0.1] }} transition={{ duration: 3 + i, repeat: Infinity, delay: i * 0.5 }} />
                 ))}
 
                 {/* Contenido central */}

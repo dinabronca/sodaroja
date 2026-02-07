@@ -15,7 +15,57 @@ export const QueEsEsto: React.FC = () => {
 
   return (
     <section id="que-es-esto" className="relative py-32 px-6 bg-gradient-to-b from-soda-night via-soda-deep to-soda-night overflow-hidden">
-      {/* Efectos de fondo */}
+      {/* Humo / niebla flotando */}
+      {[...Array(4)].map((_, i) => (
+        <motion.div
+          key={`smoke-${i}`}
+          className="absolute pointer-events-none"
+          style={{
+            left: `${-20 + i * 30}%`,
+            top: `${20 + i * 15}%`,
+            width: '50%',
+            height: '200px',
+            background: `radial-gradient(ellipse, rgba(${i % 2 === 0 ? '196, 85, 85' : '138, 155, 196'}, 0.03) 0%, transparent 70%)`,
+            filter: 'blur(50px)',
+            zIndex: 0,
+          }}
+          animate={{
+            x: [0, 60 + i * 20, 0],
+            y: [0, -20, 0],
+            opacity: [0.3, 0.6, 0.3],
+          }}
+          transition={{ duration: 12 + i * 4, repeat: Infinity, ease: 'easeInOut', delay: i * 3 }}
+        />
+      ))}
+
+      {/* Bokeh sutil de fondo */}
+      {[...Array(10)].map((_, i) => (
+        <motion.div
+          key={`qbk-${i}`}
+          className="absolute rounded-full pointer-events-none"
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            width: `${80 + Math.random() * 120}px`,
+            height: `${80 + Math.random() * 120}px`,
+            background: i % 3 === 0
+              ? 'radial-gradient(circle, rgba(196, 85, 85, 0.04) 0%, transparent 70%)'
+              : i % 3 === 1
+                ? 'radial-gradient(circle, rgba(138, 155, 196, 0.03) 0%, transparent 70%)'
+                : 'radial-gradient(circle, rgba(212, 197, 176, 0.025) 0%, transparent 70%)',
+            filter: 'blur(25px)',
+            zIndex: 0,
+          }}
+          animate={{
+            x: [(Math.random()-0.5)*30, (Math.random()-0.5)*30],
+            y: [(Math.random()-0.5)*20, (Math.random()-0.5)*20],
+            opacity: [0.4, 0.8, 0.4],
+          }}
+          transition={{ duration: 8 + Math.random() * 8, repeat: Infinity, ease: 'easeInOut', delay: Math.random() * 5 }}
+        />
+      ))}
+
+      {/* Efectos de fondo — lineas verticales sutiles */}
       <div className="absolute inset-0 opacity-10">
         {[...Array(20)].map((_, i) => (
           <motion.div

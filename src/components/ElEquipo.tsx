@@ -176,7 +176,10 @@ export const ElEquipo: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
             >
-              <div className="bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm overflow-hidden hover:border-soda-accent hover:border-opacity-40 transition-all duration-300 group">
+              <div className="bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm overflow-hidden hover:border-soda-red hover:border-opacity-50 transition-all duration-500 group hover:shadow-2xl hover:shadow-soda-red/20 hover:-translate-y-3 relative">
+                {/* Glow rojo que aparece en hover */}
+                <div className="absolute inset-0 bg-gradient-to-t from-soda-red/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0 rounded-sm" />
+                <div className="absolute -inset-px rounded-sm pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(135deg, rgba(196,85,85,0.15), transparent 40%, transparent 60%, rgba(138,155,196,0.1))' }} />
                 {/* Foto - ratio 3:4 con partículas doradas, negras y efecto shimmer */}
                 <div className="relative aspect-[3/4] overflow-hidden bg-soda-deep">
                   {/* Partículas doradas */}
@@ -252,6 +255,7 @@ export const ElEquipo: React.FC = () => {
                     className="w-full h-full object-cover object-center"
                     whileHover={{ scale: 1.08 }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
+                    loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-soda-night via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
                 </div>

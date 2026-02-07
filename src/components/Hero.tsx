@@ -89,60 +89,55 @@ export const Hero: React.FC = () => {
             </div>
           ) : (
             <div className="relative inline-block mb-10">
-            {/* Círculo exterior pulsante */}
+            {/* Logo SVG grande con animacion */}
             <motion.div
-              className="w-32 h-32 md:w-40 md:h-40 mx-auto relative"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+              className="w-40 h-40 md:w-48 md:h-48 mx-auto relative"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.5, ease: 'easeOut' }}
             >
-              <svg viewBox="0 0 100 100" className="w-full h-full">
-                {/* Arco exterior */}
-                <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(196, 85, 85, 0.15)" strokeWidth="0.5" />
-                <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(196, 85, 85, 0.1)" strokeWidth="0.3" />
+              <svg viewBox="0 0 120 120" className="w-full h-full">
+                {/* Circulos de fondo */}
+                <motion.circle cx="60" cy="60" r="55" fill="none" stroke="rgba(196, 85, 85, 0.08)" strokeWidth="0.5" animate={{ r: [55, 57, 55] }} transition={{ duration: 4, repeat: Infinity }} />
+                <motion.circle cx="60" cy="60" r="48" fill="none" stroke="rgba(138, 155, 196, 0.06)" strokeWidth="0.3" animate={{ r: [48, 50, 48] }} transition={{ duration: 5, repeat: Infinity, delay: 1 }} />
                 {/* Marcas de frecuencia */}
-                {[...Array(36)].map((_, i) => {
-                  const angle = (i * 10) * Math.PI / 180;
-                  const len = i % 3 === 0 ? 4 : 2;
-                  const x1 = 50 + 44 * Math.cos(angle);
-                  const y1 = 50 + 44 * Math.sin(angle);
-                  const x2 = 50 + (44 - len) * Math.cos(angle);
-                  const y2 = 50 + (44 - len) * Math.sin(angle);
-                  return (
-                    <line key={i} x1={x1} y1={y1} x2={x2} y2={y2}
-                      stroke={i % 3 === 0 ? "rgba(196, 85, 85, 0.4)" : "rgba(138, 155, 196, 0.2)"}
-                      strokeWidth="0.5"
-                    />
-                  );
+                {[...Array(48)].map((_, i) => {
+                  const angle = (i * 7.5) * Math.PI / 180;
+                  const isMajor = i % 4 === 0;
+                  const len = isMajor ? 5 : 2;
+                  const x1 = 60 + 52 * Math.cos(angle);
+                  const y1 = 60 + 52 * Math.sin(angle);
+                  const x2 = 60 + (52 - len) * Math.cos(angle);
+                  const y2 = 60 + (52 - len) * Math.sin(angle);
+                  return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={isMajor ? "rgba(196, 85, 85, 0.3)" : "rgba(138, 155, 196, 0.12)"} strokeWidth="0.5" />;
                 })}
+                {/* Carita central */}
+                <circle cx="60" cy="60" r="20" fill="rgba(196, 85, 85, 0.12)" />
+                <circle cx="54" cy="57" r="2" fill="rgba(212, 197, 176, 0.6)" />
+                <circle cx="66" cy="57" r="2" fill="rgba(212, 197, 176, 0.6)" />
+                <path d="M 53 65 Q 60 70 67 65" stroke="rgba(212, 197, 176, 0.5)" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+                {/* Ondas de señal */}
+                <path d="M 38 50 Q 35 60 38 70" stroke="rgba(196, 85, 85, 0.2)" strokeWidth="1.5" fill="none" />
+                <path d="M 82 50 Q 85 60 82 70" stroke="rgba(196, 85, 85, 0.2)" strokeWidth="1.5" fill="none" />
               </svg>
             </motion.div>
-            
-            {/* Punto central rojo pulsante */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <motion.div
-                className="w-4 h-4 bg-soda-red rounded-full"
-                animate={{ scale: [1, 1.5, 1], opacity: [0.6, 1, 0.6] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                style={{ boxShadow: '0 0 30px rgba(196, 85, 85, 0.6), 0 0 60px rgba(196, 85, 85, 0.3)' }}
-              />
-            </div>
 
-            {/* Onda de señal expandiéndose */}
+            {/* Ondas expandiendose */}
             {[...Array(3)].map((_, i) => (
               <motion.div
                 key={`wave-${i}`}
                 className="absolute inset-0 flex items-center justify-center pointer-events-none"
               >
                 <motion.div
-                  className="w-4 h-4 border border-soda-red rounded-full"
-                  animate={{ scale: [1, 12], opacity: [0.4, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, delay: i * 1.3, ease: "easeOut" }}
+                  className="w-6 h-6 border border-soda-red rounded-full"
+                  animate={{ scale: [1, 10], opacity: [0.3, 0] }}
+                  transition={{ duration: 5, repeat: Infinity, delay: i * 1.5, ease: "easeOut" }}
                 />
               </motion.div>
             ))}
 
-            {/* Resplandor */}
-            <div className="absolute inset-0 bg-soda-red rounded-full opacity-10 blur-3xl animate-pulse-slow" />
+            {/* Glow */}
+            <div className="absolute inset-0 bg-soda-red rounded-full opacity-5 blur-3xl animate-pulse-slow" />
           </div>
           )}
 

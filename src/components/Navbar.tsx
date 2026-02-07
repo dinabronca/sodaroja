@@ -6,6 +6,7 @@ import { getCurrentUser } from '../data/auth';
 
 export const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
   const content = getContent();
   const names = content.sectionNames;
@@ -16,6 +17,9 @@ export const Navbar: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Close mobile menu on route change
+  useEffect(() => { setMobileOpen(false); }, [location.pathname]);
 
   const menuItems = [
     { label: names.inicio, href: '/', special: '' },
@@ -89,7 +93,15 @@ export const Navbar: React.FC = () => {
             })}
           </div>
 
-          {/* Auth button */}
+          {/* Mobile hamburger */}
+          <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden flex flex-col gap-1.5 p-2 hoverable z-50" aria-label="Menu">
+            <motion.span animate={{ rotate: mobileOpen ? 45 : 0, y: mobileOpen ? 6 : 0 }} className="block w-5 h-0.5 bg-soda-lamp origin-center" />
+            <motion.span animate={{ opacity: mobileOpen ? 0 : 1 }} className="block w-5 h-0.5 bg-soda-lamp" />
+            <motion.span animate={{ rotate: mobileOpen ? -45 : 0, y: mobileOpen ? -6 : 0 }} className="block w-5 h-0.5 bg-soda-lamp origin-center" />
+          </button>
+
+          {/* Auth button — desktop only */}
+          <div className="hidden md:block">
           {isLoggedIn ? (
             <Link to="/mi-cuenta">
               <motion.button initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5, duration: 0.5 }} className="hoverable px-6 py-2 border border-soda-accent border-opacity-40 rounded-sm text-soda-accent text-sm hover:bg-soda-accent hover:bg-opacity-10 hover:border-opacity-60 transition-all duration-300 backdrop-blur-sm">
@@ -103,8 +115,39 @@ export const Navbar: React.FC = () => {
               </motion.button>
             </Link>
           )}
+          </div>
         </div>
       </div>
+
+      {/* Mobile menu */}
+      <motion.div
+        initial={false}
+        animate={{ height: mobileOpen ? 'auto' : 0, opacity: mobileOpen ? 1 : 0 }}
+        transition={{ duration: 0.3 }}
+        className="md:hidden overflow-hidden bg-soda-night bg-opacity-98 backdrop-blur-xl border-t border-soda-mist border-opacity-10"
+      >
+        <div className="px-6 py-6 space-y-1">
+          {menuItems.map((item) => {
+            const active = isActive(item.href);
+            return (
+              <Link key={item.href} to={item.href} onClick={() => setMobileOpen(false)} className={`block py-3 px-4 rounded-sm text-sm tracking-wide transition-all duration-200 ${
+                active ? 'text-soda-glow bg-soda-slate bg-opacity-30'
+                : item.special === 'frecuencia' ? 'text-soda-red hover:text-soda-glow hover:bg-soda-slate hover:bg-opacity-20'
+                : 'text-soda-fog hover:text-soda-lamp hover:bg-soda-slate hover:bg-opacity-20'
+              }`}>
+                {item.label}
+              </Link>
+            );
+          })}
+          <div className="pt-4 mt-4 border-t border-soda-mist border-opacity-10">
+            {isLoggedIn ? (
+              <Link to="/mi-cuenta" onClick={() => setMobileOpen(false)} className="block w-full py-3 text-center border border-soda-accent border-opacity-40 rounded-sm text-soda-accent text-sm">Mi Cuenta</Link>
+            ) : (
+              <Link to="/unirse" onClick={() => setMobileOpen(false)} className="block w-full py-3 text-center bg-soda-red bg-opacity-20 border border-soda-red border-opacity-50 rounded-sm text-soda-glow text-sm">Unirse</Link>
+            )}
+          </div>
+        </div>
+      </motion.div>
     </motion.nav>
   );
 };

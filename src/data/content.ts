@@ -12,6 +12,9 @@ export interface SiteContent {
     faviconUrl: string;
     description: string;
     analyticsId: string;
+    emailjsServiceId: string;
+    emailjsTemplateId: string;
+    emailjsPublicKey: string;
   };
 
   // Nombres de las secciones (aparecen en el header/navbar)
@@ -179,6 +182,9 @@ export const defaultContent: SiteContent = {
     faviconUrl: '',
     description: 'sodaroja - un podcast que viaja por el mundo contando historias que nadie mas cuenta.',
     analyticsId: '',
+    emailjsServiceId: '',
+    emailjsTemplateId: '',
+    emailjsPublicKey: '',
   },
 
   sectionNames: {
