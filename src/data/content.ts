@@ -401,7 +401,14 @@ export const defaultContent: SiteContent = {
     { id: 'birth', label: 'Mes y año de nacimiento', type: 'month-year', required: false, visible: true },
     { id: 'pronouns', label: 'Pronombres', type: 'select', required: false, visible: true, options: ['Él', 'Ella', 'Elle', 'Prefiero no decir'] },
     { id: 'city', label: 'Ciudad', type: 'text', required: false, visible: true, placeholder: '¿Desde dónde nos escuchás?' },
-    { id: 'country', label: 'País', type: 'text', required: false, visible: true, placeholder: 'País' },
+    { id: 'country', label: 'País', type: 'select', required: false, visible: true, options: [
+      '🇦🇷 Argentina', '🇧🇴 Bolivia', '🇧🇷 Brasil', '🇨🇱 Chile', '🇨🇴 Colombia', '🇨🇷 Costa Rica', '🇨🇺 Cuba',
+      '🇩🇴 Rep. Dominicana', '🇪🇨 Ecuador', '🇸🇻 El Salvador', '🇬🇹 Guatemala', '🇭🇳 Honduras', '🇲🇽 México',
+      '🇳🇮 Nicaragua', '🇵🇦 Panamá', '🇵🇾 Paraguay', '🇵🇪 Perú', '🇵🇷 Puerto Rico', '🇺🇾 Uruguay', '🇻🇪 Venezuela',
+      '🇪🇸 España', '🇺🇸 Estados Unidos', '🇨🇦 Canadá', '🇬🇧 Reino Unido', '🇫🇷 Francia', '🇩🇪 Alemania',
+      '🇮🇹 Italia', '🇵🇹 Portugal', '🇯🇵 Japón', '🇰🇷 Corea del Sur', '🇦🇺 Australia', '🇮🇱 Israel', '🇮🇳 India',
+      '🌍 Otro'
+    ] },
     { id: 'howFoundUs', label: '¿Cómo nos encontraste?', type: 'select', required: false, visible: true, options: ['Instagram', 'YouTube', 'Un amigo/a', 'Spotify', 'Google', 'TikTok', 'Otro'] },
   ],
 };

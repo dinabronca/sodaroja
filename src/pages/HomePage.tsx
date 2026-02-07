@@ -26,8 +26,8 @@ export const HomePage: React.FC = () => {
             <p className="text-soda-fog font-light tracking-wide">Lo mas nuevo de sodaroja</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {featured.map((episode: any) => (
-              <EpisodeCard key={episode.id} episode={episode} />
+            {featured.map((episode: any, index: number) => (
+              <EpisodeCard key={episode.id} episode={episode} isNewest={index === 0} />
             ))}
           </div>
           <div className="text-center mt-12 sm:mt-16">

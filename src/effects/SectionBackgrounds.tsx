@@ -42,15 +42,15 @@ const cityEmojis = ['🏛️', '🗺️', '✈️', '🌍', '🏔️', '⛩️',
 
 export const EpisodeVibes: React.FC = () => {
   const mobile = useMemo(isMobile, []);
-  const emojiCount = mobile ? 6 : 20;
+  const emojiCount = mobile ? 8 : 28;
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
       {[...Array(emojiCount)].map((_, i) => (
         <motion.div key={`emoji-${i}`} className="absolute select-none"
           style={{ left: `${(i / emojiCount) * 100 + Math.random() * 3}%`, top: '-5%', fontSize: `${16 + Math.random() * 10}px`, opacity: 0 }}
-          animate={{ y: ['0vh', '110vh'], opacity: [0, 0.14, 0.1, 0], rotate: [0, (Math.random() - 0.5) * 40] }}
-          transition={{ duration: 12 + Math.random() * 8, repeat: Infinity, delay: i * 0.8, ease: 'linear' }}
+          animate={{ y: ['0vh', '110vh'], opacity: [0, 0.15, 0.12, 0], rotate: [0, (Math.random() - 0.5) * 40] }}
+          transition={{ duration: 10 + Math.random() * 6, repeat: Infinity, delay: i * 0.4, ease: 'linear' }}
         >
           {cityEmojis[i % cityEmojis.length]}
         </motion.div>
@@ -103,17 +103,17 @@ export const BlueprintEffects: React.FC = () => {
 // ============================================================
 export const MailEffects: React.FC = () => {
   const mobile = useMemo(isMobile, []);
-  const envCount = mobile ? 4 : 12;
+  const envCount = mobile ? 6 : 18;
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
       {[...Array(envCount)].map((_, i) => (
         <motion.div key={`env-${i}`} className="absolute"
-          style={{ left: `${5 + (i / envCount) * 90}%`, top: `${5 + Math.random() * 85}%` }}
+          style={{ left: `${3 + (i / envCount) * 94}%`, top: `${3 + (i % 5) * 20}%` }}
         >
           <motion.svg width="28" height="20" viewBox="0 0 28 20"
-            animate={{ y: [0, -18, 0], rotate: [0, 6, -4, 0], opacity: [0.1, 0.25, 0.1] }}
-            transition={{ duration: 6 + Math.random() * 4, repeat: Infinity, delay: i * 0.6 }}
+            animate={{ y: [0, -18, 0], rotate: [0, 6, -4, 0], opacity: [0.12, 0.28, 0.12] }}
+            transition={{ duration: 5 + Math.random() * 3, repeat: Infinity, delay: i * 0.3 }}
           >
             <rect x="1" y="1" width="26" height="18" rx="2" fill="none" stroke="rgba(138, 155, 196, 0.3)" strokeWidth="1" />
             <path d="M 1 1 L 14 11 L 27 1" fill="none" stroke="rgba(138, 155, 196, 0.3)" strokeWidth="1" />

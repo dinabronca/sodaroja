@@ -113,10 +113,10 @@ export const QueEsEsto: React.FC = () => {
             return (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.08 }}
+                transition={{ duration: 0.5, delay: index * 0.06 }}
                 className={`relative bg-soda-slate bg-opacity-40 backdrop-blur-sm rounded-sm p-8 border transition-all duration-300 hover:scale-[1.02] group ${
                   item.destacado
                     ? 'border-soda-red border-opacity-40 hover:border-opacity-60 hover:shadow-lg hover:shadow-soda-red/10'

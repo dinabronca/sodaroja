@@ -181,7 +181,7 @@ export const ElEquipo: React.FC = () => {
                 {/* Glow rojo que aparece en hover */}
                 <div className="absolute inset-0 bg-gradient-to-t from-soda-red/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0 rounded-sm" />
                 <div className="absolute -inset-px rounded-sm pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(135deg, rgba(196,85,85,0.15), transparent 40%, transparent 60%, rgba(138,155,196,0.1))' }} />
-                {/* Foto - ratio 3:4 con partículas doradas, negras y efecto shimmer */}
+                {/* Foto - ratio 3:4 con partículas doradas, negras y color tint en hover */}
                 <div className="relative aspect-[3/4] overflow-hidden bg-soda-deep">
                   {/* Partículas doradas */}
                   {[...Array(isMobileDevice ? 2 : 8)].map((_, i) => (
@@ -232,23 +232,8 @@ export const ElEquipo: React.FC = () => {
                     />
                   ))}
 
-                  {/* Efecto shimmer — solo desktop */}
-                  {!isMobileDevice && <motion.div
-                    className="absolute inset-0 z-10 pointer-events-none"
-                    style={{
-                      background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.04) 45%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 55%, transparent 60%)',
-                      backgroundSize: '200% 100%',
-                    }}
-                    animate={{
-                      backgroundPosition: ['200% 0', '-200% 0'],
-                    }}
-                    transition={{
-                      duration: 6 + index * 2,
-                      repeat: Infinity,
-                      repeatDelay: 4,
-                      ease: "easeInOut"
-                    }}
-                  />}
+                  {/* Color tint sutil en hover — reemplaza shimmer */}
+                  <div className="absolute inset-0 z-10 pointer-events-none bg-gradient-to-t from-soda-red/10 via-transparent to-soda-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   
                   <motion.img
                     src={member.photoUrl}

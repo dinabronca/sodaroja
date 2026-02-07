@@ -35,6 +35,8 @@ export const EpisodiosPage: React.FC = () => {
 
   const cities = useMemo(() => [...new Set(allSorted.map(e => e.city))], [allSorted]);
 
+  const newestId = allSorted.length > 0 ? allSorted[0].id : null;
+
   return (
     <section className="relative pt-28 sm:pt-32 pb-24 px-4 sm:px-6 min-h-screen overflow-hidden">
       <SEO title="Episodios" description="Todos los episodios de sodaroja. Historias reales de ciudades del mundo." />
@@ -55,7 +57,7 @@ export const EpisodiosPage: React.FC = () => {
           <div className="flex gap-2">
             {(['all', 'free', 'premium'] as const).map(f => (
               <button key={f} onClick={() => setFilter(f)} className={`px-4 py-2.5 rounded-sm text-xs tracking-wider transition-all border ${filter === f ? 'border-soda-red bg-soda-red bg-opacity-15 text-soda-glow' : 'border-soda-mist border-opacity-20 text-soda-fog hover:text-soda-lamp'}`}>
-                {f === 'all' ? 'TODOS' : f === 'free' ? 'GRATIS' : 'PREMIUM'}
+                {f === 'all' ? 'TODOS' : f === 'free' ? 'ABIERTOS' : 'FRECUENCIA INTERNA'}
               </button>
             ))}
           </div>
@@ -65,7 +67,7 @@ export const EpisodiosPage: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {filtered.map((episode: any, index: number) => (
             <motion.div key={episode.id} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: Math.min(index * 0.05, 0.5) }}>
-              <EpisodeCard episode={episode} />
+              <EpisodeCard episode={episode} isNewest={episode.id === newestId} />
             </motion.div>
           ))}
         </div>

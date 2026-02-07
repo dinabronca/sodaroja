@@ -65,7 +65,7 @@ const GlitchText: React.FC<{ text: string }> = ({ text }) => (
   </div>
 );
 
-export const EpisodeCard: React.FC<{ episode: Episode }> = ({ episode }) => {
+export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean }> = ({ episode, isNewest = false }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const formattedDate = formatDate(episode.publishDate);
   const user = getCurrentUser();
@@ -128,8 +128,21 @@ export const EpisodeCard: React.FC<{ episode: Episode }> = ({ episode }) => {
                 <div className="flex items-center gap-1.5"><Calendar size={12} className="text-soda-accent" /><span className="text-soda-lamp text-xs">{formattedDate}</span></div>
               </div>
             )}
+
+            {/* Sello NUEVO — episodio mas reciente */}
+            {isNewest && (
+              <div className={`absolute ${isUnlockedPremium ? 'top-12' : episode.isPremium ? 'top-3' : 'top-14'} right-3 z-20`}>
+                <motion.div
+                  className="bg-emerald-500 px-3 py-1 rounded-sm shadow-lg shadow-emerald-500/30"
+                  animate={{ opacity: [0.85, 1, 0.85] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  <span className="text-white text-[10px] font-bold tracking-widest">RECIÉN SALIDO</span>
+                </motion.div>
+              </div>
+            )}
             {formattedDate && isUnlockedPremium && (
-              <div className="absolute top-3 right-3 glass-fog px-3 py-1.5 rounded-sm z-20">
+              <div className={`absolute ${isNewest ? 'top-12' : 'top-3'} right-3 glass-fog px-3 py-1.5 rounded-sm z-20`}>
                 <div className="flex items-center gap-1.5"><Calendar size={12} className="text-soda-red" /><span className="text-soda-lamp text-xs">{formattedDate}</span></div>
               </div>
             )}
@@ -306,6 +319,18 @@ export const EpisodeCard: React.FC<{ episode: Episode }> = ({ episode }) => {
               <div className="relative h-64 overflow-hidden">
                 <img src={episode.imageUrl} alt={episode.city} className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-soda-deep via-soda-deep/50 to-transparent" />
+                {/* Sello Frecuencia Interna en modal */}
+                {isUnlockedPremium && (
+                  <div className="absolute top-4 left-4 z-20 bg-soda-red px-4 py-1.5 rounded-sm">
+                    <span className="text-white text-[11px] font-bold tracking-widest">FRECUENCIA INTERNA</span>
+                  </div>
+                )}
+                {/* Sello Nuevo en modal */}
+                {isNewest && (
+                  <div className={`absolute top-4 ${isUnlockedPremium ? 'left-52' : 'left-4'} z-20 bg-emerald-500 px-4 py-1.5 rounded-sm`}>
+                    <span className="text-white text-[11px] font-bold tracking-widest">RECIÉN SALIDO</span>
+                  </div>
+                )}
                 {/* Barra oscura con titulo */}
                 <div className="absolute bottom-0 left-0 right-0 z-10">
                   <div className="bg-soda-night bg-opacity-85 px-6 py-5">
