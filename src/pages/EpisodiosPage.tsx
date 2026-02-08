@@ -22,11 +22,18 @@ export const EpisodiosPage: React.FC = () => {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<'all' | 'free' | 'premium'>('all');
 
+  // Mapa de id -> numero (mas antiguo = #1, mas reciente = mayor numero)
+  const episodeNumberMap = useMemo(() => {
+    const byDate = [...allRaw].sort((a, b) => (a.publishDate || '').localeCompare(b.publishDate || ''));
+    const map: Record<string, number> = {};
+    byDate.forEach((ep, i) => { map[ep.id] = i + 1; });
+    return map;
+  }, [allRaw]);
+
   const filtered = useMemo(() => {
     let eps = allSorted;
     if (search) {
       const q = search.toLowerCase().trim();
-      // Buscar por numero (#5, 5, etc)
       const numMatch = q.match(/^#?(\d+)$/);
       if (numMatch) {
         const num = parseInt(numMatch[1]);
@@ -43,14 +50,6 @@ export const EpisodiosPage: React.FC = () => {
   const cities = useMemo(() => [...new Set(allSorted.map(e => e.city))], [allSorted]);
 
   const newestId = allSorted.length > 0 ? allSorted[0].id : null;
-
-  // Mapa de id -> numero (mas antiguo = #1, mas reciente = mayor numero)
-  const episodeNumberMap = useMemo(() => {
-    const byDate = [...allRaw].sort((a, b) => (a.publishDate || '').localeCompare(b.publishDate || ''));
-    const map: Record<string, number> = {};
-    byDate.forEach((ep, i) => { map[ep.id] = i + 1; });
-    return map;
-  }, [allRaw]);
 
   return (
     <section className="relative pt-28 sm:pt-32 pb-24 px-4 sm:px-6 min-h-screen overflow-hidden">
