@@ -103,20 +103,20 @@ export const BlueprintEffects: React.FC = () => {
 // ============================================================
 export const MailEffects: React.FC = () => {
   const mobile = useMemo(isMobile, []);
-  const envCount = mobile ? 6 : 18;
+  const envCount = mobile ? 10 : 28;
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
       {[...Array(envCount)].map((_, i) => (
         <motion.div key={`env-${i}`} className="absolute"
-          style={{ left: `${3 + (i / envCount) * 94}%`, top: `${3 + (i % 5) * 20}%` }}
+          style={{ left: `${2 + (i / envCount) * 96}%`, top: `${2 + (i % 6) * 16}%` }}
         >
           <motion.svg width="28" height="20" viewBox="0 0 28 20"
-            animate={{ y: [0, -18, 0], rotate: [0, 6, -4, 0], opacity: [0.12, 0.28, 0.12] }}
-            transition={{ duration: 5 + Math.random() * 3, repeat: Infinity, delay: i * 0.3 }}
+            animate={{ y: [0, -20, 0], rotate: [0, 8, -5, 0], opacity: [0.10, 0.30, 0.10] }}
+            transition={{ duration: 4 + Math.random() * 3, repeat: Infinity, delay: i * 0.2 }}
           >
-            <rect x="1" y="1" width="26" height="18" rx="2" fill="none" stroke="rgba(138, 155, 196, 0.3)" strokeWidth="1" />
-            <path d="M 1 1 L 14 11 L 27 1" fill="none" stroke="rgba(138, 155, 196, 0.3)" strokeWidth="1" />
+            <rect x="1" y="1" width="26" height="18" rx="2" fill="none" stroke="rgba(138, 155, 196, 0.35)" strokeWidth="1" />
+            <path d="M 1 1 L 14 11 L 27 1" fill="none" stroke="rgba(138, 155, 196, 0.35)" strokeWidth="1" />
           </motion.svg>
         </motion.div>
       ))}

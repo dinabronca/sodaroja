@@ -149,7 +149,29 @@ export const ElEquipo: React.FC = () => {
   return (
     <section id="equipo" className="relative py-32 px-6 overflow-hidden">
       <TeamAmbience />
-      <div className="max-w-7xl mx-auto">
+      
+      {/* Fondo atmosférico extra */}
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
+        {/* Gradiente orbital grande */}
+        <div className="absolute" style={{ left: '-15%', top: '10%', width: '60%', height: '60%', background: 'radial-gradient(ellipse, rgba(196, 85, 85, 0.06) 0%, transparent 60%)', filter: 'blur(60px)' }} />
+        <div className="absolute" style={{ right: '-10%', bottom: '10%', width: '50%', height: '50%', background: 'radial-gradient(ellipse, rgba(138, 155, 196, 0.05) 0%, transparent 60%)', filter: 'blur(60px)' }} />
+        {/* Lineas horizontales sutiles como estacion de radio */}
+        {!isMobileDevice && (
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(212, 197, 176, 0.025) 80px)',
+            backgroundSize: '100% 80px',
+          }} />
+        )}
+        {/* Glow central sutil */}
+        <motion.div
+          className="absolute"
+          style={{ left: '30%', top: '40%', width: '40%', height: '30%', background: 'radial-gradient(ellipse, rgba(196, 85, 85, 0.04) 0%, transparent 70%)', filter: 'blur(40px)' }}
+          animate={{ opacity: [0.3, 0.6, 0.3], scale: [0.9, 1.1, 0.9] }}
+          transition={{ duration: 10, repeat: Infinity }}
+        />
+      </div>
+
+      <div className="max-w-7xl mx-auto relative" style={{ zIndex: 1 }}>
         {/* Título */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}

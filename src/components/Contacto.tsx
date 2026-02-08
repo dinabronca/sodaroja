@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Instagram, Send, CheckCircle, AlertCircle, Loader2, MessageSquare, Lightbulb, Briefcase, HelpCircle, Heart } from 'lucide-react';
+import { Mail, Instagram, Send, CheckCircle, AlertCircle, Loader2, MessageSquare, Lightbulb, Briefcase, HelpCircle, Heart, Bug } from 'lucide-react';
 import { getContent } from '../data/content';
 import { MailEffects } from '../effects/SectionBackgrounds';
 
@@ -9,6 +9,7 @@ const subjectOptions = [
   { id: 'sugerencia', label: 'Sugerencia', icon: Lightbulb, desc: 'Tengo una idea para un episodio, ciudad o mejora.' },
   { id: 'patrocinio', label: 'Patrocinio', icon: Briefcase, desc: 'Me interesa colaborar o patrocinar el proyecto.' },
   { id: 'historias', label: 'Tengo una historia', icon: Heart, desc: 'Quiero contarles algo que viví o escuché.' },
+  { id: 'problema', label: 'Problema técnico', icon: Bug, desc: 'Algo no funciona bien o encontré un error.' },
   { id: 'otro', label: 'Otro', icon: HelpCircle, desc: 'Cualquier otra consulta o tema.' },
 ];
 

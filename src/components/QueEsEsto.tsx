@@ -21,21 +21,20 @@ export const QueEsEsto: React.FC = () => {
   return (
     <section id="que-es-esto" className="relative py-32 px-6 bg-gradient-to-b from-soda-night via-soda-deep to-soda-night overflow-hidden">
       {/* ===== FONDO ANTENAS — paisaje cyberpunk traslúcido ===== */}
-      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 1 }}>
         {/* Imagen base con tratamiento */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: 'url(/antenas-bg.jpg)',
-            filter: 'saturate(0.3) brightness(0.15) contrast(1.3) sepia(0.4) hue-rotate(200deg)',
-            opacity: 0.35,
-            mixBlendMode: 'screen',
+            filter: 'saturate(0.2) brightness(0.35) contrast(1.2) hue-rotate(200deg)',
+            opacity: 0.5,
           }}
         />
-        {/* Overlay gradiente para fundirlo con la sección */}
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(10,14,26,0.7) 0%, transparent 25%, transparent 75%, rgba(10,14,26,0.8) 100%)' }} />
+        {/* Overlay gradiente para fundirlo arriba y abajo */}
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(10,14,26,0.95) 0%, rgba(10,14,26,0.3) 20%, rgba(10,14,26,0.2) 50%, rgba(10,14,26,0.3) 80%, rgba(10,14,26,0.95) 100%)' }} />
         {/* Tinte cyberpunk — rojo/azul */}
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(196,85,85,0.06) 0%, transparent 50%, rgba(138,155,196,0.05) 100%)' }} />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(196,85,85,0.08) 0%, transparent 50%, rgba(138,155,196,0.08) 100%)' }} />
 
         {/* Lucecitas de antena parpadeando */}
         {!isMobile && [...Array(12)].map((_, i) => (
@@ -91,7 +90,7 @@ export const QueEsEsto: React.FC = () => {
             height: '200px',
             background: `radial-gradient(ellipse, rgba(${i % 2 === 0 ? '196, 85, 85' : '138, 155, 196'}, 0.03) 0%, transparent 70%)`,
             filter: 'blur(50px)',
-            zIndex: 0,
+            zIndex: 2,
           }}
           animate={{
             x: [0, 60 + i * 20, 0],
@@ -118,7 +117,7 @@ export const QueEsEsto: React.FC = () => {
                 ? 'radial-gradient(circle, rgba(138, 155, 196, 0.03) 0%, transparent 70%)'
                 : 'radial-gradient(circle, rgba(212, 197, 176, 0.025) 0%, transparent 70%)',
             filter: 'blur(25px)',
-            zIndex: 0,
+            zIndex: 2,
           }}
           animate={{
             x: [(Math.random()-0.5)*30, (Math.random()-0.5)*30],
