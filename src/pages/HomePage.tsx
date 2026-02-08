@@ -15,6 +15,14 @@ export const HomePage: React.FC = () => {
   );
   const featured = sorted.slice(0, 6);
 
+  // Mapa de id -> numero (mas antiguo = #1)
+  const episodeNumberMap = React.useMemo(() => {
+    const byDate = [...allRaw].sort((a, b) => (a.publishDate || '').localeCompare(b.publishDate || ''));
+    const map: Record<string, number> = {};
+    byDate.forEach((ep: any, i: number) => { map[ep.id] = i + 1; });
+    return map;
+  }, [allRaw]);
+
   return (
     <>
       <Hero />
@@ -27,7 +35,7 @@ export const HomePage: React.FC = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {featured.map((episode: any, index: number) => (
-              <EpisodeCard key={episode.id} episode={episode} isNewest={index === 0} />
+              <EpisodeCard key={episode.id} episode={episode} isNewest={index === 0} episodeNumber={episodeNumberMap[episode.id]} />
             ))}
           </div>
           <div className="text-center mt-12 sm:mt-16">

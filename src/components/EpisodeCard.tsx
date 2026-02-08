@@ -65,7 +65,7 @@ const GlitchText: React.FC<{ text: string }> = ({ text }) => (
   </div>
 );
 
-export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean }> = ({ episode, isNewest = false }) => {
+export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episodeNumber?: number }> = ({ episode, isNewest = false, episodeNumber }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const formattedDate = formatDate(episode.publishDate);
   const user = getCurrentUser();
@@ -112,26 +112,20 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean }> = (
           <div className="relative h-64 overflow-hidden">
             <motion.img src={episode.imageUrl} alt={episode.city} className="w-full h-full object-cover" whileHover={isLocked ? undefined : { scale: 1.05 }} transition={{ duration: 0.6 }} loading="lazy" />
 
-            {/* ===== PREMIUM DESBLOQUEADO: scan effect sobre imagen ===== */}
+            {/* ===== PREMIUM DESBLOQUEADO: scan effect sutil ===== */}
             {isUnlockedPremium && (
               <>
                 <div className="absolute inset-0 pointer-events-none z-10" style={{ background: 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(196, 85, 85, 0.04) 3px, rgba(196, 85, 85, 0.04) 4px)', mixBlendMode: 'overlay' }} />
                 <motion.div className="absolute inset-0 pointer-events-none z-10" style={{ background: 'linear-gradient(180deg, transparent 40%, rgba(196, 85, 85, 0.1) 50%, transparent 60%)' }} animate={{ y: ['-100%', '100%'] }} transition={{ duration: 4, repeat: Infinity, ease: 'linear' }} />
-                {/* Sello */}
-                <div className="absolute top-3 left-3 z-20 bg-soda-red px-3 py-1 rounded-sm"><span className="text-white text-[10px] font-bold tracking-widest">FRECUENCIA INTERNA</span></div>
               </>
             )}
 
-            {/* Fecha */}
-            {formattedDate && !episode.isPremium && (
-              <div className="absolute top-4 left-4 glass-fog px-3 py-1.5 rounded-sm z-20">
-                <div className="flex items-center gap-1.5"><Calendar size={12} className="text-soda-accent" /><span className="text-soda-lamp text-xs">{formattedDate}</span></div>
-              </div>
-            )}
-
-            {/* Sello NUEVO — episodio mas reciente */}
-            {isNewest && (
-              <div className={`absolute ${isUnlockedPremium ? 'top-12' : episode.isPremium ? 'top-3' : 'top-14'} right-3 z-20`}>
+            {/* ===== BADGES ZONA IZQUIERDA — apilados ===== */}
+            <div className="absolute top-3 left-3 z-20 flex flex-col gap-1.5">
+              {isUnlockedPremium && (
+                <div className="bg-soda-red px-3 py-1 rounded-sm"><span className="text-white text-[10px] font-bold tracking-widest">FRECUENCIA INTERNA</span></div>
+              )}
+              {isNewest && (
                 <motion.div
                   className="bg-emerald-500 px-3 py-1 rounded-sm shadow-lg shadow-emerald-500/30"
                   animate={{ opacity: [0.85, 1, 0.85] }}
@@ -139,10 +133,24 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean }> = (
                 >
                   <span className="text-white text-[10px] font-bold tracking-widest">RECIÉN SALIDO</span>
                 </motion.div>
+              )}
+              {formattedDate && !episode.isPremium && !isNewest && (
+                <div className="glass-fog px-3 py-1.5 rounded-sm">
+                  <div className="flex items-center gap-1.5"><Calendar size={12} className="text-soda-accent" /><span className="text-soda-lamp text-xs">{formattedDate}</span></div>
+                </div>
+              )}
+            </div>
+
+            {/* ===== BADGE DERECHA — número de episodio ===== */}
+            {episodeNumber !== undefined && (
+              <div className="absolute top-3 right-3 z-20 bg-soda-night/80 backdrop-blur-sm px-2.5 py-1 rounded-sm border border-soda-mist/15">
+                <span className="text-soda-lamp text-[11px] font-mono font-bold">#{episodeNumber}</span>
               </div>
             )}
+
+            {/* Fecha premium desbloqueado — abajo izquierda si tiene sello FI */}
             {formattedDate && isUnlockedPremium && (
-              <div className={`absolute ${isNewest ? 'top-12' : 'top-3'} right-3 glass-fog px-3 py-1.5 rounded-sm z-20`}>
+              <div className="absolute bottom-3 left-3 glass-fog px-3 py-1.5 rounded-sm z-20">
                 <div className="flex items-center gap-1.5"><Calendar size={12} className="text-soda-red" /><span className="text-soda-lamp text-xs">{formattedDate}</span></div>
               </div>
             )}
@@ -319,16 +327,23 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean }> = (
               <div className="relative h-64 overflow-hidden">
                 <img src={episode.imageUrl} alt={episode.city} className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-soda-deep via-soda-deep/50 to-transparent" />
-                {/* Sello Frecuencia Interna en modal */}
-                {isUnlockedPremium && (
-                  <div className="absolute top-4 left-4 z-20 bg-soda-red px-4 py-1.5 rounded-sm">
-                    <span className="text-white text-[11px] font-bold tracking-widest">FRECUENCIA INTERNA</span>
-                  </div>
-                )}
-                {/* Sello Nuevo en modal */}
-                {isNewest && (
-                  <div className={`absolute top-4 ${isUnlockedPremium ? 'left-52' : 'left-4'} z-20 bg-emerald-500 px-4 py-1.5 rounded-sm`}>
-                    <span className="text-white text-[11px] font-bold tracking-widest">RECIÉN SALIDO</span>
+                {/* Badges izquierda — apilados */}
+                <div className="absolute top-4 left-4 z-20 flex flex-col gap-1.5">
+                  {isUnlockedPremium && (
+                    <div className="bg-soda-red px-4 py-1.5 rounded-sm">
+                      <span className="text-white text-[11px] font-bold tracking-widest">FRECUENCIA INTERNA</span>
+                    </div>
+                  )}
+                  {isNewest && (
+                    <div className="bg-emerald-500 px-4 py-1.5 rounded-sm">
+                      <span className="text-white text-[11px] font-bold tracking-widest">RECIÉN SALIDO</span>
+                    </div>
+                  )}
+                </div>
+                {/* Badge derecha — número */}
+                {episodeNumber !== undefined && (
+                  <div className="absolute top-4 right-14 z-20 bg-soda-night/80 backdrop-blur-sm px-3 py-1.5 rounded-sm border border-soda-mist/15">
+                    <span className="text-soda-lamp text-xs font-mono font-bold">#{episodeNumber}</span>
                   </div>
                 )}
                 {/* Barra oscura con titulo */}

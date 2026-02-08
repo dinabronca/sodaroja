@@ -25,17 +25,32 @@ export const EpisodiosPage: React.FC = () => {
   const filtered = useMemo(() => {
     let eps = allSorted;
     if (search) {
-      const q = search.toLowerCase();
-      eps = eps.filter(e => e.city.toLowerCase().includes(q) || e.title.toLowerCase().includes(q));
+      const q = search.toLowerCase().trim();
+      // Buscar por numero (#5, 5, etc)
+      const numMatch = q.match(/^#?(\d+)$/);
+      if (numMatch) {
+        const num = parseInt(numMatch[1]);
+        eps = eps.filter(e => episodeNumberMap[e.id] === num);
+      } else {
+        eps = eps.filter(e => e.city.toLowerCase().includes(q) || e.title.toLowerCase().includes(q));
+      }
     }
     if (filter === 'free') eps = eps.filter(e => !e.isPremium);
     if (filter === 'premium') eps = eps.filter(e => e.isPremium);
     return eps;
-  }, [allSorted, search, filter]);
+  }, [allSorted, search, filter, episodeNumberMap]);
 
   const cities = useMemo(() => [...new Set(allSorted.map(e => e.city))], [allSorted]);
 
   const newestId = allSorted.length > 0 ? allSorted[0].id : null;
+
+  // Mapa de id -> numero (mas antiguo = #1, mas reciente = mayor numero)
+  const episodeNumberMap = useMemo(() => {
+    const byDate = [...allRaw].sort((a, b) => (a.publishDate || '').localeCompare(b.publishDate || ''));
+    const map: Record<string, number> = {};
+    byDate.forEach((ep, i) => { map[ep.id] = i + 1; });
+    return map;
+  }, [allRaw]);
 
   return (
     <section className="relative pt-28 sm:pt-32 pb-24 px-4 sm:px-6 min-h-screen overflow-hidden">
@@ -52,7 +67,7 @@ export const EpisodiosPage: React.FC = () => {
         <div className="flex flex-col sm:flex-row gap-3 mb-8 sm:mb-12">
           <div className="relative flex-1">
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-soda-fog" />
-            <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar por ciudad o titulo..." className="w-full bg-soda-slate bg-opacity-40 border border-soda-mist border-opacity-20 rounded-sm pl-10 pr-4 py-2.5 text-soda-lamp text-sm focus:border-soda-accent focus:outline-none transition-colors" />
+            <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar por ciudad, titulo o #número..." className="w-full bg-soda-slate bg-opacity-40 border border-soda-mist border-opacity-20 rounded-sm pl-10 pr-4 py-2.5 text-soda-lamp text-sm focus:border-soda-accent focus:outline-none transition-colors" />
           </div>
           <div className="flex gap-2">
             {(['all', 'free', 'premium'] as const).map(f => (
@@ -67,7 +82,7 @@ export const EpisodiosPage: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {filtered.map((episode: any, index: number) => (
             <motion.div key={episode.id} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: Math.min(index * 0.05, 0.5) }}>
-              <EpisodeCard episode={episode} isNewest={episode.id === newestId} />
+              <EpisodeCard episode={episode} isNewest={episode.id === newestId} episodeNumber={episodeNumberMap[episode.id]} />
             </motion.div>
           ))}
         </div>
