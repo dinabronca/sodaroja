@@ -1,19 +1,29 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Instagram, Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { Mail, Instagram, Send, CheckCircle, AlertCircle, Loader2, MessageSquare, Lightbulb, Handshake, HelpCircle, Heart } from 'lucide-react';
 import { getContent } from '../data/content';
 import { MailEffects } from '../effects/SectionBackgrounds';
+
+const subjectOptions = [
+  { id: 'mensaje', label: 'Mensaje', icon: MessageSquare, desc: 'Quiero escribirles algo, saludar o compartir algo.' },
+  { id: 'sugerencia', label: 'Sugerencia', icon: Lightbulb, desc: 'Tengo una idea para un episodio, ciudad o mejora.' },
+  { id: 'patrocinio', label: 'Patrocinio', icon: Handshake, desc: 'Me interesa colaborar o patrocinar el proyecto.' },
+  { id: 'historias', label: 'Tengo una historia', icon: Heart, desc: 'Quiero contarles algo que viví o escuché.' },
+  { id: 'otro', label: 'Otro', icon: HelpCircle, desc: 'Cualquier otra consulta o tema.' },
+];
 
 export const Contacto: React.FC = () => {
   const contacto = getContent().contacto;
   const meta = getContent().meta;
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Si hay EmailJS configurado, usar eso
+    const subjectLabel = subjectOptions.find(s => s.id === formData.subject)?.label || 'Mensaje';
+    const fullSubject = `[${subjectLabel}] Contacto de ${formData.name}`;
+
     const ejsService = meta?.emailjsServiceId || '';
     const ejsTemplate = meta?.emailjsTemplateId || '';
     const ejsKey = meta?.emailjsPublicKey || '';
@@ -31,6 +41,7 @@ export const Contacto: React.FC = () => {
             template_params: {
               from_name: formData.name,
               from_email: formData.email,
+              subject: fullSubject,
               message: formData.message,
               to_email: contacto.email,
             },
@@ -38,7 +49,7 @@ export const Contacto: React.FC = () => {
         });
         if (res.ok) {
           setStatus('sent');
-          setFormData({ name: '', email: '', message: '' });
+          setFormData({ name: '', email: '', subject: '', message: '' });
           setTimeout(() => setStatus('idle'), 4000);
         } else {
           setStatus('error');
@@ -49,8 +60,7 @@ export const Contacto: React.FC = () => {
         setTimeout(() => setStatus('idle'), 3000);
       }
     } else {
-      // Fallback: mailto
-      const subject = encodeURIComponent(`Contacto de ${formData.name}`);
+      const subject = encodeURIComponent(fullSubject);
       const body = encodeURIComponent(`De: ${formData.name} (${formData.email})\n\n${formData.message}`);
       window.location.href = `mailto:${contacto.email}?subject=${subject}&body=${body}`;
       setStatus('sent');
@@ -58,7 +68,7 @@ export const Contacto: React.FC = () => {
     }
   };
 
-  const ic = "w-full bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm px-4 py-3 text-soda-lamp focus:border-soda-accent focus:outline-none transition-colors text-sm";
+  const ic = "w-full bg-soda-slate/40 backdrop-blur-sm border border-soda-mist/20 rounded-sm px-4 py-3 text-soda-lamp focus:border-soda-accent focus:outline-none transition-colors text-sm";
 
   return (
     <section id="contacto" className="relative py-32 px-6 bg-gradient-to-b from-soda-night to-soda-deep overflow-hidden">
@@ -72,31 +82,65 @@ export const Contacto: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div><label className="block text-soda-lamp text-sm mb-2">Tu nombre</label><input type="text" required value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className={ic} placeholder="Juan Perez" /></div>
-              <div><label className="block text-soda-lamp text-sm mb-2">Tu email</label><input type="email" required value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} className={ic} placeholder="tu@email.com" /></div>
-              <div><label className="block text-soda-lamp text-sm mb-2">Mensaje</label><textarea required value={formData.message} onChange={(e) => setFormData({...formData, message: e.target.value})} rows={6} className={ic + ' resize-none'} placeholder="Contanos tu idea..." /></div>
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Asunto — seleccionable */}
+              <div>
+                <label className="block text-soda-lamp text-sm mb-3">Asunto</label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {subjectOptions.map((opt) => {
+                    const Icon = opt.icon;
+                    const selected = formData.subject === opt.id;
+                    return (
+                      <button
+                        type="button"
+                        key={opt.id}
+                        onClick={() => setFormData({ ...formData, subject: opt.id })}
+                        className={`text-left px-3 py-2.5 rounded-sm border transition-all duration-200 ${
+                          selected
+                            ? 'border-soda-accent bg-soda-accent/10 text-soda-lamp'
+                            : 'border-soda-mist/15 bg-soda-slate/20 text-soda-fog hover:border-soda-mist/30 hover:text-soda-lamp'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <Icon size={14} className={selected ? 'text-soda-accent' : 'text-soda-fog'} />
+                          <span className="text-xs font-medium tracking-wide">{opt.label}</span>
+                        </div>
+                        <p className="text-[11px] opacity-60 leading-tight">{opt.desc}</p>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
 
-              <button type="submit" disabled={status === 'sending'} className={`glow-button hoverable w-full py-4 border rounded-sm transition-all duration-300 tracking-wider flex items-center justify-center gap-2 ${
-                status === 'sent' ? 'bg-green-500 bg-opacity-20 border-green-500 text-green-400'
-                : status === 'error' ? 'bg-red-500 bg-opacity-20 border-red-500 text-red-400'
-                : 'bg-soda-accent bg-opacity-20 border-soda-accent text-soda-lamp hover:bg-opacity-30'
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div><label className="block text-soda-lamp text-sm mb-2">Tu nombre</label><input type="text" required value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className={ic} placeholder="Juan Perez" /></div>
+                <div><label className="block text-soda-lamp text-sm mb-2">Tu email</label><input type="email" required value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} className={ic} placeholder="tu@email.com" /></div>
+              </div>
+
+              <div><label className="block text-soda-lamp text-sm mb-2">Mensaje</label><textarea required value={formData.message} onChange={(e) => setFormData({...formData, message: e.target.value})} rows={5} className={ic + ' resize-none'} placeholder="Contanos..." /></div>
+
+              <button type="submit" disabled={status === 'sending' || !formData.subject} className={`w-full py-4 border rounded-sm transition-all duration-300 tracking-wider flex items-center justify-center gap-2 text-sm ${
+                status === 'sent' ? 'bg-green-500/20 border-green-500 text-green-400'
+                : status === 'error' ? 'bg-red-500/20 border-red-500 text-red-400'
+                : !formData.subject ? 'border-soda-mist/20 text-soda-fog cursor-not-allowed opacity-50'
+                : 'bg-soda-accent/20 border-soda-accent text-soda-lamp hover:bg-soda-accent/30'
               }`}>
                 {status === 'idle' && <><Send size={16} />ENVIAR MENSAJE</>}
                 {status === 'sending' && <><Loader2 size={16} className="animate-spin" />ENVIANDO...</>}
                 {status === 'sent' && <><CheckCircle size={16} />MENSAJE ENVIADO</>}
                 {status === 'error' && <><AlertCircle size={16} />ERROR AL ENVIAR</>}
               </button>
+              {!formData.subject && status === 'idle' && <p className="text-soda-fog text-xs text-center">Seleccioná un asunto para enviar</p>}
               {status === 'error' && <p className="text-soda-fog text-xs text-center">No se pudo enviar. Intenta de nuevo o escribinos directamente al email.</p>}
             </form>
           </motion.div>
 
           <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="space-y-6">
-            <div className="bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm p-8">
+            <div className="bg-soda-slate/40 backdrop-blur-sm border border-soda-mist/20 rounded-sm p-8">
               <h3 className="text-xl font-serif text-soda-glow mb-6">Lineas directas</h3>
               <div className="space-y-4">
-                <a href={`mailto:${contacto.email}`} className="hoverable flex items-center gap-4 text-soda-lamp hover:text-soda-glow transition-colors group"><Mail size={24} className="text-soda-accent group-hover:text-soda-lamp transition-colors" /><span>{contacto.email}</span></a>
-                <a href={`https://instagram.com/${contacto.instagram.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="hoverable flex items-center gap-4 text-soda-lamp hover:text-soda-glow transition-colors group"><Instagram size={24} className="text-soda-accent group-hover:text-soda-lamp transition-colors" /><span>{contacto.instagram}</span></a>
+                <a href={`mailto:${contacto.email}`} className="flex items-center gap-4 text-soda-lamp hover:text-soda-glow transition-colors group"><Mail size={24} className="text-soda-accent group-hover:text-soda-lamp transition-colors" /><span>{contacto.email}</span></a>
+                <a href={`https://instagram.com/${contacto.instagram.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-soda-lamp hover:text-soda-glow transition-colors group"><Instagram size={24} className="text-soda-accent group-hover:text-soda-lamp transition-colors" /><span>{contacto.instagram}</span></a>
               </div>
             </div>
             <p className="text-soda-fog text-sm font-light">Respondemos todos los mensajes. Puede que tarde un poco, pero llegamos.</p>

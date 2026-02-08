@@ -113,11 +113,14 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
             <motion.img src={episode.imageUrl} alt={episode.city} className="w-full h-full object-cover" whileHover={isLocked ? undefined : { scale: 1.05 }} transition={{ duration: 0.6 }} loading="lazy" />
 
             {/* ===== PREMIUM DESBLOQUEADO: scan effect sutil ===== */}
-            {isUnlockedPremium && (
+            {isUnlockedPremium && !isMobile && (
               <>
                 <div className="absolute inset-0 pointer-events-none z-10" style={{ background: 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(196, 85, 85, 0.04) 3px, rgba(196, 85, 85, 0.04) 4px)', mixBlendMode: 'overlay' }} />
                 <motion.div className="absolute inset-0 pointer-events-none z-10" style={{ background: 'linear-gradient(180deg, transparent 40%, rgba(196, 85, 85, 0.1) 50%, transparent 60%)' }} animate={{ y: ['-100%', '100%'] }} transition={{ duration: 4, repeat: Infinity, ease: 'linear' }} />
               </>
+            )}
+            {isUnlockedPremium && isMobile && (
+              <div className="absolute inset-0 pointer-events-none z-10 border-2 border-soda-red/20 rounded-sm" />
             )}
 
             {/* ===== BADGES ZONA IZQUIERDA — apilados ===== */}
@@ -134,24 +137,12 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
                   <span className="text-white text-[10px] font-bold tracking-widest">RECIÉN SALIDO</span>
                 </motion.div>
               )}
-              {formattedDate && !episode.isPremium && !isNewest && (
-                <div className="glass-fog px-3 py-1.5 rounded-sm">
-                  <div className="flex items-center gap-1.5"><Calendar size={12} className="text-soda-accent" /><span className="text-soda-lamp text-xs">{formattedDate}</span></div>
-                </div>
-              )}
             </div>
 
             {/* ===== BADGE DERECHA — número de episodio ===== */}
             {episodeNumber !== undefined && (
               <div className="absolute top-3 right-3 z-20 bg-soda-night/80 backdrop-blur-sm px-2.5 py-1 rounded-sm border border-soda-mist/15">
                 <span className="text-soda-lamp text-[11px] font-mono font-bold">#{episodeNumber}</span>
-              </div>
-            )}
-
-            {/* Fecha premium desbloqueado — abajo izquierda si tiene sello FI */}
-            {formattedDate && isUnlockedPremium && (
-              <div className="absolute bottom-3 left-3 glass-fog px-3 py-1.5 rounded-sm z-20">
-                <div className="flex items-center gap-1.5"><Calendar size={12} className="text-soda-red" /><span className="text-soda-lamp text-xs">{formattedDate}</span></div>
               </div>
             )}
 

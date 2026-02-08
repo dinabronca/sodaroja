@@ -52,9 +52,14 @@ export const Navbar: React.FC = () => {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link to="/" className="group flex items-center space-x-3 z-[110]">
-              <div className="w-8 h-8 border border-soda-red/60 rounded-sm flex items-center justify-center group-hover:border-soda-red transition-all">
-                <div className="w-2 h-2 bg-soda-red rounded-full animate-pulse" />
-              </div>
+              <svg width="32" height="32" viewBox="0 0 28 28" className="group-hover:scale-110 transition-transform">
+                <circle cx="14" cy="14" r="12" fill="#c45555" className="animate-pulse" style={{ animationDuration: '3s' }} />
+                <circle cx="10" cy="12" r="1.5" fill="#d4c5b0" />
+                <circle cx="18" cy="12" r="1.5" fill="#d4c5b0" />
+                <path d="M 10 17 Q 14 20 18 17" stroke="#d4c5b0" strokeWidth="1.3" fill="none" strokeLinecap="round" />
+                <path d="M 4 8 Q 2 14 4 20" stroke="#c45555" strokeWidth="2.5" fill="none" opacity="0.5" />
+                <path d="M 24 8 Q 26 14 24 20" stroke="#c45555" strokeWidth="2.5" fill="none" opacity="0.5" />
+              </svg>
               <span className="font-serif text-xl tracking-wider text-soda-glow">sodaroja</span>
             </Link>
 

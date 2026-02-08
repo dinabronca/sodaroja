@@ -20,6 +20,65 @@ export const QueEsEsto: React.FC = () => {
 
   return (
     <section id="que-es-esto" className="relative py-32 px-6 bg-gradient-to-b from-soda-night via-soda-deep to-soda-night overflow-hidden">
+      {/* ===== FONDO ANTENAS — paisaje cyberpunk traslúcido ===== */}
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
+        {/* Imagen base con tratamiento */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: 'url(/antenas-bg.jpg)',
+            filter: 'saturate(0.3) brightness(0.15) contrast(1.3) sepia(0.4) hue-rotate(200deg)',
+            opacity: 0.35,
+            mixBlendMode: 'screen',
+          }}
+        />
+        {/* Overlay gradiente para fundirlo con la sección */}
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(10,14,26,0.7) 0%, transparent 25%, transparent 75%, rgba(10,14,26,0.8) 100%)' }} />
+        {/* Tinte cyberpunk — rojo/azul */}
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(196,85,85,0.06) 0%, transparent 50%, rgba(138,155,196,0.05) 100%)' }} />
+
+        {/* Lucecitas de antena parpadeando */}
+        {!isMobile && [...Array(12)].map((_, i) => (
+          <motion.div
+            key={`light-${i}`}
+            className="absolute rounded-full"
+            style={{
+              left: `${8 + (i / 12) * 84}%`,
+              top: `${25 + (i % 3) * 18 + Math.random() * 8}%`,
+              width: `${4 + Math.random() * 3}px`,
+              height: `${4 + Math.random() * 3}px`,
+              background: i % 3 === 0 ? '#c45555' : i % 3 === 1 ? '#ff6b6b' : '#c45555',
+              boxShadow: `0 0 ${8 + Math.random() * 12}px ${i % 2 === 0 ? 'rgba(196,85,85,0.6)' : 'rgba(255,107,107,0.4)'}`,
+            }}
+            animate={{
+              opacity: [0.2, 0.9, 0.2],
+              scale: [0.8, 1.2, 0.8],
+            }}
+            transition={{
+              duration: 1.5 + Math.random() * 2,
+              repeat: Infinity,
+              delay: Math.random() * 3,
+              ease: 'easeInOut',
+            }}
+          />
+        ))}
+        {isMobile && [...Array(5)].map((_, i) => (
+          <motion.div
+            key={`light-m-${i}`}
+            className="absolute rounded-full"
+            style={{
+              left: `${10 + i * 20}%`,
+              top: `${30 + (i % 2) * 20}%`,
+              width: '4px', height: '4px',
+              background: '#c45555',
+              boxShadow: '0 0 10px rgba(196,85,85,0.5)',
+            }}
+            animate={{ opacity: [0.2, 0.8, 0.2] }}
+            transition={{ duration: 2, repeat: Infinity, delay: i * 0.6 }}
+          />
+        ))}
+      </div>
+
       {/* Humo / niebla flotando */}
       {[...Array(smokeCount)].map((_, i) => (
         <motion.div
