@@ -21,37 +21,9 @@ body {
   position: relative;
 }
 
-/* Cursor personalizado */
-* {
-  cursor: none !important;
-}
-
-/* Restaurar cursor en modales */
-.restore-cursor,
-.restore-cursor * {
-  cursor: auto !important;
-}
-
-.restore-cursor button,
-.restore-cursor a {
-  cursor: pointer !important;
-}
-
-#custom-cursor {
-  position: fixed;
-  width: 20px;
-  height: 20px;
-  border: 1px solid rgba(212, 197, 176, 0.6);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 99999;
-  transition: transform 0.15s ease-out, width 0.15s, height 0.15s;
-}
-
-#custom-cursor.hover {
-  width: 40px;
-  height: 40px;
-  background: rgba(212, 197, 176, 0.1);
+/* Cursor — usar nativo para evitar problemas de rendering */
+.hoverable {
+  cursor: pointer;
 }
 
 /* Grano de película analógica */

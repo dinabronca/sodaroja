@@ -92,18 +92,44 @@ interface Mission { id: string; label: string; icon: React.ElementType; soditas:
 const getMissions = (): Mission[] => {
   const completed: string[] = getLS('sodaroja-missions-done', []);
   const listenedCount = getLS('sodaroja-listened', []).length;
-  return [
-    { id: 'listen-1', label: 'Escuchar tu primer episodio', icon: Headphones, soditas: 3, completed: listenedCount >= 1, type: 'one-time' },
-    { id: 'listen-5', label: 'Escuchar 5 episodios', icon: Headphones, soditas: 8, completed: listenedCount >= 5, type: 'one-time' },
-    { id: 'listen-10', label: 'Escuchar 10 episodios', icon: Star, soditas: 15, completed: listenedCount >= 10, type: 'one-time' },
-    { id: 'follow-ig', label: 'Seguinos en Instagram', icon: Instagram, soditas: 5, completed: completed.includes('follow-ig'), type: 'one-time' },
-    { id: 'follow-yt', label: 'Suscribite en YouTube', icon: Youtube, soditas: 5, completed: completed.includes('follow-yt'), type: 'one-time' },
-    { id: 'follow-tw', label: 'Seguinos en X (Twitter)', icon: Twitter, soditas: 5, completed: completed.includes('follow-tw'), type: 'one-time' },
-    { id: 'streak-3', label: '3 meses consecutivos suscripto', icon: Calendar, soditas: 10, completed: completed.includes('streak-3'), type: 'one-time' },
-    { id: 'streak-6', label: '6 meses consecutivos suscripto', icon: Zap, soditas: 25, completed: completed.includes('streak-6'), type: 'one-time' },
-    { id: 'poll-vote', label: 'Votar en una encuesta', icon: BarChart3, soditas: 3, completed: Object.keys(getLS('sodaroja-user-poll-votes', {})).length > 0, type: 'recurring' },
-    { id: 'early-bird', label: 'Ser de los primeros en escuchar un nuevo episodio', icon: Zap, soditas: 5, completed: completed.includes('early-bird'), type: 'recurring' },
+  const pollCount = Object.keys(getLS('sodaroja-user-poll-votes', {})).length;
+  
+  // Read config from admin (or use defaults)
+  const config: any[] | null = (() => { try { return JSON.parse(localStorage.getItem('sodaroja-missions-config') || 'null'); } catch { return null; } })();
+  
+  const defaultConfig = [
+    { id: 'listen-1', label: 'Escuchar tu primer episodio', icon: 'Headphones', soditas: 3, type: 'auto' },
+    { id: 'listen-5', label: 'Escuchar 5 episodios', icon: 'Headphones', soditas: 8, type: 'auto' },
+    { id: 'listen-10', label: 'Escuchar 10 episodios', icon: 'Star', soditas: 15, type: 'auto' },
+    { id: 'follow-ig', label: 'Seguinos en Instagram', icon: 'Instagram', soditas: 5, type: 'social' },
+    { id: 'follow-yt', label: 'Suscribite en YouTube', icon: 'Youtube', soditas: 5, type: 'social' },
+    { id: 'follow-tw', label: 'Seguinos en X (Twitter)', icon: 'Twitter', soditas: 5, type: 'social' },
+    { id: 'streak-3', label: '3 meses consecutivos suscripto', icon: 'Calendar', soditas: 10, type: 'auto' },
+    { id: 'streak-6', label: '6 meses consecutivos suscripto', icon: 'Zap', soditas: 25, type: 'auto' },
+    { id: 'poll-vote', label: 'Votar en una encuesta', icon: 'BarChart3', soditas: 3, type: 'recurring' },
+    { id: 'early-bird', label: 'Ser de los primeros en escuchar', icon: 'Zap', soditas: 5, type: 'auto' },
   ];
+
+  const iconMap: Record<string, React.ElementType> = { Headphones, Star, Instagram, Youtube, Twitter, Calendar, Zap, BarChart3, Trophy, Heart };
+  const items = config || defaultConfig;
+
+  return items.map((m: any) => {
+    let autoCompleted = false;
+    if (m.id === 'listen-1') autoCompleted = listenedCount >= 1;
+    else if (m.id === 'listen-5') autoCompleted = listenedCount >= 5;
+    else if (m.id === 'listen-10') autoCompleted = listenedCount >= 10;
+    else if (m.id === 'poll-vote') autoCompleted = pollCount > 0;
+    else autoCompleted = completed.includes(m.id);
+    
+    return {
+      id: m.id,
+      label: m.label,
+      icon: iconMap[m.icon] || Star,
+      soditas: m.soditas,
+      completed: autoCompleted,
+      type: m.type === 'recurring' ? 'recurring' as const : 'one-time' as const,
+    };
+  });
 };
 
 const completeMission = (missionId: string) => {
@@ -127,6 +153,9 @@ const SubscriberDashboard: React.FC = () => {
   const [missions, setMissions] = useState<Mission[]>([]);
   const [showMissions, setShowMissions] = useState(false);
   const [activePollPage, setActivePollPage] = useState<string | null>(null);
+  const [openPanel, setOpenPanel] = useState<string | null>(null);
+  const [userPlan, setUserPlan] = useState('plan-b');
+  const [payMethod, setPayMethod] = useState('Mercado Pago');
 
   useEffect(() => {
     setMessages(getLS('sodaroja-internal-messages'));
@@ -138,6 +167,8 @@ const SubscriberDashboard: React.FC = () => {
     setSoditas(parseInt(localStorage.getItem('sodaroja-user-bubbles') || '10'));
     setNotifications(getLS('sodaroja-user-notifications', []));
     setMissions(getMissions());
+    setUserPlan(localStorage.getItem('sodaroja-user-plan') || 'plan-b');
+    setPayMethod(localStorage.getItem('sodaroja-pay-method') || 'Mercado Pago');
   }, []);
 
   const listenedCount = useMemo(() => getLS('sodaroja-listened').length, []);
@@ -241,23 +272,60 @@ const SubscriberDashboard: React.FC = () => {
           <div className="bg-soda-night/60 border border-soda-mist/15 rounded-sm p-5">
             <h3 className="text-soda-glow font-serif text-sm mb-4 flex items-center gap-2"><Settings size={14} className="text-soda-accent" />Tu Plan</h3>
             <div className="flex items-center justify-between mb-4">
-              <div><div className="text-soda-lamp text-sm font-medium">Plan Soda</div><div className="text-soda-fog text-xs">$5.000 ARS / mes</div></div>
+              <div><div className="text-soda-lamp text-sm font-medium">Plan {plans.find(p => p.id === userPlan)?.name || 'Soda'}</div><div className="text-soda-fog text-xs">${(plans.find(p => p.id === userPlan)?.priceARS || 5000).toLocaleString('es-AR')} ARS / mes</div></div>
               <div className="bg-emerald-500/20 border border-emerald-500/30 rounded-sm px-2.5 py-1"><span className="text-emerald-400 text-[11px]">Activo</span></div>
             </div>
             <div className="space-y-1">
-              {[
-                { label: 'Cambiar plan', icon: ArrowRight },
-                { label: 'Medio de pago', icon: CreditCard },
-                { label: 'Historial de pagos', icon: BarChart3 },
-                { label: 'Dar de baja', icon: LogOut },
-              ].map((opt, i) => {
-                const Icon = opt.icon;
-                return (
-                  <button key={i} className={`w-full text-left flex items-center gap-2.5 px-3 py-2 rounded-sm text-xs transition-all ${
-                    opt.label === 'Dar de baja' ? 'text-soda-fog/40 hover:text-red-400/60' : 'text-soda-fog hover:text-soda-lamp hover:bg-soda-mist/5'
-                  }`}><Icon size={12} className="text-soda-accent/50" />{opt.label}</button>
-                );
-              })}
+              <button onClick={() => setOpenPanel(openPanel === 'plan' ? null : 'plan')} className="w-full text-left flex items-center gap-2.5 px-3 py-2 rounded-sm text-xs text-soda-fog hover:text-soda-lamp hover:bg-soda-mist/5 transition-all"><ArrowRight size={12} className="text-soda-accent/50" />Cambiar plan</button>
+              <AnimatePresence>{openPanel === 'plan' && (
+                <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
+                  <div className="py-2 space-y-2">
+                    {plans.map(p => (
+                      <button key={p.id} onClick={() => { setUserPlan(p.id); localStorage.setItem('sodaroja-user-plan', p.id); setOpenPanel(null); }}
+                        className={`w-full text-left px-3 py-2.5 rounded-sm border text-xs transition-all ${userPlan === p.id ? 'border-soda-red/40 bg-soda-red/10 text-soda-lamp' : 'border-soda-mist/10 text-soda-fog hover:border-soda-accent/20'}`}>
+                        <div className="font-medium">{p.name} <span className="text-soda-fog font-normal">— ${p.priceARS.toLocaleString('es-AR')}/mes</span></div>
+                        <div className="text-[10px] text-soda-fog/60 mt-0.5">{p.description}</div>
+                      </button>
+                    ))}
+                  </div>
+                </motion.div>
+              )}</AnimatePresence>
+
+              <button onClick={() => setOpenPanel(openPanel === 'payment' ? null : 'payment')} className="w-full text-left flex items-center gap-2.5 px-3 py-2 rounded-sm text-xs text-soda-fog hover:text-soda-lamp hover:bg-soda-mist/5 transition-all"><CreditCard size={12} className="text-soda-accent/50" />Medio de pago</button>
+              <AnimatePresence>{openPanel === 'payment' && (
+                <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
+                  <div className="py-2 space-y-2">
+                    {['Visa ****6411', 'Mastercard ****2190', 'Mercado Pago'].map((m, i) => (
+                      <button key={i} onClick={() => { setPayMethod(m); localStorage.setItem('sodaroja-pay-method', m); setOpenPanel(null); }}
+                        className={`w-full text-left px-3 py-2 rounded-sm border text-xs transition-all ${payMethod === m ? 'border-soda-accent/30 bg-soda-accent/5 text-soda-lamp' : 'border-soda-mist/10 text-soda-fog hover:border-soda-accent/20'}`}>
+                        <span>{i === 0 ? '💳' : i === 1 ? '💳' : '📱'} {m}</span>
+                      </button>
+                    ))}
+                    <p className="text-soda-fog/40 text-[10px] px-1">En producción se conecta con tu pasarela de pagos.</p>
+                  </div>
+                </motion.div>
+              )}</AnimatePresence>
+
+              <button onClick={() => setOpenPanel(openPanel === 'history' ? null : 'history')} className="w-full text-left flex items-center gap-2.5 px-3 py-2 rounded-sm text-xs text-soda-fog hover:text-soda-lamp hover:bg-soda-mist/5 transition-all"><BarChart3 size={12} className="text-soda-accent/50" />Historial de pagos</button>
+              <AnimatePresence>{openPanel === 'history' && (
+                <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
+                  <div className="py-2 space-y-1.5">
+                    {[
+                      { date: '01/02/2026', amount: 5000, method: payMethod, status: 'Pagado' },
+                      { date: '01/01/2026', amount: 5000, method: payMethod, status: 'Pagado' },
+                      { date: '01/12/2025', amount: 5000, method: payMethod, status: 'Pagado' },
+                    ].map((h, i) => (
+                      <div key={i} className="px-3 py-2 border border-soda-mist/5 rounded-sm">
+                        <div className="flex justify-between text-xs"><span className="text-soda-lamp">{h.date}</span><span className="text-emerald-400/70">{h.status}</span></div>
+                        <div className="flex justify-between text-[10px] text-soda-fog mt-0.5"><span>${h.amount.toLocaleString('es-AR')} ARS</span><span>{h.method}</span></div>
+                      </div>
+                    ))}
+                    <p className="text-soda-fog/40 text-[10px] px-1">En producción estos datos vienen de tu pasarela.</p>
+                  </div>
+                </motion.div>
+              )}</AnimatePresence>
+
+              <button className="w-full text-left flex items-center gap-2.5 px-3 py-2 rounded-sm text-xs text-soda-fog/40 hover:text-red-400/60 transition-all"><LogOut size={12} className="text-soda-accent/50" />Dar de baja</button>
             </div>
           </div>
           {/* Stats */}

@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { ScrollToTop } from './components/ScrollToTop';
 import { HomePage } from './pages/HomePage';
-import { CustomCursor } from './effects/CustomCursor';
 import { FloatingParticles } from './effects/FloatingParticles';
 import { getContent } from './data/content';
 import { initDemoUsers } from './data/auth';
@@ -101,12 +100,9 @@ function App() {
     <Router>
       <ScrollToTop />
       <div className="relative min-h-screen bg-soda-night overflow-x-hidden">
-        {/* GPU-heavy overlays: skip on mobile */}
-        {!mobile && <div className="film-grain" />}
+        {/* Overlays decorativos — solo desktop, ligeros */}
         {!mobile && <div className="vignette" />}
-        {!mobile && <div className="scanlines" />}
-        {!mobile && <CustomCursor />}
-        <FloatingParticles count={mobile ? 4 : 30} />
+        <FloatingParticles count={mobile ? 4 : 20} />
         <Navbar />
 
         <Suspense fallback={<PageLoader />}>

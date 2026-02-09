@@ -146,6 +146,7 @@ export const Hero: React.FC = () => {
           </div>
           )}
 
+          {hero.title && (
           <motion.h1
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -155,7 +156,9 @@ export const Hero: React.FC = () => {
           >
             {hero.title}
           </motion.h1>
+          )}
 
+          {hero.subtitle && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -164,14 +167,18 @@ export const Hero: React.FC = () => {
           >
             {hero.subtitle}
           </motion.div>
+          )}
 
+          {(hero.title || hero.subtitle) && hero.description && (
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: '200px' }}
             transition={{ delay: 1.2, duration: 1 }}
             className="h-px bg-gradient-to-r from-transparent via-soda-lamp to-transparent mx-auto mb-8"
           />
+          )}
 
+          {hero.description && (
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -180,6 +187,7 @@ export const Hero: React.FC = () => {
           >
             {hero.description}
           </motion.p>
+          )}
         </motion.div>
 
       </div>

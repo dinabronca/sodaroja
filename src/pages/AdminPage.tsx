@@ -441,6 +441,13 @@ export const AdminPage: React.FC = () => {
               <p className={nc + ' mb-4'}>Enviá mensajes directos a un suscriptor: aviso de ganador, pago rechazado, feliz cumpleaños, etc.</p>
               <AdminNotifications ic={ic} lc={lc} />
             </div>
+
+            {/* MISIONES / SODITAS */}
+            <div className={cc}>
+              <h2 className="text-xl font-serif text-soda-glow mb-4">🥤 Misiones de Soditas</h2>
+              <p className={nc + ' mb-4'}>Configurá cómo se ganan soditas. En producción, las misiones automáticas (escuchar episodios, streak) se verifican por el sistema.</p>
+              <AdminMissions ic={ic} lc={lc} />
+            </div>
           </div>
         )}
 
@@ -874,6 +881,52 @@ const AdminNotifications: React.FC<{ ic: string; lc: string }> = ({ ic, lc }) =>
           <button onClick={() => remove(n.id)} className="text-soda-fog hover:text-red-400"><Trash2 size={14} /></button>
         </div>
       ))}
+    </div>
+  );
+};
+
+const AdminMissions: React.FC<{ ic: string; lc: string }> = ({ ic, lc }) => {
+  const defaultMissions = [
+    { id: 'listen-1', label: 'Escuchar primer episodio', soditas: 3, type: 'auto' },
+    { id: 'listen-5', label: 'Escuchar 5 episodios', soditas: 8, type: 'auto' },
+    { id: 'listen-10', label: 'Escuchar 10 episodios', soditas: 15, type: 'auto' },
+    { id: 'follow-ig', label: 'Seguinos en Instagram', soditas: 5, type: 'social' },
+    { id: 'follow-yt', label: 'Suscribite en YouTube', soditas: 5, type: 'social' },
+    { id: 'follow-tw', label: 'Seguinos en X (Twitter)', soditas: 5, type: 'social' },
+    { id: 'streak-3', label: '3 meses consecutivos', soditas: 10, type: 'auto' },
+    { id: 'streak-6', label: '6 meses consecutivos', soditas: 25, type: 'auto' },
+    { id: 'poll-vote', label: 'Votar en una encuesta', soditas: 3, type: 'recurring' },
+    { id: 'early-bird', label: 'Primero en escuchar episodio nuevo', soditas: 5, type: 'auto' },
+  ];
+  const [missions, setMissions] = useState<any[]>([]);
+
+  useEffect(() => {
+    const saved = (() => { try { return JSON.parse(localStorage.getItem('sodaroja-missions-config') || 'null'); } catch { return null; } })();
+    setMissions(saved || defaultMissions);
+  }, []);
+
+  const save = (m: any[]) => { setMissions(m); localStorage.setItem('sodaroja-missions-config', JSON.stringify(m)); };
+  const updateMission = (idx: number, field: string, val: any) => {
+    const m = [...missions]; m[idx] = { ...m[idx], [field]: val }; save(m);
+  };
+  const addMission = () => save([...missions, { id: `mission-${Date.now()}`, label: 'Nueva misión', soditas: 5, type: 'social' }]);
+  const removeMission = (idx: number) => save(missions.filter((_: any, i: number) => i !== idx));
+
+  return (
+    <div className="space-y-2">
+      {missions.map((m: any, idx: number) => (
+        <div key={m.id} className="grid grid-cols-12 gap-2 items-center border border-soda-mist/10 rounded-sm p-2">
+          <input type="text" value={m.label} onChange={e => updateMission(idx, 'label', e.target.value)} className={ic + ' col-span-5 text-xs'} />
+          <input type="number" value={m.soditas} onChange={e => updateMission(idx, 'soditas', Number(e.target.value))} className={ic + ' col-span-2 text-xs'} min={1} />
+          <select value={m.type} onChange={e => updateMission(idx, 'type', e.target.value)} className={ic + ' col-span-3 text-xs'}>
+            <option value="auto">Automática</option>
+            <option value="social">Redes sociales</option>
+            <option value="recurring">Recurrente</option>
+          </select>
+          <button onClick={() => removeMission(idx)} className="col-span-2 text-soda-fog hover:text-red-400 text-center"><Trash2 size={12} /></button>
+        </div>
+      ))}
+      <button onClick={addMission} className="px-3 py-1.5 border border-soda-mist/20 text-soda-fog rounded-sm text-xs hover:text-soda-lamp flex items-center gap-1"><Plus size={12} />Agregar misión</button>
     </div>
   );
 };
