@@ -15,8 +15,8 @@ export const Hero: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const waveCount = isMobile ? 2 : 5;
-  const particleCount = isMobile ? 4 : 15;
+  const waveCount = isMobile ? 1 : 5;
+  const particleCount = isMobile ? 2 : 15;
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -37,7 +37,7 @@ export const Hero: React.FC = () => {
         />
       ))}
       
-      <div className="light-rays" />
+      {!isMobile && <div className="light-rays" />}
       
       <div 
         className="absolute inset-0 bg-gradient-to-b from-soda-deep via-soda-night to-soda-deep"
@@ -182,7 +182,8 @@ export const Hero: React.FC = () => {
           </motion.p>
         </motion.div>
 
-        {/* Indicador de scroll */}
+        {/* Indicador de scroll — solo desktop */}
+        {!isMobile && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -195,6 +196,7 @@ export const Hero: React.FC = () => {
             className="w-px h-16 bg-gradient-to-b from-transparent via-soda-lamp to-transparent"
           />
         </motion.div>
+        )}
       </div>
 
       {/* Ondas de frecuencia en el fondo */}

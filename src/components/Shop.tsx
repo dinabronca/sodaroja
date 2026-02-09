@@ -67,15 +67,15 @@ export const Shop: React.FC = () => {
             Dejanos tu email y te avisamos cuando esté disponible el catálogo completo
           </p>
           
-          <div className="flex gap-4 max-w-md mx-auto">
+          <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
             <input
               type="email"
               placeholder="tu@email.com"
-              className="flex-1 bg-soda-slate bg-opacity-40 border border-soda-mist border-opacity-20 rounded-sm px-4 py-3 text-soda-lamp focus:border-soda-accent focus:outline-none transition-colors"
+              className="flex-1 bg-soda-slate/40 border border-soda-mist/20 rounded-sm px-4 py-3 text-soda-lamp focus:border-soda-accent focus:outline-none transition-colors text-sm"
             />
-            <button className="px-6 py-3 bg-soda-accent bg-opacity-20 border border-soda-accent text-soda-lamp rounded-sm hover:bg-opacity-30 transition-all flex items-center gap-2">
-              <Mail size={18} />
-              <span>Avisar</span>
+            <button className="px-6 py-3 bg-soda-accent/20 border border-soda-accent text-soda-lamp rounded-sm hover:bg-soda-accent/30 transition-all flex items-center justify-center gap-2 text-sm">
+              <Mail size={16} />
+              <span>Avisame</span>
             </button>
           </div>
         </motion.div>

@@ -9,139 +9,103 @@ const colorMap: Record<string, { border: string; text: string }> = {
   glow: { border: 'border-soda-glow', text: 'text-soda-glow' },
 };
 
+// Posiciones de lucecitas mapeadas a donde estan las antenas en la imagen
+const antennaLights = [
+  { x: 6, y: 28 }, { x: 12, y: 18 }, { x: 16, y: 24 }, { x: 20, y: 14 },
+  { x: 26, y: 20 }, { x: 31, y: 26 }, { x: 36, y: 16 }, { x: 40, y: 22 },
+  { x: 46, y: 12 }, { x: 50, y: 20 }, { x: 55, y: 18 }, { x: 60, y: 14 },
+  { x: 65, y: 22 }, { x: 70, y: 16 }, { x: 75, y: 20 }, { x: 80, y: 24 },
+  { x: 85, y: 18 }, { x: 90, y: 22 }, { x: 94, y: 16 },
+];
+
 export const QueEsEsto: React.FC = () => {
   const content = getContent();
   const { queEsEsto } = content;
   const isMobile = typeof window !== 'undefined' && (window.innerWidth < 768 || 'ontouchstart' in window);
 
-  const smokeCount = isMobile ? 1 : 4;
-  const bokehCount = isMobile ? 3 : 10;
-  const lineCount = isMobile ? 0 : 20;
+  const lightsToShow = isMobile ? antennaLights.filter((_, i) => i % 3 === 0) : antennaLights;
 
   return (
-    <section id="que-es-esto" className="relative py-32 px-6 bg-gradient-to-b from-soda-night via-soda-deep to-soda-night overflow-hidden">
-      {/* ===== FONDO ANTENAS — paisaje cyberpunk traslúcido ===== */}
-      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 1 }}>
-        {/* Imagen base con tratamiento */}
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+    <section id="que-es-esto" className="relative py-32 px-6 overflow-hidden">
+
+      {/* ===== CAPA 0: FONDO ANTENAS ===== */}
+      <div className="absolute inset-0">
+        {/* La imagen real */}
+        <img
+          src="/antenas-bg.jpg"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
           style={{
-            backgroundImage: 'url(/antenas-bg.jpg)',
-            filter: 'saturate(0.2) brightness(0.35) contrast(1.2) hue-rotate(200deg)',
-            opacity: 0.5,
+            filter: 'saturate(0.15) brightness(0.25) contrast(1.3)',
+            opacity: 1,
           }}
         />
-        {/* Overlay gradiente para fundirlo arriba y abajo */}
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(10,14,26,0.95) 0%, rgba(10,14,26,0.3) 20%, rgba(10,14,26,0.2) 50%, rgba(10,14,26,0.3) 80%, rgba(10,14,26,0.95) 100%)' }} />
-        {/* Tinte cyberpunk — rojo/azul */}
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(196,85,85,0.08) 0%, transparent 50%, rgba(138,155,196,0.08) 100%)' }} />
+        {/* Color overlay oscuro para que pegue con el estilo */}
+        <div className="absolute inset-0 bg-soda-night/70" />
+        {/* Fade arriba y abajo para transición suave */}
+        <div className="absolute inset-0" style={{
+          background: 'linear-gradient(to bottom, rgb(10,14,26) 0%, transparent 15%, transparent 85%, rgb(10,14,26) 100%)',
+        }} />
+        {/* Tinte oscuro rojizo sutil */}
+        <div className="absolute inset-0 bg-soda-red/[0.03]" />
+      </div>
 
-        {/* Lucecitas de antena parpadeando */}
-        {!isMobile && [...Array(12)].map((_, i) => (
+      {/* ===== CAPA 1: LUCECITAS DE ANTENA ===== */}
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 2 }}>
+        {lightsToShow.map((pos, i) => (
           <motion.div
-            key={`light-${i}`}
+            key={`alight-${i}`}
             className="absolute rounded-full"
             style={{
-              left: `${8 + (i / 12) * 84}%`,
-              top: `${25 + (i % 3) * 18 + Math.random() * 8}%`,
-              width: `${4 + Math.random() * 3}px`,
-              height: `${4 + Math.random() * 3}px`,
-              background: i % 3 === 0 ? '#c45555' : i % 3 === 1 ? '#ff6b6b' : '#c45555',
-              boxShadow: `0 0 ${8 + Math.random() * 12}px ${i % 2 === 0 ? 'rgba(196,85,85,0.6)' : 'rgba(255,107,107,0.4)'}`,
+              left: `${pos.x}%`,
+              top: `${pos.y + 20}%`,
+              width: '5px',
+              height: '5px',
+              background: '#c45555',
+              boxShadow: '0 0 8px rgba(196,85,85,0.7), 0 0 20px rgba(196,85,85,0.3)',
             }}
             animate={{
-              opacity: [0.2, 0.9, 0.2],
-              scale: [0.8, 1.2, 0.8],
+              opacity: [0.3, 1, 0.3],
+              boxShadow: [
+                '0 0 6px rgba(196,85,85,0.4), 0 0 15px rgba(196,85,85,0.15)',
+                '0 0 12px rgba(196,85,85,0.8), 0 0 30px rgba(196,85,85,0.4)',
+                '0 0 6px rgba(196,85,85,0.4), 0 0 15px rgba(196,85,85,0.15)',
+              ],
             }}
             transition={{
-              duration: 1.5 + Math.random() * 2,
+              duration: 1.5 + (i % 5) * 0.4,
               repeat: Infinity,
-              delay: Math.random() * 3,
+              delay: (i % 7) * 0.3,
               ease: 'easeInOut',
             }}
           />
         ))}
-        {isMobile && [...Array(5)].map((_, i) => (
-          <motion.div
-            key={`light-m-${i}`}
-            className="absolute rounded-full"
-            style={{
-              left: `${10 + i * 20}%`,
-              top: `${30 + (i % 2) * 20}%`,
-              width: '4px', height: '4px',
-              background: '#c45555',
-              boxShadow: '0 0 10px rgba(196,85,85,0.5)',
-            }}
-            animate={{ opacity: [0.2, 0.8, 0.2] }}
-            transition={{ duration: 2, repeat: Infinity, delay: i * 0.6 }}
-          />
-        ))}
       </div>
 
-      {/* Humo / niebla flotando */}
-      {[...Array(smokeCount)].map((_, i) => (
-        <motion.div
-          key={`smoke-${i}`}
-          className="absolute pointer-events-none"
-          style={{
-            left: `${-20 + i * 30}%`,
-            top: `${20 + i * 15}%`,
-            width: '50%',
-            height: '200px',
-            background: `radial-gradient(ellipse, rgba(${i % 2 === 0 ? '196, 85, 85' : '138, 155, 196'}, 0.03) 0%, transparent 70%)`,
-            filter: 'blur(50px)',
-            zIndex: 2,
-          }}
-          animate={{
-            x: [0, 60 + i * 20, 0],
-            y: [0, -20, 0],
-            opacity: [0.3, 0.6, 0.3],
-          }}
-          transition={{ duration: 12 + i * 4, repeat: Infinity, ease: 'easeInOut', delay: i * 3 }}
-        />
-      ))}
+      {/* ===== CAPA 2: HUMO SUTIL ===== */}
+      {!isMobile && (
+        <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 3 }}>
+          {[0, 1, 2].map(i => (
+            <motion.div
+              key={`smoke-${i}`}
+              className="absolute"
+              style={{
+                left: `${-10 + i * 35}%`,
+                bottom: '5%',
+                width: '45%',
+                height: '150px',
+                background: `radial-gradient(ellipse, rgba(${i % 2 === 0 ? '10, 14, 26' : '20, 25, 40'}, 0.4) 0%, transparent 70%)`,
+                filter: 'blur(40px)',
+              }}
+              animate={{ x: [0, 40 + i * 15, 0], opacity: [0.3, 0.5, 0.3] }}
+              transition={{ duration: 14 + i * 4, repeat: Infinity, ease: 'easeInOut' }}
+            />
+          ))}
+        </div>
+      )}
 
-      {/* Bokeh sutil de fondo */}
-      {[...Array(bokehCount)].map((_, i) => (
-        <motion.div
-          key={`qbk-${i}`}
-          className="absolute rounded-full pointer-events-none"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            width: `${80 + Math.random() * 120}px`,
-            height: `${80 + Math.random() * 120}px`,
-            background: i % 3 === 0
-              ? 'radial-gradient(circle, rgba(196, 85, 85, 0.04) 0%, transparent 70%)'
-              : i % 3 === 1
-                ? 'radial-gradient(circle, rgba(138, 155, 196, 0.03) 0%, transparent 70%)'
-                : 'radial-gradient(circle, rgba(212, 197, 176, 0.025) 0%, transparent 70%)',
-            filter: 'blur(25px)',
-            zIndex: 2,
-          }}
-          animate={{
-            x: [(Math.random()-0.5)*30, (Math.random()-0.5)*30],
-            y: [(Math.random()-0.5)*20, (Math.random()-0.5)*20],
-            opacity: [0.4, 0.8, 0.4],
-          }}
-          transition={{ duration: 8 + Math.random() * 8, repeat: Infinity, ease: 'easeInOut', delay: Math.random() * 5 }}
-        />
-      ))}
-
-      {/* Efectos de fondo — lineas verticales sutiles */}
-      {lineCount > 0 && <div className="absolute inset-0 opacity-10">
-        {[...Array(lineCount)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-px h-32 bg-gradient-to-b from-transparent via-soda-accent to-transparent"
-            style={{ left: `${Math.random() * 100}%`, top: `${Math.random() * 100}%` }}
-            animate={{ y: [0, -100, 0], opacity: [0, 0.5, 0] }}
-            transition={{ duration: 4 + Math.random() * 4, repeat: Infinity, delay: Math.random() * 4 }}
-          />
-        ))}
-      </div>}
-
-      <div className="max-w-5xl mx-auto relative z-10">
+      {/* ===== CAPA 10: CONTENIDO ===== */}
+      <div className="max-w-5xl mx-auto relative" style={{ zIndex: 10 }}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -175,24 +139,12 @@ export const QueEsEsto: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.06 }}
-                className={`relative bg-soda-slate bg-opacity-40 backdrop-blur-sm rounded-sm p-8 border transition-all duration-300 hover:scale-[1.02] group ${
+                className={`relative rounded-sm p-8 border transition-all duration-300 group ${
                   item.destacado
-                    ? 'border-soda-red border-opacity-40 hover:border-opacity-60 hover:shadow-lg hover:shadow-soda-red/10'
-                    : 'border-soda-mist border-opacity-20 hover:border-soda-accent hover:border-opacity-40'
+                    ? 'bg-soda-night/80 border-soda-red/40 hover:border-soda-red/60 hover:shadow-lg hover:shadow-soda-red/10'
+                    : 'bg-soda-night/70 border-soda-mist/20 hover:border-soda-accent/40'
                 }`}
               >
-                <div className="absolute inset-0 overflow-hidden rounded-sm opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                  {[...Array(5)].map((_, i) => (
-                    <motion.div
-                      key={i}
-                      className={`absolute w-1 h-1 rounded-full ${item.destacado ? 'bg-soda-red' : 'bg-soda-accent'}`}
-                      style={{ left: `${20 + Math.random() * 60}%`, top: `${20 + Math.random() * 60}%` }}
-                      animate={{ y: [0, -20, 0], opacity: [0, 0.6, 0] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
-                    />
-                  ))}
-                </div>
-
                 <div className="flex items-start gap-6">
                   <div className={`flex-shrink-0 w-16 h-16 rounded-sm border-2 flex items-center justify-center font-serif text-2xl ${colors.border} ${colors.text}`}>
                     {item.numero}
@@ -232,8 +184,7 @@ export const QueEsEsto: React.FC = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.05 }}
-                whileHover={undefined}
-                className="px-4 py-3 bg-soda-night bg-opacity-60 border border-soda-accent border-opacity-30 rounded-sm text-soda-accent text-sm text-center cursor-default"
+                className="px-4 py-3 bg-soda-night/80 border border-soda-accent/30 rounded-sm text-soda-accent text-sm text-center cursor-default"
               >
                 {tema}
               </motion.div>

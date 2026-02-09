@@ -480,18 +480,46 @@ body {
   * { cursor: auto !important; }
 }
 
+/* Mobile performance — reduce GPU load */
+@media (max-width: 767px) {
+  /* Kill backdrop-blur everywhere on mobile — huge GPU saver */
+  .backdrop-blur-sm, .backdrop-blur-md, .backdrop-blur-xl {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  
+  /* Smooth scrolling for modals */
+  .overflow-y-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Reduce transitions */
+  .transition-all { transition-duration: 150ms !important; }
+  
+  /* Iframes — prevent blocking main thread */
+  iframe {
+    will-change: auto !important;
+    contain: strict;
+  }
+}
+
 /* Mobile typography */
 @media (max-width: 640px) {
   .font-serif { letter-spacing: 0.02em; }
-  
-  /* Ensure no overflow */
   section { overflow-x: hidden; }
-  
-  /* Footer stack better */
   footer .flex-wrap { gap: 8px; }
 }
 
 /* Tablet fixes */
 @media (min-width: 641px) and (max-width: 1024px) {
   .grid-cols-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

@@ -8,8 +8,8 @@ const isMobile = () => typeof window !== 'undefined' && (window.innerWidth < 768
 // ============================================================
 export const TeamAmbience: React.FC = () => {
   const mobile = useMemo(isMobile, []);
-  const flyCount = mobile ? 4 : 18;
-  const bokehCount = mobile ? 1 : 5;
+  const flyCount = mobile ? 2 : 18;
+  const bokehCount = mobile ? 0 : 5;
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
@@ -42,7 +42,7 @@ const cityEmojis = ['🏛️', '🗺️', '✈️', '🌍', '🏔️', '⛩️',
 
 export const EpisodeVibes: React.FC = () => {
   const mobile = useMemo(isMobile, []);
-  const emojiCount = mobile ? 8 : 28;
+  const emojiCount = mobile ? 5 : 28;
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
@@ -103,7 +103,7 @@ export const BlueprintEffects: React.FC = () => {
 // ============================================================
 export const MailEffects: React.FC = () => {
   const mobile = useMemo(isMobile, []);
-  const envCount = mobile ? 10 : 28;
+  const envCount = mobile ? 6 : 28;
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>

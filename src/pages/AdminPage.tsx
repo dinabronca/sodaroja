@@ -413,6 +413,27 @@ export const AdminPage: React.FC = () => {
                 <div><label className={lc}>URL Internacional (cobro en USD)</label><input type="text" value={content.frecuenciaInterna.paymentUrls.international} onChange={(e) => update('frecuenciaInterna.paymentUrls.international', e.target.value)} className={ic} placeholder="https://www.paypal.com/..." /></div>
               </div>
             </div>
+
+            {/* MENSAJES INTERNOS */}
+            <div className={cc}>
+              <h2 className="text-xl font-serif text-soda-glow mb-4">📡 Mensajes Internos</h2>
+              <p className={nc + ' mb-4'}>Estos mensajes los ven solo los suscriptores en su panel. Como un feed privado.</p>
+              <AdminInternalMessages ic={ic} lc={lc} />
+            </div>
+
+            {/* ENCUESTAS */}
+            <div className={cc}>
+              <h2 className="text-xl font-serif text-soda-glow mb-4">📊 Encuestas</h2>
+              <p className={nc + ' mb-4'}>Creá encuestas para que voten los suscriptores. Podés ver estadísticas en tiempo real.</p>
+              <AdminPolls ic={ic} lc={lc} />
+            </div>
+
+            {/* SORTEOS */}
+            <div className={cc}>
+              <h2 className="text-xl font-serif text-soda-glow mb-4">🎰 Sorteos</h2>
+              <p className={nc + ' mb-4'}>Los suscriptores compran tickets con burbujas (moneda interna). Más tickets = más chances.</p>
+              <AdminRaffles ic={ic} lc={lc} />
+            </div>
           </div>
         )}
 
@@ -594,5 +615,159 @@ export const AdminPage: React.FC = () => {
         )}
       </div>
     </section>
+  );
+};
+
+// ============================================================
+// ADMIN SUB-COMPONENTS para Frecuencia Interna
+// ============================================================
+const AdminInternalMessages: React.FC<{ ic: string; lc: string }> = ({ ic, lc }) => {
+  const [messages, setMessages] = useState<any[]>([]);
+  const [newMsg, setNewMsg] = useState('');
+  const [newEmoji, setNewEmoji] = useState('📡');
+
+  useEffect(() => {
+    try { setMessages(JSON.parse(localStorage.getItem('sodaroja-internal-messages') || '[]')); } catch {}
+  }, []);
+
+  const save = (msgs: any[]) => {
+    setMessages(msgs);
+    localStorage.setItem('sodaroja-internal-messages', JSON.stringify(msgs));
+  };
+
+  const add = () => {
+    if (!newMsg.trim()) return;
+    save([...messages, { id: `msg-${Date.now()}`, text: newMsg, date: new Date().toISOString(), emoji: newEmoji }]);
+    setNewMsg(''); setNewEmoji('📡');
+  };
+
+  const remove = (id: string) => save(messages.filter((m: any) => m.id !== id));
+
+  return (
+    <div className="space-y-3">
+      <div className="flex gap-2">
+        <input type="text" value={newEmoji} onChange={e => setNewEmoji(e.target.value)} className={ic + ' w-16 text-center'} />
+        <input type="text" value={newMsg} onChange={e => setNewMsg(e.target.value)} className={ic + ' flex-1'} placeholder="Escribí un mensaje para los suscriptores..." />
+        <button onClick={add} className="px-4 py-2 bg-soda-red/20 border border-soda-red/40 text-soda-lamp rounded-sm text-sm"><Plus size={16} /></button>
+      </div>
+      {messages.slice().reverse().map((m: any) => (
+        <div key={m.id} className="flex items-start gap-3 border border-soda-mist/10 rounded-sm p-3">
+          <span className="text-lg">{m.emoji}</span>
+          <div className="flex-1 min-w-0">
+            <p className="text-soda-lamp text-sm">{m.text}</p>
+            <p className="text-soda-fog text-[10px] mt-1">{new Date(m.date).toLocaleDateString('es-AR')}</p>
+          </div>
+          <button onClick={() => remove(m.id)} className="text-soda-fog hover:text-red-400 transition-colors"><Trash2 size={14} /></button>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const AdminPolls: React.FC<{ ic: string; lc: string }> = ({ ic, lc }) => {
+  const [polls, setPolls] = useState<any[]>([]);
+  const [newQ, setNewQ] = useState('');
+  const [newOpts, setNewOpts] = useState('');
+
+  useEffect(() => {
+    try { setPolls(JSON.parse(localStorage.getItem('sodaroja-polls') || '[]')); } catch {}
+  }, []);
+
+  const save = (p: any[]) => { setPolls(p); localStorage.setItem('sodaroja-polls', JSON.stringify(p)); };
+
+  const add = () => {
+    if (!newQ.trim() || !newOpts.trim()) return;
+    const opts = newOpts.split('\n').map((s: string) => s.trim()).filter(Boolean);
+    if (opts.length < 2) return;
+    save([...polls, { id: `poll-${Date.now()}`, question: newQ, options: opts, active: true }]);
+    setNewQ(''); setNewOpts('');
+  };
+
+  const toggle = (id: string) => save(polls.map((p: any) => p.id === id ? { ...p, active: !p.active } : p));
+  const remove = (id: string) => save(polls.filter((p: any) => p.id !== id));
+
+  const allVotes = (() => { try { return JSON.parse(localStorage.getItem('sodaroja-poll-votes') || '{}'); } catch { return {}; } })();
+
+  return (
+    <div className="space-y-4">
+      <div className="space-y-2">
+        <input type="text" value={newQ} onChange={e => setNewQ(e.target.value)} className={ic} placeholder="Pregunta (ej: ¿Quién va a ganar Mejor Película?)" />
+        <textarea value={newOpts} onChange={e => setNewOpts(e.target.value)} className={ic + ' resize-y'} rows={4} placeholder={'Opciones (una por línea):\nOpción 1\nOpción 2\nOpción 3'} />
+        <button onClick={add} className="px-4 py-2 bg-soda-accent/20 border border-soda-accent/40 text-soda-lamp rounded-sm text-sm flex items-center gap-2"><Plus size={14} />Crear encuesta</button>
+      </div>
+      {polls.map((p: any) => {
+        const votes = allVotes[p.id] || {};
+        const total = Object.values(votes).reduce((a: number, b: any) => a + (b as number), 0) as number;
+        return (
+          <div key={p.id} className="border border-soda-mist/15 rounded-sm p-4">
+            <div className="flex items-start justify-between mb-2">
+              <div>
+                <h4 className="text-soda-lamp text-sm font-medium">{p.question}</h4>
+                <span className={`text-[10px] ${p.active ? 'text-emerald-400' : 'text-soda-fog'}`}>{p.active ? 'Activa' : 'Cerrada'} · {total} votos</span>
+              </div>
+              <div className="flex gap-2">
+                <button onClick={() => toggle(p.id)} className="text-soda-fog hover:text-soda-lamp text-xs">{p.active ? 'Cerrar' : 'Abrir'}</button>
+                <button onClick={() => remove(p.id)} className="text-soda-fog hover:text-red-400"><Trash2 size={14} /></button>
+              </div>
+            </div>
+            {p.options.map((opt: string, idx: number) => {
+              const count = votes[String(idx)] || 0;
+              const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+              return (
+                <div key={idx} className="flex justify-between text-xs text-soda-fog py-1 border-b border-soda-mist/5 last:border-0">
+                  <span>{opt}</span>
+                  <span>{count} ({pct}%)</span>
+                </div>
+              );
+            })}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+const AdminRaffles: React.FC<{ ic: string; lc: string }> = ({ ic, lc }) => {
+  const [raffles, setRaffles] = useState<any[]>([]);
+  const [newTitle, setNewTitle] = useState('');
+  const [newDesc, setNewDesc] = useState('');
+  const [newCost, setNewCost] = useState(2);
+
+  useEffect(() => {
+    try { setRaffles(JSON.parse(localStorage.getItem('sodaroja-raffles') || '[]')); } catch {}
+  }, []);
+
+  const save = (r: any[]) => { setRaffles(r); localStorage.setItem('sodaroja-raffles', JSON.stringify(r)); };
+  const add = () => {
+    if (!newTitle.trim()) return;
+    save([...raffles, { id: `raffle-${Date.now()}`, title: newTitle, description: newDesc, active: true, ticketCost: newCost }]);
+    setNewTitle(''); setNewDesc(''); setNewCost(2);
+  };
+  const toggle = (id: string) => save(raffles.map((r: any) => r.id === id ? { ...r, active: !r.active } : r));
+  const remove = (id: string) => save(raffles.filter((r: any) => r.id !== id));
+
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+        <input type="text" value={newTitle} onChange={e => setNewTitle(e.target.value)} className={ic} placeholder="Título del sorteo" />
+        <input type="text" value={newDesc} onChange={e => setNewDesc(e.target.value)} className={ic} placeholder="Descripción" />
+        <div className="flex gap-2">
+          <input type="number" value={newCost} onChange={e => setNewCost(Number(e.target.value))} className={ic + ' w-20'} min={1} />
+          <button onClick={add} className="px-3 py-2 bg-soda-accent/20 border border-soda-accent/40 text-soda-lamp rounded-sm text-sm"><Plus size={14} /></button>
+        </div>
+      </div>
+      {raffles.map((r: any) => (
+        <div key={r.id} className="flex items-center justify-between border border-soda-mist/15 rounded-sm p-3">
+          <div>
+            <h4 className="text-soda-lamp text-sm">{r.title}</h4>
+            <p className="text-soda-fog text-[10px]">{r.description} · Costo: {r.ticketCost} 🫧 · {r.active ? '✅ Activo' : '⏸ Cerrado'}</p>
+          </div>
+          <div className="flex gap-2">
+            <button onClick={() => toggle(r.id)} className="text-soda-fog hover:text-soda-lamp text-xs">{r.active ? 'Cerrar' : 'Abrir'}</button>
+            <button onClick={() => remove(r.id)} className="text-soda-fog hover:text-red-400"><Trash2 size={14} /></button>
+          </div>
+        </div>
+      ))}
+    </div>
   );
 };

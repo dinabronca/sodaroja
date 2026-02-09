@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, ExternalLink } from 'lucide-react';
+import { X, Calendar, ExternalLink, Eye, EyeOff } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getCurrentUser } from '../data/auth';
 
@@ -67,6 +67,7 @@ const GlitchText: React.FC<{ text: string }> = ({ text }) => (
 
 export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episodeNumber?: number }> = ({ episode, isNewest = false, episodeNumber }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [listened, setListened] = useState(false);
   const formattedDate = formatDate(episode.publishDate);
   const user = getCurrentUser();
   const isPremiumUser = user?.isPremium === true;
@@ -74,13 +75,44 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
   const isUnlockedPremium = episode.isPremium && isPremiumUser;
   const isMobile = typeof window !== 'undefined' && (window.innerWidth < 768 || 'ontouchstart' in window);
 
+  // Check if episode was listened
+  useEffect(() => {
+    try {
+      const data = JSON.parse(localStorage.getItem('sodaroja-listened') || '[]');
+      setListened(data.includes(episode.id));
+    } catch { /* */ }
+  }, [episode.id]);
+
+  const toggleListened = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    try {
+      const data: string[] = JSON.parse(localStorage.getItem('sodaroja-listened') || '[]');
+      const next = listened ? data.filter(id => id !== episode.id) : [...data, episode.id];
+      localStorage.setItem('sodaroja-listened', JSON.stringify(next));
+      setListened(!listened);
+    } catch { /* */ }
+  };
+
+  // Mark as listened when modal opens (user clicked to listen)
+  const markAsListened = () => {
+    if (!listened) {
+      try {
+        const data: string[] = JSON.parse(localStorage.getItem('sodaroja-listened') || '[]');
+        if (!data.includes(episode.id)) {
+          localStorage.setItem('sodaroja-listened', JSON.stringify([...data, episode.id]));
+          setListened(true);
+        }
+      } catch { /* */ }
+    }
+  };
+
   useEffect(() => {
     if (isExpanded) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = '';
     return () => { document.body.style.overflow = ''; };
   }, [isExpanded]);
 
-  const handleCardClick = () => { if (!isLocked) setIsExpanded(true); };
+  const handleCardClick = () => { if (!isLocked) { setIsExpanded(true); markAsListened(); } };
   const links = episode.links || {};
   const embeds = episode.embeds || {};
 
@@ -139,23 +171,36 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
               )}
             </div>
 
-            {/* ===== BADGE DERECHA — número de episodio ===== */}
-            {episodeNumber !== undefined && (
-              <div className="absolute top-3 right-3 z-20 bg-soda-night/80 backdrop-blur-sm px-2.5 py-1 rounded-sm border border-soda-mist/15">
-                <span className="text-soda-lamp text-[11px] font-mono font-bold">#{episodeNumber}</span>
-              </div>
-            )}
+            {/* ===== BADGE DERECHA — número + escuchado ===== */}
+            <div className="absolute top-3 right-3 z-20 flex items-center gap-1.5">
+              {listened && (
+                <button onClick={toggleListened} className="bg-soda-night/80 backdrop-blur-sm p-1.5 rounded-sm border border-emerald-500/30" title="Escuchado">
+                  <Eye size={13} className="text-emerald-400" />
+                </button>
+              )}
+              {!listened && !isLocked && (
+                <button onClick={toggleListened} className="bg-soda-night/80 backdrop-blur-sm p-1.5 rounded-sm border border-soda-mist/15 opacity-0 group-hover:opacity-100 transition-opacity" title="Marcar como escuchado">
+                  <EyeOff size={13} className="text-soda-fog" />
+                </button>
+              )}
+              {episodeNumber !== undefined && (
+                <div className="bg-soda-night/80 backdrop-blur-sm px-2.5 py-1 rounded-sm border border-soda-mist/15">
+                  <span className="text-soda-lamp text-[11px] font-mono font-bold">#{episodeNumber}</span>
+                </div>
+              )}
+            </div>
 
             {/* ===== PREMIUM BLOQUEADO: EFECTOS COMPLETOS ===== */}
             {isLocked && (
               <div className="absolute inset-0 z-20 flex items-center justify-center overflow-hidden">
-                {/* Fondo gradient con blur */}
-                <div className="absolute inset-0 bg-gradient-to-br from-soda-red/30 via-soda-night/70 to-soda-accent/30 backdrop-blur-md" />
+                {/* Fondo gradient */}
+                <div className={`absolute inset-0 bg-gradient-to-br from-soda-red/30 via-soda-night/70 to-soda-accent/30 ${isMobile ? '' : 'backdrop-blur-md'}`} />
 
-                {/* Scan lines */}
+                {/* Scan lines — CSS only, no animation */}
                 <div className="absolute inset-0 pointer-events-none" style={{ background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px)' }} />
 
-                {/* PULSO DE ENERGIA RADIAL */}
+                {/* PULSO DE ENERGIA RADIAL — solo desktop */}
+                {!isMobile && <>
                 <motion.div
                   className="absolute rounded-full"
                   style={{
@@ -176,6 +221,7 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
                   animate={{ scale: [0.3, 2], opacity: [0.3, 0] }}
                   transition={{ duration: 3, repeat: Infinity, delay: 1, ease: 'easeOut' }}
                 />
+                </>}
 
                 {/* BORDE ELECTRICO — solo desktop */}
                 {!isMobile && <motion.div
@@ -309,10 +355,10 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
       {/* Modal */}
       <AnimatePresence>
         {isExpanded && !isLocked && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[10000] flex items-center justify-center p-4 md:p-8 restore-cursor" onClick={() => setIsExpanded(false)}>
-            <div className="absolute inset-0 bg-soda-night bg-opacity-90 backdrop-blur-md" />
-            <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-soda-deep border border-soda-mist border-opacity-30 rounded-sm" onClick={(e) => e.stopPropagation()}>
-              <button onClick={() => setIsExpanded(false)} className="absolute top-4 right-4 z-50 w-10 h-10 bg-soda-night bg-opacity-80 rounded-full flex items-center justify-center text-soda-lamp hover:text-soda-glow transition-colors"><X size={20} /></button>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 z-[10000] flex items-center justify-center p-2 sm:p-4 md:p-8 restore-cursor" onClick={() => setIsExpanded(false)}>
+            <div className={`absolute inset-0 bg-soda-night/95 ${isMobile ? '' : 'backdrop-blur-md'}`} />
+            <motion.div initial={isMobile ? { opacity: 0, y: 20 } : { scale: 0.95, opacity: 0 }} animate={isMobile ? { opacity: 1, y: 0 } : { scale: 1, opacity: 1 }} exit={isMobile ? { opacity: 0 } : { scale: 0.95, opacity: 0 }} transition={{ duration: 0.2 }} className="relative w-full max-w-3xl max-h-[92vh] overflow-y-auto bg-soda-deep border border-soda-mist/30 rounded-sm" style={{ WebkitOverflowScrolling: 'touch' }} onClick={(e) => e.stopPropagation()}>
+              <button onClick={() => setIsExpanded(false)} className="absolute top-3 right-3 z-50 w-10 h-10 bg-soda-night/80 rounded-full flex items-center justify-center text-soda-lamp hover:text-soda-glow transition-colors"><X size={20} /></button>
 
               {/* Header con imagen */}
               <div className="relative h-64 overflow-hidden">
@@ -348,19 +394,19 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
               </div>
 
               {/* Contenido + Embeds */}
-              <div className="p-6 space-y-6">
-                <p className="text-soda-lamp leading-relaxed">{episode.description}</p>
+              <div className="p-4 sm:p-6 space-y-5">
+                <p className="text-soda-lamp leading-relaxed text-sm sm:text-base">{episode.description}</p>
                 {embeds.spotify && (
-                  <div><h4 className="text-soda-accent text-xs tracking-wider mb-3">SPOTIFY</h4><div className="rounded-sm overflow-hidden"><iframe src={embeds.spotify} width="100%" height="232" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" style={{ borderRadius: '8px' }} /></div></div>
+                  <div><h4 className="text-soda-accent text-xs tracking-wider mb-2">SPOTIFY</h4><div className="rounded-sm overflow-hidden"><iframe src={embeds.spotify} width="100%" height={isMobile ? "152" : "232"} frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" style={{ borderRadius: '8px' }} /></div></div>
                 )}
                 {embeds.soundcloud && (
-                  <div><h4 className="text-soda-accent text-xs tracking-wider mb-3">SOUNDCLOUD</h4><div className="rounded-sm overflow-hidden"><iframe src={embeds.soundcloud} width="100%" height="166" frameBorder="0" allow="autoplay" loading="lazy" /></div></div>
+                  <div><h4 className="text-soda-accent text-xs tracking-wider mb-2">SOUNDCLOUD</h4><div className="rounded-sm overflow-hidden"><iframe src={embeds.soundcloud} width="100%" height={isMobile ? "120" : "166"} frameBorder="0" allow="autoplay" loading="lazy" /></div></div>
                 )}
                 {embeds.ivoox && (
-                  <div><h4 className="text-soda-accent text-xs tracking-wider mb-3">IVOOX</h4><div className="rounded-sm overflow-hidden"><iframe src={embeds.ivoox} width="100%" height="200" frameBorder="0" loading="lazy" /></div></div>
+                  <div><h4 className="text-soda-accent text-xs tracking-wider mb-2">IVOOX</h4><div className="rounded-sm overflow-hidden"><iframe src={embeds.ivoox} width="100%" height={isMobile ? "150" : "200"} frameBorder="0" loading="lazy" /></div></div>
                 )}
                 {embeds.applePodcasts && (
-                  <div><h4 className="text-soda-accent text-xs tracking-wider mb-3">APPLE PODCASTS</h4><div className="rounded-sm overflow-hidden"><iframe src={embeds.applePodcasts} width="100%" height="175" frameBorder="0" allow="autoplay *;" loading="lazy" /></div></div>
+                  <div><h4 className="text-soda-accent text-xs tracking-wider mb-2">APPLE PODCASTS</h4><div className="rounded-sm overflow-hidden"><iframe src={embeds.applePodcasts} width="100%" height={isMobile ? "150" : "175"} frameBorder="0" allow="autoplay *;" loading="lazy" /></div></div>
                 )}
                 <div>
                   <h4 className="text-soda-accent text-xs tracking-wider mb-3">TAMBIEN DISPONIBLE EN</h4>

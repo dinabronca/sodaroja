@@ -106,7 +106,7 @@ function App() {
         {!mobile && <div className="vignette" />}
         {!mobile && <div className="scanlines" />}
         {!mobile && <CustomCursor />}
-        <FloatingParticles count={mobile ? 8 : 35} />
+        <FloatingParticles count={mobile ? 4 : 30} />
         <Navbar />
 
         <Suspense fallback={<PageLoader />}>
