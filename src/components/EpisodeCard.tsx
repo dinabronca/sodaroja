@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, ExternalLink, Eye, EyeOff } from 'lucide-react';
+import { X, Calendar, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getCurrentUser } from '../data/auth';
 
@@ -68,6 +68,7 @@ const GlitchText: React.FC<{ text: string }> = ({ text }) => (
 export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episodeNumber?: number }> = ({ episode, isNewest = false, episodeNumber }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [listened, setListened] = useState(false);
+  const [showListenPrompt, setShowListenPrompt] = useState(false);
   const formattedDate = formatDate(episode.publishDate);
   const user = getCurrentUser();
   const isPremiumUser = user?.isPremium === true;
@@ -75,7 +76,6 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
   const isUnlockedPremium = episode.isPremium && isPremiumUser;
   const isMobile = typeof window !== 'undefined' && (window.innerWidth < 768 || 'ontouchstart' in window);
 
-  // Check if episode was listened
   useEffect(() => {
     try {
       const data = JSON.parse(localStorage.getItem('sodaroja-listened') || '[]');
@@ -83,27 +83,14 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
     } catch { /* */ }
   }, [episode.id]);
 
-  const toggleListened = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const markListened = (val: boolean) => {
     try {
       const data: string[] = JSON.parse(localStorage.getItem('sodaroja-listened') || '[]');
-      const next = listened ? data.filter(id => id !== episode.id) : [...data, episode.id];
+      const next = val ? (data.includes(episode.id) ? data : [...data, episode.id]) : data.filter(id => id !== episode.id);
       localStorage.setItem('sodaroja-listened', JSON.stringify(next));
-      setListened(!listened);
+      setListened(val);
+      setShowListenPrompt(false);
     } catch { /* */ }
-  };
-
-  // Mark as listened when modal opens (user clicked to listen)
-  const markAsListened = () => {
-    if (!listened) {
-      try {
-        const data: string[] = JSON.parse(localStorage.getItem('sodaroja-listened') || '[]');
-        if (!data.includes(episode.id)) {
-          localStorage.setItem('sodaroja-listened', JSON.stringify([...data, episode.id]));
-          setListened(true);
-        }
-      } catch { /* */ }
-    }
   };
 
   useEffect(() => {
@@ -112,7 +99,12 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
     return () => { document.body.style.overflow = ''; };
   }, [isExpanded]);
 
-  const handleCardClick = () => { if (!isLocked) { setIsExpanded(true); markAsListened(); } };
+  const handleCardClick = () => {
+    if (!isLocked) {
+      setIsExpanded(true);
+      if (!listened) setTimeout(() => setShowListenPrompt(true), 2000);
+    }
+  };
   const links = episode.links || {};
   const embeds = episode.embeds || {};
 
@@ -174,14 +166,9 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
             {/* ===== BADGE DERECHA — número + escuchado ===== */}
             <div className="absolute top-3 right-3 z-20 flex items-center gap-1.5">
               {listened && (
-                <button onClick={toggleListened} className="bg-soda-night/80 backdrop-blur-sm p-1.5 rounded-sm border border-emerald-500/30" title="Escuchado">
-                  <Eye size={13} className="text-emerald-400" />
-                </button>
-              )}
-              {!listened && !isLocked && (
-                <button onClick={toggleListened} className="bg-soda-night/80 backdrop-blur-sm p-1.5 rounded-sm border border-soda-mist/15 opacity-0 group-hover:opacity-100 transition-opacity" title="Marcar como escuchado">
-                  <EyeOff size={13} className="text-soda-fog" />
-                </button>
+                <div className="bg-emerald-500/20 backdrop-blur-sm p-1.5 rounded-sm border border-emerald-500/30" title="Ya lo escuchaste">
+                  <span className="text-[10px]">✓</span>
+                </div>
               )}
               {episodeNumber !== undefined && (
                 <div className="bg-soda-night/80 backdrop-blur-sm px-2.5 py-1 rounded-sm border border-soda-mist/15">
@@ -416,6 +403,30 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
                     {links.soundcloud && !embeds.soundcloud && <a href={links.soundcloud} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 border border-soda-mist border-opacity-30 rounded-sm text-soda-lamp text-sm hover:border-soda-accent transition-all"><ExternalLink size={14} />SoundCloud</a>}
                   </div>
                 </div>
+
+                {/* ¿Ya lo escuchaste? */}
+                {showListenPrompt && !listened && (
+                  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+                    className="border-t border-soda-mist/15 pt-5 mt-2">
+                    <p className="text-soda-lamp text-sm text-center mb-3">¿Ya viajaste con este episodio? 🎧</p>
+                    <div className="flex justify-center gap-3">
+                      <button onClick={() => markListened(true)}
+                        className="px-5 py-2 bg-soda-red/15 border border-soda-red/40 rounded-sm text-soda-lamp text-sm hover:bg-soda-red/25 transition-all">
+                        Sí, ya lo escuché 🔴
+                      </button>
+                      <button onClick={() => setShowListenPrompt(false)}
+                        className="px-5 py-2 border border-soda-mist/20 rounded-sm text-soda-fog text-sm hover:text-soda-lamp transition-all">
+                        Todavía no 👀
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+                {listened && (
+                  <div className="border-t border-soda-mist/15 pt-4 mt-2 flex items-center justify-between">
+                    <p className="text-emerald-400/70 text-xs flex items-center gap-1.5">✓ Ya escuchaste este episodio</p>
+                    <button onClick={() => markListened(false)} className="text-soda-fog/40 text-[11px] hover:text-soda-fog transition-colors">desmarcar</button>
+                  </div>
+                )}
               </div>
             </motion.div>
           </motion.div>
