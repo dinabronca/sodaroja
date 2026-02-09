@@ -673,9 +673,9 @@ const AdminInternalMessages: React.FC<{ ic: string; lc: string }> = ({ ic, lc })
 
 const AdminPolls: React.FC<{ ic: string; lc: string }> = ({ ic, lc }) => {
   const [polls, setPolls] = useState<any[]>([]);
-  const [newQ, setNewQ] = useState('');
-  const [newOpts, setNewOpts] = useState('');
+  const [newTitle, setNewTitle] = useState('');
   const [newBanner, setNewBanner] = useState('');
+  const [newQuestions, setNewQuestions] = useState<{ question: string; options: string }[]>([{ question: '', options: '' }]);
 
   useEffect(() => {
     try { setPolls(JSON.parse(localStorage.getItem('sodaroja-polls') || '[]')); } catch {}
@@ -683,12 +683,25 @@ const AdminPolls: React.FC<{ ic: string; lc: string }> = ({ ic, lc }) => {
 
   const save = (p: any[]) => { setPolls(p); localStorage.setItem('sodaroja-polls', JSON.stringify(p)); };
 
-  const add = () => {
-    if (!newQ.trim() || !newOpts.trim()) return;
-    const opts = newOpts.split('\n').map((s: string) => s.trim()).filter(Boolean);
-    if (opts.length < 2) return;
-    save([...polls, { id: `poll-${Date.now()}`, question: newQ, options: opts, active: true, bannerUrl: newBanner || '' }]);
-    setNewQ(''); setNewOpts(''); setNewBanner('');
+  const addQuestion = () => setNewQuestions([...newQuestions, { question: '', options: '' }]);
+  const removeQuestion = (idx: number) => setNewQuestions(newQuestions.filter((_, i) => i !== idx));
+  const updateQuestion = (idx: number, field: string, val: string) => {
+    const q = [...newQuestions]; q[idx] = { ...q[idx], [field]: val }; setNewQuestions(q);
+  };
+
+  const createPoll = () => {
+    if (!newTitle.trim()) return;
+    const questions = newQuestions
+      .filter(q => q.question.trim() && q.options.trim())
+      .map(q => ({ question: q.question, options: q.options.split('\n').map((s: string) => s.trim()).filter(Boolean) }))
+      .filter(q => q.options.length >= 2);
+    if (questions.length === 0) return;
+    save([...polls, {
+      id: `poll-${Date.now()}`, title: newTitle, questions, active: true, bannerUrl: newBanner || '',
+      // Backwards compat: question = title, options = first question's options
+      question: newTitle, options: questions[0].options,
+    }]);
+    setNewTitle(''); setNewBanner(''); setNewQuestions([{ question: '', options: '' }]);
   };
 
   const toggle = (id: string) => save(polls.map((p: any) => p.id === id ? { ...p, active: !p.active } : p));
@@ -698,35 +711,60 @@ const AdminPolls: React.FC<{ ic: string; lc: string }> = ({ ic, lc }) => {
 
   return (
     <div className="space-y-4">
-      <p className="text-soda-fog text-[11px]">📐 Tamaño del banner: <span className="text-soda-lamp">800 × 200 px</span> (formato horizontal, JPG o PNG)</p>
-      <div className="space-y-2">
-        <input type="text" value={newQ} onChange={e => setNewQ(e.target.value)} className={ic} placeholder="Pregunta (ej: ¿Quién va a ganar Mejor Película?)" />
-        <input type="text" value={newBanner} onChange={e => setNewBanner(e.target.value)} className={ic} placeholder="URL del banner/imagen (opcional, 800×200px)" />
-        <textarea value={newOpts} onChange={e => setNewOpts(e.target.value)} className={ic + ' resize-y'} rows={4} placeholder={'Opciones (una por línea):\nOpción 1\nOpción 2\nOpción 3'} />
-        <button onClick={add} className="px-4 py-2 bg-soda-accent/20 border border-soda-accent/40 text-soda-lamp rounded-sm text-sm flex items-center gap-2"><Plus size={14} />Crear encuesta</button>
+      <p className="text-soda-fog text-[11px]">📐 Banner: <span className="text-soda-lamp">800 × 200 px</span> · Cada encuesta puede tener múltiples preguntas (ej: 10 categorías del Oscar)</p>
+
+      {/* Crear nueva encuesta */}
+      <div className="border border-soda-accent/20 rounded-sm p-4 space-y-3">
+        <input type="text" value={newTitle} onChange={e => setNewTitle(e.target.value)} className={ic} placeholder="Título de la encuesta (ej: Premios Oscar 2026)" />
+        <input type="text" value={newBanner} onChange={e => setNewBanner(e.target.value)} className={ic} placeholder="URL del banner (opcional, 800×200px)" />
+
+        <div className="space-y-3">
+          {newQuestions.map((q, idx) => (
+            <div key={idx} className="border border-soda-mist/10 rounded-sm p-3">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-soda-accent text-[11px]">Pregunta {idx + 1}</span>
+                {newQuestions.length > 1 && (
+                  <button onClick={() => removeQuestion(idx)} className="text-soda-fog hover:text-red-400 text-[10px]">Eliminar</button>
+                )}
+              </div>
+              <input type="text" value={q.question} onChange={e => updateQuestion(idx, 'question', e.target.value)} className={ic + ' mb-2'} placeholder={`Pregunta (ej: Mejor Película)`} />
+              <textarea value={q.options} onChange={e => updateQuestion(idx, 'options', e.target.value)} className={ic + ' resize-y text-xs'} rows={3} placeholder={'Opciones (una por línea):\nOpción 1\nOpción 2'} />
+            </div>
+          ))}
+        </div>
+
+        <div className="flex gap-2">
+          <button onClick={addQuestion} className="px-3 py-1.5 border border-soda-mist/20 text-soda-fog rounded-sm text-xs hover:text-soda-lamp">+ Agregar pregunta</button>
+          <button onClick={createPoll} className="px-4 py-1.5 bg-soda-accent/20 border border-soda-accent/40 text-soda-lamp rounded-sm text-xs flex items-center gap-1"><Plus size={12} />Crear encuesta</button>
+        </div>
       </div>
+
+      {/* Lista de encuestas */}
       {polls.map((p: any) => {
-        const votes = allVotes[p.id] || {};
-        const total = Object.values(votes).reduce((a: number, b: any) => a + (b as number), 0) as number;
+        const questions = p.questions || [{ question: p.question, options: p.options }];
         return (
           <div key={p.id} className="border border-soda-mist/15 rounded-sm p-4">
             <div className="flex items-start justify-between mb-2">
               <div>
-                <h4 className="text-soda-lamp text-sm font-medium">{p.question}</h4>
-                <span className={`text-[10px] ${p.active ? 'text-emerald-400' : 'text-soda-fog'}`}>{p.active ? 'Activa' : 'Cerrada'} · {total} votos</span>
+                <h4 className="text-soda-lamp text-sm font-medium">{p.title || p.question}</h4>
+                <span className={`text-[10px] ${p.active ? 'text-emerald-400' : 'text-soda-fog'}`}>{p.active ? 'Activa' : 'Cerrada'} · {questions.length} pregunta{questions.length > 1 ? 's' : ''}</span>
               </div>
               <div className="flex gap-2">
                 <button onClick={() => toggle(p.id)} className="text-soda-fog hover:text-soda-lamp text-xs">{p.active ? 'Cerrar' : 'Abrir'}</button>
                 <button onClick={() => remove(p.id)} className="text-soda-fog hover:text-red-400"><Trash2 size={14} /></button>
               </div>
             </div>
-            {p.options.map((opt: string, idx: number) => {
-              const count = votes[String(idx)] || 0;
-              const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+            {questions.map((q: any, qi: number) => {
+              const votes = allVotes[`${p.id}-q${qi}`] || {};
+              const total = Object.values(votes).reduce((a: number, b: any) => a + (b as number), 0) as number;
               return (
-                <div key={idx} className="flex justify-between text-xs text-soda-fog py-1 border-b border-soda-mist/5 last:border-0">
-                  <span>{opt}</span>
-                  <span>{count} ({pct}%)</span>
+                <div key={qi} className="mb-2 last:mb-0">
+                  <p className="text-soda-fog text-xs font-medium mb-1">{qi + 1}. {q.question}</p>
+                  {q.options.map((opt: string, oi: number) => {
+                    const count = votes[String(oi)] || 0;
+                    const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+                    return <div key={oi} className="flex justify-between text-[11px] text-soda-fog py-0.5 pl-3"><span>{opt}</span><span>{count} ({pct}%)</span></div>;
+                  })}
                 </div>
               );
             })}

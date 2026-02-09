@@ -151,15 +151,7 @@ const SubscriberDashboard: React.FC = () => {
     const n = soditas + amount; setSoditas(n); localStorage.setItem('sodaroja-user-bubbles', String(n));
   };
 
-  const handleVote = (pollId: string, idx: number) => {
-    if (userVotes[pollId] !== undefined) return;
-    const nv = { ...pollVotes }; if (!nv[pollId]) nv[pollId] = {};
-    nv[pollId][String(idx)] = (nv[pollId][String(idx)] || 0) + 1;
-    setPollVotes(nv); setLS('sodaroja-poll-votes', nv);
-    const nuv = { ...userVotes, [pollId]: idx }; setUserVotes(nuv); setLS('sodaroja-user-poll-votes', nuv);
-    addSoditas(3); // reward for voting
-    setActivePollPage(null);
-  };
+  const pollCompleted = currentPoll ? userVotes[currentPoll.id] !== undefined : true;
 
   const enterRaffle = (raffleId: string) => {
     const cost = raffles.find((r: any) => r.id === raffleId)?.soditasCost || 5;
@@ -449,33 +441,88 @@ const SubscriberDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* ===== POLL PAGE (overlay) ===== */}
+      {/* ===== POLL PAGE (overlay) — multi-question ===== */}
       <AnimatePresence>
-        {activePollPage && currentPoll && userVotes[currentPoll.id] === undefined && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9999] flex items-center justify-center p-4" onClick={() => setActivePollPage(null)}>
-            <div className="absolute inset-0 bg-soda-night/95" />
-            <motion.div initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95 }}
-              className="relative w-full max-w-lg bg-soda-deep border border-soda-accent/20 rounded-sm overflow-hidden" onClick={e => e.stopPropagation()}>
-              {currentPoll.bannerUrl && <img src={currentPoll.bannerUrl} alt="" className="w-full h-auto" />}
-              <div className="p-6">
-                <h3 className="text-soda-glow font-serif text-xl mb-5">{currentPoll.question}</h3>
-                <div className="space-y-2.5">
-                  {currentPoll.options.map((opt: string, idx: number) => (
-                    <button key={idx} onClick={() => handleVote(currentPoll.id, idx)}
-                      className="w-full text-left px-4 py-3 border border-soda-mist/15 rounded-sm text-soda-lamp text-sm hover:border-soda-red/40 hover:bg-soda-red/5 transition-all">
-                      {opt}
-                    </button>
-                  ))}
-                </div>
-                <p className="text-soda-fog/40 text-[11px] mt-4 text-center">Votar te suma +3 🥤</p>
-              </div>
-              <button onClick={() => setActivePollPage(null)} className="absolute top-3 right-3 w-8 h-8 bg-soda-night/80 rounded-full flex items-center justify-center text-soda-fog hover:text-soda-lamp">✕</button>
-            </motion.div>
-          </motion.div>
+        {activePollPage && currentPoll && !pollCompleted && (
+          <PollPage poll={currentPoll} onClose={() => setActivePollPage(null)} onComplete={(answers) => {
+            // Save all answers
+            const questions = currentPoll.questions || [{ question: currentPoll.question, options: currentPoll.options }];
+            const nv = { ...pollVotes };
+            questions.forEach((_: any, qi: number) => {
+              const key = `${currentPoll.id}-q${qi}`;
+              if (!nv[key]) nv[key] = {};
+              const ans = answers[qi];
+              if (ans !== undefined) nv[key][String(ans)] = (nv[key][String(ans)] || 0) + 1;
+            });
+            setPollVotes(nv); setLS('sodaroja-poll-votes', nv);
+            const nuv = { ...userVotes, [currentPoll.id]: 1 }; setUserVotes(nuv); setLS('sodaroja-user-poll-votes', nuv);
+            addSoditas(3);
+            setActivePollPage(null);
+          }} />
         )}
       </AnimatePresence>
     </div>
+  );
+};
+
+// Multi-question poll page component
+const PollPage: React.FC<{ poll: any; onClose: () => void; onComplete: (answers: Record<number, number>) => void }> = ({ poll, onClose, onComplete }) => {
+  const questions = poll.questions || [{ question: poll.question, options: poll.options }];
+  const [current, setCurrent] = useState(0);
+  const [answers, setAnswers] = useState<Record<number, number>>({});
+  const total = questions.length;
+
+  const selectOption = (optIdx: number) => {
+    const newAnswers = { ...answers, [current]: optIdx };
+    setAnswers(newAnswers);
+    if (current < total - 1) {
+      setTimeout(() => setCurrent(current + 1), 300);
+    } else {
+      setTimeout(() => onComplete(newAnswers), 400);
+    }
+  };
+
+  const q = questions[current];
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-4" onClick={onClose}>
+      <div className="absolute inset-0 bg-soda-night/95" />
+      <motion.div initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95 }}
+        className="relative w-full max-w-lg max-h-[85vh] overflow-y-auto bg-soda-deep border border-soda-accent/20 rounded-sm" style={{ WebkitOverflowScrolling: 'touch' }} onClick={e => e.stopPropagation()}>
+        {current === 0 && poll.bannerUrl && <img src={poll.bannerUrl} alt="" className="w-full h-auto" />}
+        <div className="p-6">
+          {/* Progress */}
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-soda-fog text-[11px]">{current + 1} de {total}</span>
+            <div className="flex-1 mx-3 h-1 bg-soda-mist/10 rounded-full overflow-hidden">
+              <motion.div className="h-full bg-soda-red/60 rounded-full" animate={{ width: `${((current + 1) / total) * 100}%` }} />
+            </div>
+            <span className="text-soda-accent text-[11px]">+3 🥤</span>
+          </div>
+
+          <AnimatePresence mode="wait">
+            <motion.div key={current} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}>
+              <h3 className="text-soda-glow font-serif text-lg mb-4">{q.question}</h3>
+              <div className="space-y-2">
+                {q.options.map((opt: string, idx: number) => {
+                  const selected = answers[current] === idx;
+                  return (
+                    <button key={idx} onClick={() => selectOption(idx)}
+                      className={`w-full text-left px-4 py-3 rounded-sm text-sm transition-all ${
+                        selected ? 'border border-soda-red/50 bg-soda-red/10 text-soda-lamp' : 'border border-soda-mist/15 text-soda-fog hover:border-soda-red/30 hover:bg-soda-red/5 hover:text-soda-lamp'
+                      }`}>
+                      {opt}
+                    </button>
+                  );
+                })}
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+        <button onClick={onClose} className="absolute top-3 right-3 w-8 h-8 bg-soda-night/80 rounded-full flex items-center justify-center text-soda-fog hover:text-soda-lamp">✕</button>
+      </motion.div>
+    </motion.div>
   );
 };
 

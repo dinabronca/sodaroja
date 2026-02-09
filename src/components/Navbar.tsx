@@ -45,7 +45,7 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
+      <nav className={`fixed top-0 left-0 right-0 z-[9000] transition-all duration-300 ${
         scrolled || mobileOpen ? 'bg-soda-night/95 backdrop-blur-md shadow-lg shadow-black/20' : 'bg-transparent'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
@@ -115,7 +115,7 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile menu overlay */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-[99] lg:hidden" onClick={() => setMobileOpen(false)}>
+        <div className="fixed inset-0 z-[8999] lg:hidden" onClick={() => setMobileOpen(false)}>
           {/* Backdrop */}
           <div className="absolute inset-0 bg-black/60" />
           
