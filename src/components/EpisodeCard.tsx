@@ -102,7 +102,7 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
   const handleCardClick = () => {
     if (!isLocked) {
       setIsExpanded(true);
-      if (!listened) setTimeout(() => setShowListenPrompt(true), 2000);
+      if (!listened) setShowListenPrompt(true);
     }
   };
   const links = episode.links || {};

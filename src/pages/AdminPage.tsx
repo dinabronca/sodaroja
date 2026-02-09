@@ -434,6 +434,13 @@ export const AdminPage: React.FC = () => {
               <p className={nc + ' mb-4'}>Los suscriptores compran tickets con burbujas (moneda interna). Más tickets = más chances.</p>
               <AdminRaffles ic={ic} lc={lc} />
             </div>
+
+            {/* NOTIFICACIONES PERSONALES */}
+            <div className={cc}>
+              <h2 className="text-xl font-serif text-soda-glow mb-4">🔔 Notificaciones Personales</h2>
+              <p className={nc + ' mb-4'}>Enviá mensajes directos a un suscriptor: aviso de ganador, pago rechazado, feliz cumpleaños, etc.</p>
+              <AdminNotifications ic={ic} lc={lc} />
+            </div>
           </div>
         )}
 
@@ -668,6 +675,7 @@ const AdminPolls: React.FC<{ ic: string; lc: string }> = ({ ic, lc }) => {
   const [polls, setPolls] = useState<any[]>([]);
   const [newQ, setNewQ] = useState('');
   const [newOpts, setNewOpts] = useState('');
+  const [newBanner, setNewBanner] = useState('');
 
   useEffect(() => {
     try { setPolls(JSON.parse(localStorage.getItem('sodaroja-polls') || '[]')); } catch {}
@@ -679,8 +687,8 @@ const AdminPolls: React.FC<{ ic: string; lc: string }> = ({ ic, lc }) => {
     if (!newQ.trim() || !newOpts.trim()) return;
     const opts = newOpts.split('\n').map((s: string) => s.trim()).filter(Boolean);
     if (opts.length < 2) return;
-    save([...polls, { id: `poll-${Date.now()}`, question: newQ, options: opts, active: true }]);
-    setNewQ(''); setNewOpts('');
+    save([...polls, { id: `poll-${Date.now()}`, question: newQ, options: opts, active: true, bannerUrl: newBanner || '' }]);
+    setNewQ(''); setNewOpts(''); setNewBanner('');
   };
 
   const toggle = (id: string) => save(polls.map((p: any) => p.id === id ? { ...p, active: !p.active } : p));
@@ -690,8 +698,10 @@ const AdminPolls: React.FC<{ ic: string; lc: string }> = ({ ic, lc }) => {
 
   return (
     <div className="space-y-4">
+      <p className="text-soda-fog text-[11px]">📐 Tamaño del banner: <span className="text-soda-lamp">800 × 200 px</span> (formato horizontal, JPG o PNG)</p>
       <div className="space-y-2">
         <input type="text" value={newQ} onChange={e => setNewQ(e.target.value)} className={ic} placeholder="Pregunta (ej: ¿Quién va a ganar Mejor Película?)" />
+        <input type="text" value={newBanner} onChange={e => setNewBanner(e.target.value)} className={ic} placeholder="URL del banner/imagen (opcional, 800×200px)" />
         <textarea value={newOpts} onChange={e => setNewOpts(e.target.value)} className={ic + ' resize-y'} rows={4} placeholder={'Opciones (una por línea):\nOpción 1\nOpción 2\nOpción 3'} />
         <button onClick={add} className="px-4 py-2 bg-soda-accent/20 border border-soda-accent/40 text-soda-lamp rounded-sm text-sm flex items-center gap-2"><Plus size={14} />Crear encuesta</button>
       </div>
@@ -731,7 +741,8 @@ const AdminRaffles: React.FC<{ ic: string; lc: string }> = ({ ic, lc }) => {
   const [raffles, setRaffles] = useState<any[]>([]);
   const [newTitle, setNewTitle] = useState('');
   const [newDesc, setNewDesc] = useState('');
-  const [newCost, setNewCost] = useState(2);
+  const [newCost, setNewCost] = useState(5);
+  const [newBanner, setNewBanner] = useState('');
 
   useEffect(() => {
     try { setRaffles(JSON.parse(localStorage.getItem('sodaroja-raffles') || '[]')); } catch {}
@@ -740,19 +751,25 @@ const AdminRaffles: React.FC<{ ic: string; lc: string }> = ({ ic, lc }) => {
   const save = (r: any[]) => { setRaffles(r); localStorage.setItem('sodaroja-raffles', JSON.stringify(r)); };
   const add = () => {
     if (!newTitle.trim()) return;
-    save([...raffles, { id: `raffle-${Date.now()}`, title: newTitle, description: newDesc, active: true, ticketCost: newCost }]);
-    setNewTitle(''); setNewDesc(''); setNewCost(2);
+    save([...raffles, { id: `raffle-${Date.now()}`, title: newTitle, description: newDesc, active: true, soditasCost: newCost, bannerUrl: newBanner || '' }]);
+    setNewTitle(''); setNewDesc(''); setNewCost(5); setNewBanner('');
   };
   const toggle = (id: string) => save(raffles.map((r: any) => r.id === id ? { ...r, active: !r.active } : r));
   const remove = (id: string) => save(raffles.filter((r: any) => r.id !== id));
 
+  // Ver participantes
+  const entries = (() => { try { return JSON.parse(localStorage.getItem('sodaroja-raffle-entries') || '{}'); } catch { return {}; } })();
+
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+      <p className="text-soda-fog text-[11px]">📐 Tamaño del banner: <span className="text-soda-lamp">800 × 200 px</span> · Participar cuesta soditas (sin tickets)</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <input type="text" value={newTitle} onChange={e => setNewTitle(e.target.value)} className={ic} placeholder="Título del sorteo" />
-        <input type="text" value={newDesc} onChange={e => setNewDesc(e.target.value)} className={ic} placeholder="Descripción" />
+        <input type="text" value={newDesc} onChange={e => setNewDesc(e.target.value)} className={ic} placeholder="Descripción (qué se sortea)" />
+        <input type="text" value={newBanner} onChange={e => setNewBanner(e.target.value)} className={ic} placeholder="URL del banner (opcional, 800×200px)" />
         <div className="flex gap-2">
-          <input type="number" value={newCost} onChange={e => setNewCost(Number(e.target.value))} className={ic + ' w-20'} min={1} />
+          <input type="number" value={newCost} onChange={e => setNewCost(Number(e.target.value))} className={ic + ' w-24'} min={1} />
+          <span className="text-soda-fog text-xs self-center">🥤</span>
           <button onClick={add} className="px-3 py-2 bg-soda-accent/20 border border-soda-accent/40 text-soda-lamp rounded-sm text-sm"><Plus size={14} /></button>
         </div>
       </div>
@@ -760,12 +777,63 @@ const AdminRaffles: React.FC<{ ic: string; lc: string }> = ({ ic, lc }) => {
         <div key={r.id} className="flex items-center justify-between border border-soda-mist/15 rounded-sm p-3">
           <div>
             <h4 className="text-soda-lamp text-sm">{r.title}</h4>
-            <p className="text-soda-fog text-[10px]">{r.description} · Costo: {r.ticketCost} 🫧 · {r.active ? '✅ Activo' : '⏸ Cerrado'}</p>
+            <p className="text-soda-fog text-[10px]">{r.description} · Costo: {r.soditasCost || r.ticketCost || 5} 🥤 · {r.active ? '✅ Activo' : '⏸ Cerrado'}</p>
           </div>
           <div className="flex gap-2">
             <button onClick={() => toggle(r.id)} className="text-soda-fog hover:text-soda-lamp text-xs">{r.active ? 'Cerrar' : 'Abrir'}</button>
             <button onClick={() => remove(r.id)} className="text-soda-fog hover:text-red-400"><Trash2 size={14} /></button>
           </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const AdminNotifications: React.FC<{ ic: string; lc: string }> = ({ ic, lc }) => {
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const [newText, setNewText] = useState('');
+  const [newType, setNewType] = useState('general');
+
+  useEffect(() => {
+    try { setNotifications(JSON.parse(localStorage.getItem('sodaroja-user-notifications') || '[]')); } catch {}
+  }, []);
+
+  const save = (n: any[]) => { setNotifications(n); localStorage.setItem('sodaroja-user-notifications', JSON.stringify(n)); };
+
+  const add = () => {
+    if (!newText.trim()) return;
+    save([...notifications, { id: `notif-${Date.now()}`, text: newText, type: newType, date: new Date().toISOString(), read: false }]);
+    setNewText(''); setNewType('general');
+  };
+
+  const remove = (id: string) => save(notifications.filter((n: any) => n.id !== id));
+
+  const types = [
+    { value: 'general', label: '📬 General' },
+    { value: 'winner', label: '🏆 Ganador de sorteo' },
+    { value: 'birthday', label: '🎂 Feliz cumpleaños' },
+    { value: 'payment', label: '💳 Aviso de pago' },
+    { value: 'gift', label: '🎁 Regalo/Sorpresa' },
+  ];
+
+  return (
+    <div className="space-y-3">
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-2">
+        <select value={newType} onChange={e => setNewType(e.target.value)} className={ic}>
+          {types.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
+        </select>
+        <input type="text" value={newText} onChange={e => setNewText(e.target.value)} className={ic + ' sm:col-span-2'} placeholder="Mensaje para el suscriptor..." />
+        <button onClick={add} className="px-4 py-2 bg-soda-red/20 border border-soda-red/40 text-soda-lamp rounded-sm text-sm flex items-center gap-2"><Plus size={14} />Enviar</button>
+      </div>
+      <p className="text-soda-fog text-[10px]">⚠️ En producción, esto enviaría la notificación al usuario específico. Ahora se guarda en localStorage como demo.</p>
+      {notifications.slice().reverse().map((n: any) => (
+        <div key={n.id} className="flex items-start gap-3 border border-soda-mist/10 rounded-sm p-3">
+          <span className="text-sm">{n.type === 'winner' ? '🏆' : n.type === 'birthday' ? '🎂' : n.type === 'payment' ? '💳' : n.type === 'gift' ? '🎁' : '📬'}</span>
+          <div className="flex-1 min-w-0">
+            <p className="text-soda-lamp text-sm">{n.text}</p>
+            <p className="text-soda-fog text-[10px] mt-1">{new Date(n.date).toLocaleDateString('es-AR')} · {n.read ? 'Leído' : 'No leído'}</p>
+          </div>
+          <button onClick={() => remove(n.id)} className="text-soda-fog hover:text-red-400"><Trash2 size={14} /></button>
         </div>
       ))}
     </div>

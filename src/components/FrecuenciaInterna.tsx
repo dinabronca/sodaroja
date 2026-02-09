@@ -1,65 +1,83 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, Heart, Radio, MessageCircle, BarChart3, Trophy, Ticket, Settings, CreditCard, LogOut, ArrowRight, Sparkles } from 'lucide-react';
+import { Check, Heart, Radio, MessageCircle, BarChart3, Trophy, Settings, CreditCard, LogOut, ArrowRight, Bell, Gift, Instagram, Youtube, Twitter, Headphones, Calendar, Zap, Star, ExternalLink, ChevronRight } from 'lucide-react';
 import { getCurrentUser } from '../data/auth';
 
 // ============================================================
-// PLANES, BENEFICIOS, DATOS (same as before)
+// PLANES & BENEFICIOS
 // ============================================================
 interface Plan { id: string; name: string; priceARS: number; priceUSD: number; description: string; featured?: boolean; }
-
 const plans: Plan[] = [
   { id: 'plan-a', name: 'Mate', priceARS: 2500, priceUSD: 4, description: 'Un empujoncito que suma mucho' },
   { id: 'plan-b', name: 'Soda', priceARS: 5000, priceUSD: 8, description: 'El que más eligen', featured: true },
   { id: 'plan-c', name: 'Sifón', priceARS: 12500, priceUSD: 20, description: 'Para los que quieren que esto crezca' },
 ];
-
 const benefits = [
   '2 episodios extras por mes', 'Sorteos exclusivos', 'Historias más profundas',
   'Acceso anticipado', 'Tu Número de Socio', 'Comunidad privada',
   'Sin publicidad', 'RSS privado', 'Descuentos en la tienda', 'Ser parte real del proyecto',
 ];
 
-// Data helpers (localStorage, en prod => Supabase)
-const getLS = (key: string, def: any = []) => { try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(def)); } catch { return def; } };
-const setLS = (key: string, val: any) => localStorage.setItem(key, JSON.stringify(val));
+// ============================================================
+// LOCALSTORAGE HELPERS (en producción → Supabase)
+// ============================================================
+const getLS = (k: string, d: any = []) => { try { return JSON.parse(localStorage.getItem(k) || JSON.stringify(d)); } catch { return d; } };
+const setLS = (k: string, v: any) => localStorage.setItem(k, JSON.stringify(v));
 
 // ============================================================
-// AURORA BOREAL EFFECT
+// AURORA BOREAL + RAYOS
 // ============================================================
 const AuroraEffect: React.FC = () => {
-  const isMobile = typeof window !== 'undefined' && (window.innerWidth < 768 || 'ontouchstart' in window);
+  const isMobile = typeof window !== 'undefined' && (window.innerWidth < 768);
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
-      {/* Aurora 1 — rojo/magenta */}
-      <motion.div className="absolute" style={{ left: '-10%', top: '-20%', width: '70%', height: '50%',
-        background: 'radial-gradient(ellipse at 30% 50%, rgba(196,85,85,0.08) 0%, rgba(139,58,58,0.04) 40%, transparent 70%)',
-        filter: 'blur(60px)', }}
-        animate={{ x: [0, 80, -30, 0], y: [0, 30, -20, 0], opacity: [0.4, 0.7, 0.5, 0.4] }}
-        transition={{ duration: isMobile ? 20 : 12, repeat: Infinity, ease: 'easeInOut' }}
+    <div className="absolute inset-0 overflow-hidden" style={{ zIndex: 1 }}>
+      {/* Aurora rojo/magenta */}
+      <motion.div className="absolute" style={{ left: '-15%', top: '-25%', width: '80%', height: '60%',
+        background: 'radial-gradient(ellipse at 30% 50%, rgba(196,85,85,0.12) 0%, rgba(139,58,58,0.05) 40%, transparent 70%)',
+        filter: 'blur(60px)' }}
+        animate={{ x: [0, 100, -40, 0], y: [0, 40, -25, 0], opacity: [0.5, 0.8, 0.6, 0.5] }}
+        transition={{ duration: isMobile ? 25 : 14, repeat: Infinity, ease: 'easeInOut' }}
       />
-      {/* Aurora 2 — azul/cyan */}
-      <motion.div className="absolute" style={{ right: '-5%', top: '10%', width: '55%', height: '45%',
-        background: 'radial-gradient(ellipse at 70% 40%, rgba(138,155,196,0.06) 0%, rgba(100,130,180,0.03) 40%, transparent 70%)',
-        filter: 'blur(50px)', }}
-        animate={{ x: [0, -60, 40, 0], y: [0, -30, 20, 0], opacity: [0.3, 0.6, 0.4, 0.3] }}
-        transition={{ duration: isMobile ? 22 : 15, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
+      {/* Aurora azul */}
+      <motion.div className="absolute" style={{ right: '-10%', top: '5%', width: '65%', height: '55%',
+        background: 'radial-gradient(ellipse at 60% 40%, rgba(138,155,196,0.10) 0%, rgba(100,130,180,0.04) 40%, transparent 70%)',
+        filter: 'blur(55px)' }}
+        animate={{ x: [0, -70, 50, 0], y: [0, -35, 25, 0], opacity: [0.4, 0.7, 0.5, 0.4] }}
+        transition={{ duration: isMobile ? 28 : 17, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
       />
-      {/* Aurora 3 — verde tenue */}
-      {!isMobile && <motion.div className="absolute" style={{ left: '20%', bottom: '0%', width: '60%', height: '35%',
-        background: 'radial-gradient(ellipse at 50% 80%, rgba(80,180,120,0.04) 0%, transparent 60%)',
-        filter: 'blur(50px)', }}
-        animate={{ x: [0, 50, -30, 0], opacity: [0.2, 0.5, 0.3, 0.2] }}
-        transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut', delay: 6 }}
+      {/* Aurora verde tenue */}
+      {!isMobile && <motion.div className="absolute" style={{ left: '15%', bottom: '-5%', width: '70%', height: '40%',
+        background: 'radial-gradient(ellipse at 50% 80%, rgba(80,180,120,0.05) 0%, transparent 60%)',
+        filter: 'blur(55px)' }}
+        animate={{ x: [0, 60, -40, 0], opacity: [0.3, 0.55, 0.35, 0.3] }}
+        transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut', delay: 7 }}
       />}
-      {/* Rayos de luz verticales sutiles */}
-      {!isMobile && [0, 1, 2].map(i => (
-        <motion.div key={`ray-${i}`} className="absolute" style={{
-          left: `${20 + i * 25}%`, top: 0, width: '1px', height: '100%',
-          background: 'linear-gradient(to bottom, transparent, rgba(196,85,85,0.06), transparent 50%, rgba(138,155,196,0.04), transparent)',
-        }}
-          animate={{ opacity: [0, 0.5, 0], x: [0, 10, 0] }}
-          transition={{ duration: 8 + i * 2, repeat: Infinity, delay: i * 3, ease: 'easeInOut' }}
+
+      {/* ===== RAYOS DE LUZ ===== */}
+      {[0, 1, 2, 3, 4].map(i => (
+        <motion.div key={`ray-${i}`} className="absolute"
+          style={{
+            left: `${10 + i * 20}%`, top: 0, width: '2px', height: '100%',
+            background: `linear-gradient(to bottom, transparent 0%, ${i % 2 === 0 ? 'rgba(196,85,85,0.12)' : 'rgba(138,155,196,0.08)'} 30%, ${i % 2 === 0 ? 'rgba(196,85,85,0.06)' : 'rgba(138,155,196,0.04)'} 70%, transparent 100%)`,
+          }}
+          animate={{
+            opacity: [0, 0.8, 0.3, 0.9, 0],
+            scaleX: [1, 1.5, 1, 2, 1],
+          }}
+          transition={{ duration: 6 + i * 1.5, repeat: Infinity, delay: i * 2.5, ease: 'easeInOut' }}
+        />
+      ))}
+      {/* Rayos diagonales anchos */}
+      {!isMobile && [0, 1].map(i => (
+        <motion.div key={`dray-${i}`} className="absolute"
+          style={{
+            left: `${20 + i * 45}%`, top: '-10%', width: '80px', height: '120%',
+            background: `linear-gradient(${150 + i * 30}deg, transparent 0%, rgba(196,85,85,0.03) 40%, rgba(138,155,196,0.02) 60%, transparent 100%)`,
+            filter: 'blur(20px)',
+            transform: `rotate(${-15 + i * 8}deg)`,
+          }}
+          animate={{ opacity: [0.1, 0.4, 0.1], x: [0, 30, 0] }}
+          transition={{ duration: 10 + i * 4, repeat: Infinity, ease: 'easeInOut', delay: i * 5 }}
         />
       ))}
     </div>
@@ -67,7 +85,34 @@ const AuroraEffect: React.FC = () => {
 };
 
 // ============================================================
-// SUBSCRIBER DASHBOARD — 3 columnas
+// SODITAS MISSIONS SYSTEM
+// ============================================================
+interface Mission { id: string; label: string; icon: React.ElementType; soditas: number; completed: boolean; type: 'one-time' | 'recurring'; }
+
+const getMissions = (): Mission[] => {
+  const completed: string[] = getLS('sodaroja-missions-done', []);
+  const listenedCount = getLS('sodaroja-listened', []).length;
+  return [
+    { id: 'listen-1', label: 'Escuchar tu primer episodio', icon: Headphones, soditas: 3, completed: listenedCount >= 1, type: 'one-time' },
+    { id: 'listen-5', label: 'Escuchar 5 episodios', icon: Headphones, soditas: 8, completed: listenedCount >= 5, type: 'one-time' },
+    { id: 'listen-10', label: 'Escuchar 10 episodios', icon: Star, soditas: 15, completed: listenedCount >= 10, type: 'one-time' },
+    { id: 'follow-ig', label: 'Seguinos en Instagram', icon: Instagram, soditas: 5, completed: completed.includes('follow-ig'), type: 'one-time' },
+    { id: 'follow-yt', label: 'Suscribite en YouTube', icon: Youtube, soditas: 5, completed: completed.includes('follow-yt'), type: 'one-time' },
+    { id: 'follow-tw', label: 'Seguinos en X (Twitter)', icon: Twitter, soditas: 5, completed: completed.includes('follow-tw'), type: 'one-time' },
+    { id: 'streak-3', label: '3 meses consecutivos suscripto', icon: Calendar, soditas: 10, completed: completed.includes('streak-3'), type: 'one-time' },
+    { id: 'streak-6', label: '6 meses consecutivos suscripto', icon: Zap, soditas: 25, completed: completed.includes('streak-6'), type: 'one-time' },
+    { id: 'poll-vote', label: 'Votar en una encuesta', icon: BarChart3, soditas: 3, completed: Object.keys(getLS('sodaroja-user-poll-votes', {})).length > 0, type: 'recurring' },
+    { id: 'early-bird', label: 'Ser de los primeros en escuchar un nuevo episodio', icon: Zap, soditas: 5, completed: completed.includes('early-bird'), type: 'recurring' },
+  ];
+};
+
+const completeMission = (missionId: string) => {
+  const done: string[] = getLS('sodaroja-missions-done', []);
+  if (!done.includes(missionId)) { done.push(missionId); setLS('sodaroja-missions-done', done); }
+};
+
+// ============================================================
+// SUBSCRIBER DASHBOARD
 // ============================================================
 const SubscriberDashboard: React.FC = () => {
   const user = getCurrentUser();
@@ -76,8 +121,12 @@ const SubscriberDashboard: React.FC = () => {
   const [pollVotes, setPollVotes] = useState<Record<string, Record<string, number>>>({});
   const [userVotes, setUserVotes] = useState<Record<string, number>>({});
   const [raffles, setRaffles] = useState<any[]>([]);
-  const [userTickets, setUserTickets] = useState<Record<string, number>>({});
+  const [raffleEntries, setRaffleEntries] = useState<Record<string, boolean>>({});
   const [soditas, setSoditas] = useState(10);
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const [missions, setMissions] = useState<Mission[]>([]);
+  const [showMissions, setShowMissions] = useState(false);
+  const [activePollPage, setActivePollPage] = useState<string | null>(null);
 
   useEffect(() => {
     setMessages(getLS('sodaroja-internal-messages'));
@@ -85,8 +134,10 @@ const SubscriberDashboard: React.FC = () => {
     setPollVotes(getLS('sodaroja-poll-votes', {}));
     setUserVotes(getLS('sodaroja-user-poll-votes', {}));
     setRaffles(getLS('sodaroja-raffles'));
-    setUserTickets(getLS('sodaroja-user-tickets', {}));
+    setRaffleEntries(getLS('sodaroja-raffle-entries', {}));
     setSoditas(parseInt(localStorage.getItem('sodaroja-user-bubbles') || '10'));
+    setNotifications(getLS('sodaroja-user-notifications', []));
+    setMissions(getMissions());
   }, []);
 
   const listenedCount = useMemo(() => getLS('sodaroja-listened').length, []);
@@ -94,6 +145,11 @@ const SubscriberDashboard: React.FC = () => {
   const activeRaffles = raffles.filter((r: any) => r.active);
   const currentPoll = activePolls[0];
   const currentRaffle = activeRaffles[0];
+  const unreadNotifs = notifications.filter((n: any) => !n.read).length;
+
+  const addSoditas = (amount: number) => {
+    const n = soditas + amount; setSoditas(n); localStorage.setItem('sodaroja-user-bubbles', String(n));
+  };
 
   const handleVote = (pollId: string, idx: number) => {
     if (userVotes[pollId] !== undefined) return;
@@ -101,203 +157,287 @@ const SubscriberDashboard: React.FC = () => {
     nv[pollId][String(idx)] = (nv[pollId][String(idx)] || 0) + 1;
     setPollVotes(nv); setLS('sodaroja-poll-votes', nv);
     const nuv = { ...userVotes, [pollId]: idx }; setUserVotes(nuv); setLS('sodaroja-user-poll-votes', nuv);
+    addSoditas(3); // reward for voting
+    setActivePollPage(null);
   };
 
-  const buyTicket = (raffleId: string) => {
-    const cost = raffles.find((r: any) => r.id === raffleId)?.ticketCost || 1;
-    if (soditas < cost) return;
+  const enterRaffle = (raffleId: string) => {
+    const cost = raffles.find((r: any) => r.id === raffleId)?.soditasCost || 5;
+    if (soditas < cost || raffleEntries[raffleId]) return;
     const ns = soditas - cost; setSoditas(ns); localStorage.setItem('sodaroja-user-bubbles', String(ns));
-    const nt = { ...userTickets, [raffleId]: (userTickets[raffleId] || 0) + 1 }; setUserTickets(nt); setLS('sodaroja-user-tickets', nt);
+    const ne = { ...raffleEntries, [raffleId]: true }; setRaffleEntries(ne); setLS('sodaroja-raffle-entries', ne);
   };
+
+  const claimSocialMission = (missionId: string) => {
+    completeMission(missionId);
+    addSoditas(5);
+    setMissions(getMissions());
+  };
+
+  const markNotifRead = (id: string) => {
+    const updated = notifications.map((n: any) => n.id === id ? { ...n, read: true } : n);
+    setNotifications(updated); setLS('sodaroja-user-notifications', updated);
+  };
+
+  // BANNER IMAGE SIZES (for Photoshop):
+  // Encuesta banner: 800×200 px
+  // Sorteo banner: 800×200 px
 
   return (
-    <div className="space-y-8 relative" style={{ zIndex: 1 }}>
-      {/* ===== HEADER — bienvenida + señal + soditas ===== */}
+    <div className="space-y-8 relative" style={{ zIndex: 2 }}>
+      {/* ===== HEADER ===== */}
       <div className="text-center">
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
           <h2 className="text-4xl md:text-5xl font-serif text-soda-glow">Frecuencia Interna</h2>
           <p className="text-soda-lamp text-sm">Bienvenido/a, <span className="text-soda-red font-medium">{user?.name || 'suscriptor'}</span></p>
-          <div className="flex items-center justify-center gap-4 flex-wrap">
+          <div className="flex items-center justify-center gap-3 flex-wrap">
             <motion.div animate={{ opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity }}
               className="inline-flex items-center gap-2 bg-soda-red/10 border border-soda-red/30 rounded-sm px-4 py-1.5">
-              <div className="w-2 h-2 bg-soda-red rounded-full" />
+              <motion.div animate={{ scale: [1, 1.4, 1] }} transition={{ duration: 1.5, repeat: Infinity }} className="w-2 h-2 bg-soda-red rounded-full" />
               <span className="text-soda-red text-xs tracking-wider font-medium">SEÑAL ACTIVA</span>
             </motion.div>
-            <div className="inline-flex items-center gap-2 bg-soda-accent/10 border border-soda-accent/20 rounded-sm px-4 py-1.5">
+            <button onClick={() => setShowMissions(!showMissions)}
+              className="inline-flex items-center gap-2 bg-soda-accent/10 border border-soda-accent/20 rounded-sm px-4 py-1.5 hover:bg-soda-accent/15 transition-all">
               <span className="text-sm">🥤</span>
               <span className="text-soda-lamp text-sm font-medium">{soditas} soditas</span>
-            </div>
+              <ChevronRight size={12} className={`text-soda-fog transition-transform ${showMissions ? 'rotate-90' : ''}`} />
+            </button>
           </div>
         </motion.div>
       </div>
 
-      {/* ===== GRID 3 COLUMNAS (desktop) / stack (mobile) ===== */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-        {/* ===== COLUMNA IZQUIERDA — Mi Plan ===== */}
-        <div className="lg:col-span-3 space-y-4">
-          <div className="bg-soda-night/60 border border-soda-mist/15 rounded-sm p-5">
-            <h3 className="text-soda-glow font-serif text-base mb-4 flex items-center gap-2"><Settings size={16} className="text-soda-accent" />Tu Plan</h3>
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <div className="text-soda-lamp font-medium">Plan Soda</div>
-                <div className="text-soda-fog text-xs">$5.000 ARS / mes</div>
-              </div>
-              <div className="bg-emerald-500/20 border border-emerald-500/30 rounded-sm px-2.5 py-1">
-                <span className="text-emerald-400 text-[11px] font-medium">Activo</span>
+      {/* ===== MISIONES SODITAS (expandible) ===== */}
+      <AnimatePresence>
+        {showMissions && (
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}
+            className="overflow-hidden">
+            <div className="bg-soda-night/70 border border-soda-accent/15 rounded-sm p-5 max-w-3xl mx-auto">
+              <h3 className="text-soda-glow font-serif text-sm mb-4 flex items-center gap-2">🥤 Cómo ganar soditas</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {missions.map(m => {
+                  const Icon = m.icon;
+                  const isSocial = m.id.startsWith('follow-');
+                  return (
+                    <div key={m.id} className={`flex items-center gap-3 px-3 py-2.5 rounded-sm border transition-all ${
+                      m.completed ? 'border-emerald-500/20 bg-emerald-500/5' : 'border-soda-mist/10 hover:border-soda-accent/20'
+                    }`}>
+                      <Icon size={14} className={m.completed ? 'text-emerald-400' : 'text-soda-fog'} />
+                      <div className="flex-1 min-w-0">
+                        <p className={`text-xs ${m.completed ? 'text-emerald-400/80 line-through' : 'text-soda-lamp'}`}>{m.label}</p>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-soda-accent text-[11px] font-medium">+{m.soditas} 🥤</span>
+                        {isSocial && !m.completed && (
+                          <button onClick={() => claimSocialMission(m.id)} className="text-[10px] text-soda-accent border border-soda-accent/30 rounded-sm px-2 py-0.5 hover:bg-soda-accent/10">Hecho</button>
+                        )}
+                        {m.completed && <span className="text-emerald-400 text-[10px]">✓</span>}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
-            <div className="space-y-2">
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ===== GRID 3 COLUMNAS ===== */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+
+        {/* ===== COL IZQUIERDA — Plan + Opciones ===== */}
+        <div className="lg:col-span-3 space-y-4">
+          <div className="bg-soda-night/60 border border-soda-mist/15 rounded-sm p-5">
+            <h3 className="text-soda-glow font-serif text-sm mb-4 flex items-center gap-2"><Settings size={14} className="text-soda-accent" />Tu Plan</h3>
+            <div className="flex items-center justify-between mb-4">
+              <div><div className="text-soda-lamp text-sm font-medium">Plan Soda</div><div className="text-soda-fog text-xs">$5.000 ARS / mes</div></div>
+              <div className="bg-emerald-500/20 border border-emerald-500/30 rounded-sm px-2.5 py-1"><span className="text-emerald-400 text-[11px]">Activo</span></div>
+            </div>
+            <div className="space-y-1">
               {[
                 { label: 'Cambiar plan', icon: ArrowRight },
-                { label: 'Cambiar medio de pago', icon: CreditCard },
+                { label: 'Medio de pago', icon: CreditCard },
                 { label: 'Historial de pagos', icon: BarChart3 },
                 { label: 'Dar de baja', icon: LogOut },
               ].map((opt, i) => {
                 const Icon = opt.icon;
                 return (
-                  <button key={i} className="w-full text-left flex items-center gap-2.5 px-3 py-2 rounded-sm text-soda-fog text-xs hover:text-soda-lamp hover:bg-soda-mist/5 transition-all">
-                    <Icon size={13} className="text-soda-accent/60" />{opt.label}
-                  </button>
+                  <button key={i} className={`w-full text-left flex items-center gap-2.5 px-3 py-2 rounded-sm text-xs transition-all ${
+                    opt.label === 'Dar de baja' ? 'text-soda-fog/40 hover:text-red-400/60' : 'text-soda-fog hover:text-soda-lamp hover:bg-soda-mist/5'
+                  }`}><Icon size={12} className="text-soda-accent/50" />{opt.label}</button>
                 );
               })}
             </div>
           </div>
-
-          {/* Stats compactas */}
+          {/* Stats */}
           <div className="bg-soda-night/60 border border-soda-mist/15 rounded-sm p-4">
-            <h4 className="text-soda-fog text-[11px] tracking-wider mb-3">TUS NÚMEROS</h4>
+            <h4 className="text-soda-fog text-[10px] tracking-wider mb-3">TUS NÚMEROS</h4>
             <div className="grid grid-cols-2 gap-2">
               {[
-                { n: listenedCount, l: 'Episodios', emoji: '🎧' },
-                { n: soditas, l: 'Soditas', emoji: '🥤' },
-                { n: Object.keys(userVotes).length, l: 'Votos', emoji: '📊' },
-                { n: Object.values(userTickets).reduce((a, b) => a + b, 0), l: 'Tickets', emoji: '🎟️' },
+                { n: listenedCount, l: 'Episodios', e: '🎧' },
+                { n: soditas, l: 'Soditas', e: '🥤' },
+                { n: Object.keys(userVotes).length, l: 'Encuestas', e: '📊' },
+                { n: Object.keys(raffleEntries).filter(k => raffleEntries[k]).length, l: 'Sorteos', e: '🎰' },
               ].map((s, i) => (
-                <div key={i} className="text-center py-2">
-                  <div className="text-soda-glow text-lg font-serif">{s.n}</div>
-                  <div className="text-soda-fog text-[10px]">{s.emoji} {s.l}</div>
-                </div>
+                <div key={i} className="text-center py-2"><div className="text-soda-glow text-lg font-serif">{s.n}</div><div className="text-soda-fog text-[10px]">{s.e} {s.l}</div></div>
               ))}
             </div>
           </div>
         </div>
 
-        {/* ===== COLUMNA CENTRAL — Encuesta + Sorteo ===== */}
+        {/* ===== COL CENTRAL — Encuesta + Sorteo + Notificaciones ===== */}
         <div className="lg:col-span-5 space-y-4">
-          {/* Encuesta activa */}
-          <div className="bg-soda-night/60 border border-soda-accent/15 rounded-sm p-5">
-            <h3 className="text-soda-glow font-serif text-base mb-1 flex items-center gap-2"><BarChart3 size={16} className="text-soda-accent" />Encuesta</h3>
-            {currentPoll ? (() => {
-              const voted = userVotes[currentPoll.id] !== undefined;
-              const votes = pollVotes[currentPoll.id] || {};
-              const total = Object.values(votes).reduce((a: number, b: any) => a + (b as number), 0) as number;
-              return (
-                <div className="mt-3">
-                  <h4 className="text-soda-lamp text-sm font-medium mb-3">{currentPoll.question}</h4>
-                  <div className="space-y-2">
-                    {currentPoll.options.map((opt: string, idx: number) => {
-                      const count = votes[String(idx)] || 0;
-                      const pct = total > 0 ? Math.round((count / total) * 100) : 0;
-                      const isMyVote = userVotes[currentPoll.id] === idx;
-                      return (
-                        <button key={idx} onClick={() => handleVote(currentPoll.id, idx)} disabled={voted}
-                          className={`w-full text-left relative rounded-sm overflow-hidden transition-all p-3 ${
-                            voted ? 'cursor-default' : 'cursor-pointer hover:bg-soda-mist/5'
-                          } border ${isMyVote ? 'border-soda-red/40 bg-soda-red/5' : 'border-soda-mist/10'}`}>
-                          {voted && <div className="absolute inset-y-0 left-0 bg-soda-red/10 transition-all" style={{ width: `${pct}%` }} />}
-                          <div className="relative flex justify-between items-center">
-                            <span className={`text-sm ${isMyVote ? 'text-soda-lamp' : 'text-soda-fog'}`}>{opt}</span>
-                            {voted && <span className="text-soda-fog text-xs ml-2">{pct}%</span>}
-                          </div>
-                        </button>
-                      );
-                    })}
+          {/* ENCUESTA con imagen/banner */}
+          <div className="bg-soda-night/60 border border-soda-accent/15 rounded-sm overflow-hidden">
+            {currentPoll ? (
+              <>
+                {/* Banner image — 800×200px */}
+                {currentPoll.bannerUrl ? (
+                  <img src={currentPoll.bannerUrl} alt={currentPoll.question} className="w-full h-auto cursor-pointer" onClick={() => setActivePollPage(currentPoll.id)} />
+                ) : (
+                  <div className="bg-gradient-to-r from-soda-accent/10 via-soda-deep to-soda-red/10 px-5 py-4 border-b border-soda-mist/10">
+                    <div className="text-soda-fog text-[10px] tracking-wider mb-1">ENCUESTA ACTIVA</div>
+                    <h4 className="text-soda-glow font-serif text-base">{currentPoll.question}</h4>
                   </div>
-                  {voted && <p className="text-soda-fog/40 text-[11px] mt-2">{total} voto{total !== 1 ? 's' : ''} · Tu voto fue registrado</p>}
-                </div>
-              );
-            })() : (
-              <div className="py-8 text-center">
-                <p className="text-soda-fog text-sm">No hay encuestas activas.</p>
-                <p className="text-soda-fog/40 text-xs mt-1">Pronto lanzamos una nueva.</p>
+                )}
+                {userVotes[currentPoll.id] !== undefined ? (
+                  <div className="px-5 py-3">
+                    <p className="text-emerald-400/70 text-xs flex items-center gap-1.5">✓ Ya votaste · +3 🥤 sumadas</p>
+                  </div>
+                ) : (
+                  <div className="px-5 py-3">
+                    <button onClick={() => setActivePollPage(currentPoll.id)}
+                      className="w-full py-2.5 bg-soda-accent/15 border border-soda-accent/30 rounded-sm text-soda-lamp text-sm hover:bg-soda-accent/20 transition-all flex items-center justify-center gap-2">
+                      <BarChart3 size={14} />Votar · +3 🥤
+                    </button>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="px-5 py-8 text-center">
+                <BarChart3 size={24} className="text-soda-fog/20 mx-auto mb-2" />
+                <p className="text-soda-fog text-xs">No hay encuestas activas.</p>
               </div>
             )}
           </div>
 
-          {/* Sorteo activo */}
+          {/* SORTEO con banner */}
           <div className="bg-soda-night/60 border border-soda-red/15 rounded-sm overflow-hidden">
             {currentRaffle ? (
               <>
-                {/* Banner del sorteo */}
-                <div className="bg-gradient-to-r from-soda-red/15 via-soda-red/10 to-soda-accent/10 px-5 py-4 border-b border-soda-mist/10">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="text-soda-fog text-[10px] tracking-wider mb-1">SORTEO ACTIVO</div>
-                      <h4 className="text-soda-glow font-serif text-lg">{currentRaffle.title}</h4>
-                      <p className="text-soda-fog text-xs mt-1">{currentRaffle.description}</p>
+                {currentRaffle.bannerUrl ? (
+                  <img src={currentRaffle.bannerUrl} alt={currentRaffle.title} className="w-full h-auto" />
+                ) : (
+                  <div className="bg-gradient-to-r from-soda-red/15 via-soda-deep to-soda-accent/10 px-5 py-4 border-b border-soda-mist/10">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="text-soda-fog text-[10px] tracking-wider mb-1">SORTEO</div>
+                        <h4 className="text-soda-glow font-serif text-base">{currentRaffle.title}</h4>
+                        <p className="text-soda-fog text-xs mt-1">{currentRaffle.description}</p>
+                      </div>
+                      <motion.span animate={{ rotate: [0, 5, -5, 0] }} transition={{ duration: 2, repeat: Infinity }} className="text-2xl">🎰</motion.span>
                     </div>
-                    <motion.div animate={{ rotate: [0, 5, -5, 0] }} transition={{ duration: 2, repeat: Infinity }} className="text-3xl">🎰</motion.div>
                   </div>
-                </div>
+                )}
                 <div className="px-5 py-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="text-soda-lamp text-sm">Tus tickets: <span className="text-soda-red font-bold text-base">{userTickets[currentRaffle.id] || 0}</span></div>
-                      <div className="text-soda-fog/50 text-[11px]">Costo: {currentRaffle.ticketCost} 🥤 por ticket</div>
+                  {raffleEntries[currentRaffle.id] ? (
+                    <div className="text-center">
+                      <p className="text-emerald-400 text-sm font-medium mb-1">¡Ya estás participando! 🎉</p>
+                      <p className="text-soda-fog/50 text-[11px]">Buena suerte. Te notificamos si ganaste.</p>
                     </div>
-                    <button onClick={() => buyTicket(currentRaffle.id)} disabled={soditas < (currentRaffle.ticketCost || 1)}
-                      className={`px-5 py-2.5 rounded-sm text-sm font-medium transition-all flex items-center gap-2 ${
-                        soditas >= (currentRaffle.ticketCost || 1)
-                          ? 'bg-soda-red/20 border border-soda-red/40 text-soda-lamp hover:bg-soda-red/30'
-                          : 'border border-soda-mist/15 text-soda-fog/40 cursor-not-allowed'
-                      }`}>
-                      <Ticket size={14} />Comprar ticket
-                    </button>
-                  </div>
+                  ) : (
+                    <div className="flex items-center justify-between">
+                      <div className="text-soda-fog text-xs">Cuesta <span className="text-soda-lamp font-medium">{currentRaffle.soditasCost || 5} 🥤</span></div>
+                      <button onClick={() => enterRaffle(currentRaffle.id)} disabled={soditas < (currentRaffle.soditasCost || 5)}
+                        className={`px-5 py-2.5 rounded-sm text-sm font-medium transition-all ${
+                          soditas >= (currentRaffle.soditasCost || 5)
+                            ? 'bg-soda-red/20 border border-soda-red/40 text-soda-lamp hover:bg-soda-red/30'
+                            : 'border border-soda-mist/15 text-soda-fog/40 cursor-not-allowed'
+                        }`}>Participar 🎰</button>
+                    </div>
+                  )}
                 </div>
               </>
             ) : (
               <div className="px-5 py-8 text-center">
-                <Trophy size={28} className="text-soda-fog/20 mx-auto mb-3" />
-                <p className="text-soda-fog text-sm">No hay sorteos activos.</p>
-                <p className="text-soda-fog/40 text-xs mt-1">Guardá tus soditas 🥤</p>
+                <Trophy size={24} className="text-soda-fog/20 mx-auto mb-2" />
+                <p className="text-soda-fog text-xs">No hay sorteos activos. Guardá tus soditas 🥤</p>
               </div>
             )}
           </div>
-        </div>
 
-        {/* ===== COLUMNA DERECHA — Mensajes ===== */}
-        <div className="lg:col-span-4 space-y-4">
-          {/* Soditas header */}
-          <div className="bg-gradient-to-r from-soda-red/10 to-soda-accent/10 border border-soda-mist/15 rounded-sm p-4 flex items-center gap-3">
-            <motion.span animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 2, repeat: Infinity }} className="text-2xl">🥤</motion.span>
-            <div className="flex-1">
-              <div className="text-soda-lamp font-medium text-sm">{soditas} soditas</div>
-              <div className="text-soda-fog/50 text-[10px]">Ganás escuchando episodios · Canjealas en sorteos</div>
+          {/* NOTIFICACIONES PERSONALES */}
+          <div className="bg-soda-night/60 border border-soda-lamp/10 rounded-sm overflow-hidden">
+            <div className="px-4 py-3 border-b border-soda-mist/10 flex items-center justify-between">
+              <h3 className="text-soda-glow font-serif text-sm flex items-center gap-2">
+                <Bell size={14} className="text-soda-lamp" />Notificaciones
+                {unreadNotifs > 0 && <span className="bg-soda-red text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">{unreadNotifs}</span>}
+              </h3>
+            </div>
+            <div className="max-h-48 overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
+              {notifications.length === 0 ? (
+                <div className="px-4 py-6 text-center"><p className="text-soda-fog/40 text-xs">Sin notificaciones.</p></div>
+              ) : (
+                <div className="divide-y divide-soda-mist/5">
+                  {notifications.slice().reverse().map((n: any) => (
+                    <motion.div key={n.id} initial={!n.read ? { x: -5 } : false} animate={{ x: 0 }}
+                      onClick={() => markNotifRead(n.id)}
+                      className={`px-4 py-3 cursor-pointer transition-colors ${!n.read ? 'bg-soda-red/5 hover:bg-soda-red/8' : 'hover:bg-soda-mist/3'}`}>
+                      <div className="flex items-start gap-2.5">
+                        <span className="text-sm flex-shrink-0">
+                          {n.type === 'winner' ? '🏆' : n.type === 'birthday' ? '🎂' : n.type === 'payment' ? '💳' : n.type === 'gift' ? '🎁' : '📬'}
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <p className={`text-xs leading-relaxed ${!n.read ? 'text-soda-lamp font-medium' : 'text-soda-fog'}`}>{n.text}</p>
+                          <p className="text-soda-fog/30 text-[10px] mt-1">{new Date(n.date).toLocaleDateString('es-AR', { day: 'numeric', month: 'short' })}</p>
+                        </div>
+                        {!n.read && <div className="w-1.5 h-1.5 bg-soda-red rounded-full flex-shrink-0 mt-1" />}
+                      </div>
+                      {/* Efecto confeti para winners */}
+                      {n.type === 'winner' && !n.read && (
+                        <motion.div className="flex justify-center gap-1 mt-1"
+                          animate={{ y: [-5, 0], opacity: [0, 1] }} transition={{ duration: 0.5 }}>
+                          {['🎊', '✨', '🎉'].map((e, i) => (
+                            <motion.span key={i} animate={{ y: [0, -8, 0], rotate: [0, 10, -10, 0] }}
+                              transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.3 }}
+                              className="text-xs">{e}</motion.span>
+                          ))}
+                        </motion.div>
+                      )}
+                    </motion.div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
+        </div>
 
-          {/* Feed de mensajes */}
+        {/* ===== COL DERECHA — Mensajes del equipo ===== */}
+        <div className="lg:col-span-4 space-y-4">
           <div className="bg-soda-night/60 border border-soda-mist/15 rounded-sm">
             <div className="px-4 py-3 border-b border-soda-mist/10">
-              <h3 className="text-soda-glow font-serif text-base flex items-center gap-2"><MessageCircle size={16} className="text-soda-accent" />Mensajes</h3>
+              <h3 className="text-soda-glow font-serif text-sm flex items-center gap-2"><Radio size={14} className="text-soda-red" />Transmisiones</h3>
+              <p className="text-soda-fog/40 text-[10px] mt-0.5">Mensajes del equipo sodaroja</p>
             </div>
-            <div className="max-h-72 overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
+            <div className="max-h-[480px] overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
               {messages.length === 0 ? (
-                <div className="px-4 py-8 text-center">
-                  <Radio size={24} className="text-soda-fog/20 mx-auto mb-2" />
-                  <p className="text-soda-fog text-xs">Sin mensajes aún.</p>
+                <div className="px-4 py-12 text-center">
+                  <motion.div animate={{ opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 3, repeat: Infinity }}>
+                    <Radio size={28} className="text-soda-fog/15 mx-auto mb-3" />
+                  </motion.div>
+                  <p className="text-soda-fog text-xs">Silencio en la frecuencia...</p>
+                  <p className="text-soda-fog/40 text-[10px] mt-1">Cuando publiquemos algo, lo ves acá primero.</p>
                 </div>
               ) : (
                 <div className="divide-y divide-soda-mist/5">
                   {messages.slice().reverse().map((msg: any) => (
-                    <div key={msg.id} className="px-4 py-3 hover:bg-soda-mist/3 transition-colors">
+                    <div key={msg.id} className="px-4 py-3.5 hover:bg-soda-mist/3 transition-colors">
                       <div className="flex items-start gap-2.5">
-                        <span className="text-sm flex-shrink-0 mt-0.5">{msg.emoji || '📡'}</span>
+                        <div className="flex-shrink-0 w-7 h-7 bg-soda-red/15 rounded-full flex items-center justify-center mt-0.5">
+                          <span className="text-xs">{msg.emoji || '📡'}</span>
+                        </div>
                         <div className="min-w-0">
                           <p className="text-soda-lamp text-sm leading-relaxed">{msg.text}</p>
-                          <p className="text-soda-fog/30 text-[10px] mt-1">{new Date(msg.date).toLocaleDateString('es-AR', { day: 'numeric', month: 'short' })}</p>
+                          <p className="text-soda-fog/30 text-[10px] mt-1.5">{new Date(msg.date).toLocaleDateString('es-AR', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
                         </div>
                       </div>
                     </div>
@@ -308,22 +448,49 @@ const SubscriberDashboard: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* ===== POLL PAGE (overlay) ===== */}
+      <AnimatePresence>
+        {activePollPage && currentPoll && userVotes[currentPoll.id] === undefined && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[9999] flex items-center justify-center p-4" onClick={() => setActivePollPage(null)}>
+            <div className="absolute inset-0 bg-soda-night/95" />
+            <motion.div initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95 }}
+              className="relative w-full max-w-lg bg-soda-deep border border-soda-accent/20 rounded-sm overflow-hidden" onClick={e => e.stopPropagation()}>
+              {currentPoll.bannerUrl && <img src={currentPoll.bannerUrl} alt="" className="w-full h-auto" />}
+              <div className="p-6">
+                <h3 className="text-soda-glow font-serif text-xl mb-5">{currentPoll.question}</h3>
+                <div className="space-y-2.5">
+                  {currentPoll.options.map((opt: string, idx: number) => (
+                    <button key={idx} onClick={() => handleVote(currentPoll.id, idx)}
+                      className="w-full text-left px-4 py-3 border border-soda-mist/15 rounded-sm text-soda-lamp text-sm hover:border-soda-red/40 hover:bg-soda-red/5 transition-all">
+                      {opt}
+                    </button>
+                  ))}
+                </div>
+                <p className="text-soda-fog/40 text-[11px] mt-4 text-center">Votar te suma +3 🥤</p>
+              </div>
+              <button onClick={() => setActivePollPage(null)} className="absolute top-3 right-3 w-8 h-8 bg-soda-night/80 rounded-full flex items-center justify-center text-soda-fog hover:text-soda-lamp">✕</button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
 
 // ============================================================
-// PUBLIC VIEW (no suscriptores — idéntica a la original)
+// PUBLIC VIEW (unchanged)
 // ============================================================
 const PublicView: React.FC = () => {
   const [selectedPlan, setSelectedPlan] = useState<string>('plan-b');
   const currentPlan = plans.find(p => p.id === selectedPlan) || plans[1];
-  const isMobile = typeof window !== 'undefined' && (window.innerWidth < 768 || 'ontouchstart' in window);
+  const isMobile = typeof window !== 'undefined' && (window.innerWidth < 768);
 
   return (
     <>
       {[...Array(isMobile ? 3 : 6)].map((_, i) => (
-        <motion.div key={`wave-${i}`} className="absolute left-1/2 top-1/2 border-2 border-soda-red rounded-full pointer-events-none"
+        <motion.div key={`w-${i}`} className="absolute left-1/2 top-1/2 border-2 border-soda-red rounded-full pointer-events-none"
           style={{ width: `${300 + i * 150}px`, height: `${300 + i * 150}px`, marginLeft: `-${150 + i * 75}px`, marginTop: `-${150 + i * 75}px` }}
           animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.3, 0.1] }}
           transition={{ duration: 4 + i * 0.5, repeat: Infinity, delay: i * 0.5 }}
@@ -332,11 +499,10 @@ const PublicView: React.FC = () => {
       {[...Array(isMobile ? 4 : 20)].map((_, i) => (
         <motion.div key={`p-${i}`} className="absolute w-1 h-1 bg-soda-red rounded-full opacity-40"
           style={{ left: `${Math.random() * 100}%`, top: `${Math.random() * 100}%` }}
-          animate={{ y: [0, -100, 0], x: [0, Math.random() * 50 - 25, 0], opacity: [0.2, 0.8, 0.2] }}
+          animate={{ y: [0, -100, 0], opacity: [0.2, 0.8, 0.2] }}
           transition={{ duration: 5 + Math.random() * 5, repeat: Infinity, delay: Math.random() * 5 }}
         />
       ))}
-
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
           <motion.div animate={{ scale: [1, 1.05, 1], opacity: [0.8, 1, 0.8] }} transition={{ duration: 3, repeat: Infinity }} className="inline-block mb-8">
@@ -346,27 +512,20 @@ const PublicView: React.FC = () => {
           <div className="w-32 h-px bg-gradient-to-r from-transparent via-soda-red to-transparent mx-auto mb-8" />
           <p className="text-soda-lamp text-xl font-light max-w-2xl mx-auto mb-8">Las historias que se cuentan cuando la noche ya está avanzada</p>
         </motion.div>
-
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-3xl mx-auto mb-20">
+        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="max-w-3xl mx-auto mb-20">
           <p className="text-soda-fog text-base font-light leading-relaxed text-center">Sodaroja es un proyecto independiente que hacemos con amor, pero también con tiempo, energía y recursos. Cada episodio lleva horas de investigación, edición y producción. Tu aporte nos permite seguir haciéndolo.</p>
         </motion.div>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
             <h3 className="text-2xl font-serif text-soda-glow mb-8 text-center lg:text-left">Elegí cómo querés sumarte</h3>
             <div className="space-y-6">
               {plans.map((plan, idx) => (
-                <motion.div key={plan.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
+                <motion.div key={plan.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }}
                   onClick={() => setSelectedPlan(plan.id)}
                   className={`relative bg-soda-night/50 rounded-sm p-8 transition-all duration-300 cursor-pointer ${
-                    selectedPlan === plan.id ? 'border-2 border-soda-red shadow-lg shadow-soda-red/20 scale-[1.02]'
-                    : plan.featured ? 'border-2 border-soda-accent shadow-lg shadow-soda-accent/10'
-                    : 'border border-soda-mist/20 hover:border-soda-accent/40'
+                    selectedPlan === plan.id ? 'border-2 border-soda-red shadow-lg shadow-soda-red/20 scale-[1.02]' : plan.featured ? 'border-2 border-soda-accent shadow-lg shadow-soda-accent/10' : 'border border-soda-mist/20 hover:border-soda-accent/40'
                   }`}>
-                  <div className={`absolute top-4 right-4 w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedPlan === plan.id ? 'border-soda-red bg-soda-red' : 'border-soda-mist/40'}`}>
-                    {selectedPlan === plan.id && <div className="w-2 h-2 bg-white rounded-full" />}
-                  </div>
+                  <div className={`absolute top-4 right-4 w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedPlan === plan.id ? 'border-soda-red bg-soda-red' : 'border-soda-mist/40'}`}>{selectedPlan === plan.id && <div className="w-2 h-2 bg-white rounded-full" />}</div>
                   {plan.featured && <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-soda-red px-4 py-1 rounded-sm text-xs tracking-wider text-soda-glow">MÁS ELEGIDO</div>}
                   <div className="flex items-end justify-between pr-8">
                     <div><h4 className="text-2xl font-serif text-soda-glow mb-2">{plan.name}</h4><p className="text-soda-fog text-sm">{plan.description}</p></div>
@@ -376,7 +535,6 @@ const PublicView: React.FC = () => {
               ))}
             </div>
           </motion.div>
-
           <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
             <h3 className="text-2xl font-serif text-soda-glow mb-8 text-center lg:text-left">Qué te llevas al sumarte</h3>
             <div className="space-y-4">
@@ -389,21 +547,11 @@ const PublicView: React.FC = () => {
             </div>
           </motion.div>
         </div>
-
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mt-16">
-          <div className="mb-6 text-center">
-            <div className="text-soda-lamp text-sm mb-1">Plan seleccionado: <span className="text-soda-red font-medium">{currentPlan.name}</span></div>
-            <div className="text-soda-fog text-xs">${currentPlan.priceARS.toLocaleString('es-AR')} ARS / USD ${currentPlan.priceUSD} por mes</div>
-          </div>
+          <div className="mb-6 text-center"><div className="text-soda-lamp text-sm mb-1">Plan seleccionado: <span className="text-soda-red font-medium">{currentPlan.name}</span></div><div className="text-soda-fog text-xs">${currentPlan.priceARS.toLocaleString('es-AR')} ARS / USD ${currentPlan.priceUSD} por mes</div></div>
           <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-2xl mx-auto">
-            <button className="w-full sm:w-auto px-10 py-5 bg-soda-red/20 border-2 border-soda-red text-soda-glow rounded-sm hover:bg-soda-red/30 transition-all tracking-wider">
-              <span className="flex items-center justify-center gap-2"><Heart size={18} />SUSCRIBIRME (ARGENTINA)</span>
-              <span className="block text-xs text-soda-lamp mt-1 opacity-80">Mercado Pago · ${currentPlan.priceARS.toLocaleString('es-AR')} ARS/mes</span>
-            </button>
-            <button className="w-full sm:w-auto px-10 py-5 bg-soda-accent/15 border-2 border-soda-accent text-soda-glow rounded-sm hover:bg-soda-accent/25 transition-all tracking-wider">
-              <span className="flex items-center justify-center gap-2"><Heart size={18} />SUSCRIBIRME (INTERNACIONAL)</span>
-              <span className="block text-xs text-soda-lamp mt-1 opacity-80">USD ${currentPlan.priceUSD}/mes</span>
-            </button>
+            <button className="w-full sm:w-auto px-10 py-5 bg-soda-red/20 border-2 border-soda-red text-soda-glow rounded-sm hover:bg-soda-red/30 transition-all tracking-wider"><span className="flex items-center justify-center gap-2"><Heart size={18} />SUSCRIBIRME (ARGENTINA)</span><span className="block text-xs text-soda-lamp mt-1 opacity-80">Mercado Pago · ${currentPlan.priceARS.toLocaleString('es-AR')} ARS/mes</span></button>
+            <button className="w-full sm:w-auto px-10 py-5 bg-soda-accent/15 border-2 border-soda-accent text-soda-glow rounded-sm hover:bg-soda-accent/25 transition-all tracking-wider"><span className="flex items-center justify-center gap-2"><Heart size={18} />SUSCRIBIRME (INTERNACIONAL)</span><span className="block text-xs text-soda-lamp mt-1 opacity-80">USD ${currentPlan.priceUSD}/mes</span></button>
           </div>
           <p className="text-soda-fog text-xs mt-8 font-light text-center">Cancelá cuando quieras, sin compromiso ni letra chica</p>
         </motion.div>
@@ -418,15 +566,10 @@ const PublicView: React.FC = () => {
 export const FrecuenciaInterna: React.FC = () => {
   const user = getCurrentUser();
   const isPremium = user?.isPremium === true;
-
   return (
     <section id="frecuencia-interna" className="relative py-32 px-6 bg-gradient-to-b from-soda-night via-soda-deep to-soda-night overflow-hidden">
       {isPremium && <AuroraEffect />}
-      {isPremium ? (
-        <div className="max-w-7xl mx-auto relative z-10"><SubscriberDashboard /></div>
-      ) : (
-        <PublicView />
-      )}
+      {isPremium ? <div className="max-w-7xl mx-auto relative z-10"><SubscriberDashboard /></div> : <PublicView />}
     </section>
   );
 };
