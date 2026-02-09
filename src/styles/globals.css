@@ -44,9 +44,8 @@ body {
   border: 1px solid rgba(212, 197, 176, 0.6);
   border-radius: 50%;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 99999;
   transition: transform 0.15s ease-out, width 0.15s, height 0.15s;
-  mix-blend-mode: difference;
 }
 
 #custom-cursor.hover {

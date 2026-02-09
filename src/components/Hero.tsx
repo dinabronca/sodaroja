@@ -182,21 +182,6 @@ export const Hero: React.FC = () => {
           </motion.p>
         </motion.div>
 
-        {/* Indicador de scroll — solo desktop */}
-        {!isMobile && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2.5, duration: 1 }}
-          className="absolute bottom-12 left-1/2 transform -translate-x-1/2"
-        >
-          <motion.div
-            animate={{ y: [0, 12, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="w-px h-16 bg-gradient-to-b from-transparent via-soda-lamp to-transparent"
-          />
-        </motion.div>
-        )}
       </div>
 
       {/* Ondas de frecuencia en el fondo */}
