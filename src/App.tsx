@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { ScrollToTop } from './components/ScrollToTop';
 import { HomePage } from './pages/HomePage';
-import { FloatingParticles } from './effects/FloatingParticles';
 import { getContent } from './data/content';
 import { initDemoUsers } from './data/auth';
 import './styles/globals.css';
@@ -91,18 +90,11 @@ const Footer: React.FC = () => {
   );
 };
 
-const isMobileDevice = () => typeof window !== 'undefined' && (window.innerWidth < 768 || 'ontouchstart' in window);
-
 function App() {
-  const mobile = isMobileDevice();
-
   return (
     <Router>
       <ScrollToTop />
       <div className="relative min-h-screen bg-soda-night overflow-x-hidden">
-        {/* Overlays decorativos — solo desktop, ligeros */}
-        {!mobile && <div className="vignette" />}
-        <FloatingParticles count={mobile ? 4 : 20} />
         <Navbar />
 
         <Suspense fallback={<PageLoader />}>

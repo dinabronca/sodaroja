@@ -52,7 +52,7 @@ export const EpisodiosPage: React.FC = () => {
   const newestId = allSorted.length > 0 ? allSorted[0].id : null;
 
   return (
-    <section className="relative pt-28 sm:pt-32 pb-24 px-4 sm:px-6 min-h-screen overflow-hidden">
+    <section className="relative pt-28 sm:pt-32 pb-24 px-4 sm:px-6 min-h-screen">
       <SEO title="Episodios" description="Todos los episodios de sodaroja. Historias reales de ciudades del mundo." />
       <EpisodeVibes />
       <div className="relative z-10 max-w-7xl mx-auto">

@@ -46,7 +46,7 @@ export const UnirsePage: React.FC = () => {
       <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="w-full max-w-md">
         <div className="bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm p-8">
           <div className="text-center mb-8">
-            <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 3, repeat: Infinity }} className="text-soda-red text-5xl mb-4" style={{ filter: 'drop-shadow(0 0 15px rgba(196, 85, 85, 0.5))' }}>◉</motion.div>
+            <motion.div  className="text-soda-red text-5xl mb-4" style={{ filter: 'drop-shadow(0 0 15px rgba(196, 85, 85, 0.5))' }}>◉</motion.div>
             <h1 className="text-3xl font-serif text-soda-glow mb-2">{mode === 'register' ? 'Unirse al culto' : 'Bienvenido de vuelta'}</h1>
             <p className="text-soda-fog text-sm">{mode === 'register' ? 'Creá tu cuenta y empezá a escuchar' : 'Ingresá a tu cuenta'}</p>
           </div>
