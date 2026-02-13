@@ -105,15 +105,6 @@ export const QueEsEsto: React.FC = () => {
       )}
 
       {/* ===== CAPA 10: CONTENIDO ===== */}
-      {/* Floating radio emojis */}
-      <style>{`@keyframes radioFloat { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-30px) rotate(6deg); } }`}</style>
-      {['📡','📻','🔊','📡','🎵','📻','🔊','📡'].map((emoji, i) => (
-        <span key={`re-${i}`} style={{
-          position: 'absolute', fontSize: '1.4rem', pointerEvents: 'none', userSelect: 'none',
-          left: `${5 + i * 12}%`, top: `${10 + (i % 3) * 30}%`, opacity: 0.3, zIndex: 5,
-          animation: `radioFloat ${8 + i * 1.3}s ease-in-out infinite ${i * 0.9}s`,
-        }}>{emoji}</span>
-      ))}
       <div className="max-w-5xl mx-auto relative" style={{ zIndex: 10 }}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}

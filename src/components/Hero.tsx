@@ -1,40 +1,56 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { motion } from 'framer-motion';
 import { getContent } from '../data/content';
 
 export const Hero: React.FC = () => {
   const content = getContent();
   const { hero } = content;
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    // Small delay then show everything with a fade
-    const t = setTimeout(() => setVisible(true), 100);
-    return () => clearTimeout(t);
-  }, []);
 
   return (
-    <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-      {/* Background gradient */}
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, #0e1220, #0a0e1a, #0e1220)' }} />
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-soda-deep via-soda-night to-soda-deep" />
 
-      {/* Subtle radial glow */}
-      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', background: 'radial-gradient(ellipse at 50% 45%, rgba(196,85,85,0.06) 0%, transparent 60%)' }} />
+      {/* Subtle ambient glow */}
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{ width: '60%', height: '60%', left: '20%', top: '20%', background: 'radial-gradient(ellipse, rgba(196,85,85,0.05) 0%, transparent 70%)', filter: 'blur(60px)' }}
+        animate={{ opacity: [0.3, 0.6, 0.3], scale: [0.95, 1.05, 0.95] }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+      />
 
-      {/* Content */}
-      <div style={{ position: 'relative', zIndex: 10, textAlign: 'center', padding: '0 24px', maxWidth: '72rem', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(15px)', transition: 'opacity 0.8s ease, transform 0.8s ease' }}>
+      <div className="relative z-10 text-center px-6 max-w-6xl mx-auto flex flex-col items-center justify-center">
 
+        {/* Logo/Image or Carita */}
         {hero.imageUrl ? (
-          <div style={{ position: 'relative', display: 'inline-block', marginBottom: '2.5rem', maxWidth: '28rem' }}>
-            {/* Pulsing glow behind image */}
-            <div className="pulse-glow" style={{ position: 'absolute', inset: '-24px', borderRadius: '4px', background: 'radial-gradient(ellipse, rgba(196,85,85,0.15) 0%, transparent 70%)' }} />
-            <img src={hero.imageUrl} alt={hero.title || 'sodaroja'} style={{ position: 'relative', zIndex: 10, width: '100%', borderRadius: '4px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)', filter: 'brightness(0.9) contrast(1.05)' }} />
-          </div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.2, ease: 'easeOut' }}
+            className="relative inline-block mb-10 max-w-md mx-auto"
+          >
+            <motion.div
+              className="absolute -inset-6 rounded-sm"
+              style={{ background: 'radial-gradient(ellipse, rgba(196,85,85,0.12) 0%, transparent 70%)' }}
+              animate={{ opacity: [0.4, 0.8, 0.4] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            />
+            <img src={hero.imageUrl} alt={hero.title || 'sodaroja'} className="relative z-10 w-full rounded-sm shadow-2xl" style={{ filter: 'brightness(0.9) contrast(1.05)' }} />
+          </motion.div>
         ) : (
-          <div style={{ position: 'relative', display: 'inline-block', marginBottom: '2.5rem' }}>
-            {/* Glow behind carita */}
-            <div className="pulse-glow" style={{ position: 'absolute', inset: '-32px', background: 'radial-gradient(circle, rgba(196,85,85,0.12) 0%, transparent 60%)' }} />
-            <div style={{ width: '12rem', height: '12rem', margin: '0 auto', position: 'relative' }}>
-              <svg viewBox="0 0 120 120" style={{ width: '100%', height: '100%' }}>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.2, ease: 'easeOut' }}
+            className="relative inline-block mb-10"
+          >
+            <motion.div
+              className="absolute -inset-8"
+              style={{ background: 'radial-gradient(circle, rgba(196,85,85,0.1) 0%, transparent 60%)' }}
+              animate={{ opacity: [0.3, 0.7, 0.3], scale: [0.95, 1.1, 0.95] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+            />
+            <div className="w-40 h-40 md:w-48 md:h-48 mx-auto relative">
+              <svg viewBox="0 0 120 120" className="w-full h-full">
                 <circle cx="60" cy="60" r="55" fill="none" stroke="rgba(196, 85, 85, 0.08)" strokeWidth="0.5" />
                 <circle cx="60" cy="60" r="48" fill="none" stroke="rgba(138, 155, 196, 0.06)" strokeWidth="0.3" />
                 {[...Array(48)].map((_, i) => {
@@ -51,29 +67,50 @@ export const Hero: React.FC = () => {
                 <path d="M 82 50 Q 85 60 82 70" stroke="rgba(196, 85, 85, 0.2)" strokeWidth="1.5" fill="none" />
               </svg>
             </div>
-          </div>
+          </motion.div>
         )}
 
         {hero.title && (
-          <h1 style={{ fontSize: 'clamp(3.5rem, 8vw, 5rem)', fontFamily: "'Crimson Pro', serif", fontWeight: 300, letterSpacing: '0.05em', color: '#fef8ed', marginBottom: '1.5rem', textShadow: '0 0 30px rgba(212, 197, 176, 0.3)', opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(10px)', transition: 'opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s' }}>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 1 }}
+            className="text-7xl md:text-8xl font-serif font-light tracking-wider text-soda-glow mb-6"
+            style={{ textShadow: '0 0 30px rgba(212, 197, 176, 0.3)' }}
+          >
             {hero.title}
-          </h1>
+          </motion.h1>
         )}
 
         {hero.subtitle && (
-          <div style={{ color: '#d4c5b0', fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)', fontWeight: 300, letterSpacing: '0.05em', marginBottom: '1rem', opacity: visible ? 1 : 0, transition: 'opacity 0.8s ease 0.4s' }}>
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+            className="text-soda-lamp text-xl md:text-2xl font-light tracking-wide mb-4"
+          >
             {hero.subtitle}
-          </div>
+          </motion.div>
         )}
 
         {(hero.title || hero.subtitle) && hero.description && (
-          <div style={{ width: '200px', height: '1px', background: 'linear-gradient(to right, transparent, #d4c5b0, transparent)', margin: '0 auto 2rem', opacity: visible ? 1 : 0, transition: 'opacity 0.8s ease 0.6s' }} />
+          <motion.div
+            initial={{ opacity: 0, scaleX: 0 }}
+            animate={{ opacity: 1, scaleX: 1 }}
+            transition={{ delay: 0.9, duration: 0.8 }}
+            className="w-[200px] h-px bg-gradient-to-r from-transparent via-soda-lamp to-transparent mx-auto mb-8"
+          />
         )}
 
         {hero.description && (
-          <p style={{ color: '#8b9ab5', fontSize: 'clamp(0.9rem, 1.5vw, 1.1rem)', fontWeight: 300, maxWidth: '42rem', margin: '0 auto', lineHeight: 1.7, whiteSpace: 'pre-line' as any, opacity: visible ? 1 : 0, transition: 'opacity 0.8s ease 0.8s' }}>
+          <motion.p
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.1, duration: 0.8 }}
+            className="text-soda-fog text-base md:text-lg font-light max-w-2xl mx-auto leading-relaxed whitespace-pre-line"
+          >
             {hero.description}
-          </p>
+          </motion.p>
         )}
       </div>
     </section>

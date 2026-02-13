@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { X, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getCurrentUser } from '../data/auth';
@@ -56,16 +57,22 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
   return (
     <>
       {/* TARJETA */}
-      <div className="relative h-full group" onClick={handleCardClick}
-        style={{ transition: 'transform 0.3s ease', cursor: isLocked ? 'default' : 'pointer' }}
-        onMouseEnter={e => { if (!isLocked) (e.currentTarget as HTMLElement).style.transform = 'translateY(-6px)'; }}
-        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}>
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        whileHover={!isLocked ? { y: -6, transition: { duration: 0.25 } } : undefined}
+        className="relative group h-full"
+        onClick={handleCardClick}
+        style={{ cursor: isLocked ? 'default' : 'pointer' }}
+      >
         <div className={`relative overflow-hidden rounded-sm h-full flex flex-col transition-all duration-300 ${
           isUnlockedPremium
             ? 'bg-gradient-to-b from-soda-deep to-[#1a1020] border border-soda-red/40'
             : isLocked
             ? 'bg-soda-deep border border-soda-mist/20 hover:border-soda-red/30'
-            : 'bg-soda-deep border border-soda-mist/30 hover:border-soda-accent/50'
+            : 'bg-soda-deep border border-soda-mist/30 hover:border-soda-accent/50 hover:shadow-lg hover:shadow-soda-accent/5'
         }`}>
           <div className="relative h-64 overflow-hidden">
             <img src={episode.imageUrl} alt={episode.city}
@@ -144,7 +151,7 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
             )}
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* MODAL — only renders when open */}
       {isExpanded && !isLocked && (

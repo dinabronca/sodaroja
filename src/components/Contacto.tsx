@@ -74,14 +74,19 @@ export const Contacto: React.FC = () => {
   return (
     <section id="contacto" className="relative py-32 px-6 bg-gradient-to-b from-soda-night to-soda-deep overflow-hidden">
       <MailEffects />
-      {/* Floating letter emojis */}
-      <style>{`@keyframes mailFloat { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-30px) rotate(12deg); } }`}</style>
-      {['💌','✉️','📮','💌','📬','✉️','💌','📮','✉️','💌','📬','✉️','💌','📮','💌','✉️','📬','💌','📮','✉️','💌','📬','✉️','💌','📮','💌','✉️','📬'].map((emoji, i) => (
-        <span key={`me-${i}`} style={{
-          position: 'absolute', fontSize: '1.3rem', pointerEvents: 'none', userSelect: 'none',
-          left: `${3 + (i * 3.4) % 94}%`, top: `${5 + (i * 7.3) % 85}%`, opacity: 0.3,
-          animation: `mailFloat ${6 + (i % 5) * 1.5}s ease-in-out infinite ${i * 0.4}s`,
-        }}>{emoji}</span>
+      {/* Elegant floating light particles instead of emojis */}
+      {[...Array(20)].map((_, i) => (
+        <motion.div key={`cp-${i}`} className="absolute rounded-full pointer-events-none"
+          style={{
+            left: `${2 + (i * 5) % 96}%`,
+            top: `${3 + (i * 7.1) % 90}%`,
+            width: 3 + (i % 3) * 2,
+            height: 3 + (i % 3) * 2,
+            background: i % 3 === 0 ? 'rgba(196,85,85,0.25)' : 'rgba(138,155,196,0.2)',
+          }}
+          animate={{ y: [0, -40, 0], opacity: [0, 0.6, 0] }}
+          transition={{ duration: 8 + (i % 5) * 2, repeat: Infinity, delay: i * 0.5, ease: 'easeInOut' }}
+        />
       ))}
       <div className="relative z-10 max-w-5xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="text-center mb-16">

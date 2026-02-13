@@ -1,9 +1,38 @@
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { Hero } from '../components/Hero';
 import { EpisodeCard } from '../components/EpisodeCard';
 import { getContent } from '../data/content';
 import { demoEpisodes } from '../data/episodes';
+
+// Subtle floating dust particles (position: absolute, inside section)
+const DustParticles: React.FC<{ count?: number; color?: string }> = ({ count = 12, color = 'rgba(212,197,176,0.15)' }) => {
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const n = isMobile ? Math.floor(count / 3) : count;
+  const particles = useMemo(() =>
+    Array.from({ length: n }, (_, i) => ({
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      size: 2 + Math.random() * 3,
+      dur: 12 + Math.random() * 10,
+      delay: Math.random() * 8,
+    })),
+    [n]
+  );
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
+      {particles.map((p, i) => (
+        <motion.div key={i} className="absolute rounded-full"
+          style={{ left: `${p.x}%`, top: `${p.y}%`, width: p.size, height: p.size, background: color }}
+          animate={{ y: [0, -60, 0], x: [0, 15, -10, 0], opacity: [0, 0.6, 0.3, 0] }}
+          transition={{ duration: p.dur, repeat: Infinity, delay: p.delay, ease: 'easeInOut' }}
+        />
+      ))}
+    </div>
+  );
+};
 
 export const HomePage: React.FC = () => {
   const content = getContent();
@@ -15,7 +44,6 @@ export const HomePage: React.FC = () => {
   );
   const featured = sorted.slice(0, 6);
 
-  // Mapa de id -> numero (mas antiguo = #1)
   const episodeNumberMap = React.useMemo(() => {
     const byDate = [...allRaw].sort((a, b) => (a.publishDate || '').localeCompare(b.publishDate || ''));
     const map: Record<string, number> = {};
@@ -27,31 +55,35 @@ export const HomePage: React.FC = () => {
     <>
       <Hero />
       <section id="episodios" className="relative py-16 sm:py-24 px-4 sm:px-6">
-        {/* Floating travel emojis - inline keyframes for guaranteed visibility */}
-        <style>{`@keyframes emFloat { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-35px) rotate(8deg); } }`}</style>
-        {['✈️','🌍','🎧','🗺️','🌆','🎙️','🌃','📻','🛫','🌏'].map((emoji, i) => (
-          <span key={`te-${i}`} style={{
-            position: 'absolute', fontSize: '1.6rem', pointerEvents: 'none', userSelect: 'none',
-            left: `${8 + i * 9}%`, top: `${15 + (i % 3) * 28}%`, opacity: 0.35,
-            animation: `emFloat ${7 + i * 1.2}s ease-in-out infinite ${i * 0.8}s`,
-          }}>{emoji}</span>
-        ))}
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-10 sm:mb-16">
+        <DustParticles count={15} color="rgba(196,85,85,0.12)" />
+        <div className="max-w-7xl mx-auto relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-10 sm:mb-16"
+          >
             <h2 className="text-4xl sm:text-5xl font-serif text-soda-glow mb-4">Viajes Recientes</h2>
             <div className="w-32 h-px bg-gradient-to-r from-transparent via-soda-accent to-transparent mx-auto mb-6" />
             <p className="text-soda-fog font-light tracking-wide">Lo mas nuevo de sodaroja</p>
-          </div>
+          </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {featured.map((episode: any, index: number) => (
               <EpisodeCard key={episode.id} episode={episode} isNewest={index === 0} episodeNumber={episodeNumberMap[episode.id]} />
             ))}
           </div>
-          <div className="text-center mt-12 sm:mt-16">
-            <Link to="/episodios" className="glow-button hoverable inline-block px-8 sm:px-12 py-3 sm:py-4 border border-soda-lamp border-opacity-30 text-soda-lamp rounded-sm hover:border-opacity-60 hover:bg-soda-lamp hover:bg-opacity-5 transition-all duration-300 font-light tracking-wider text-sm sm:text-base">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="text-center mt-12 sm:mt-16"
+          >
+            <Link to="/episodios" className="inline-block px-8 sm:px-12 py-3 sm:py-4 border border-soda-lamp/30 text-soda-lamp rounded-sm hover:border-soda-lamp/60 hover:bg-soda-lamp/5 transition-all duration-300 font-light tracking-wider text-sm sm:text-base">
               VER TODOS LOS EPISODIOS
             </Link>
-          </div>
+          </motion.div>
         </div>
       </section>
     </>
