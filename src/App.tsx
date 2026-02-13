@@ -52,7 +52,7 @@ const SocialIcon: React.FC<{ platform: string; iconUrl?: string }> = ({ platform
   };
 
   return (
-    <svg width="28" height="28" viewBox="0 0 28 28" className="transition-transform hover:scale-110">
+    <svg width="28" height="28" viewBox="0 0 28 28" className="transition-transform duration-500 hover:scale-105">
       <circle cx="14" cy="14" r="13" fill={bg} />{getSymbol()}
     </svg>
   );

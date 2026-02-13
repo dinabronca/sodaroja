@@ -139,10 +139,10 @@ export const QueEsEsto: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.06 }}
-                className={`relative rounded-sm p-8 border transition-all duration-300 group ${
+                className={`relative rounded-sm p-8 border transition-all duration-500 group ${
                   item.destacado
-                    ? 'bg-soda-night/80 border-soda-red/40 hover:border-soda-red/60 hover:shadow-lg hover:shadow-soda-red/10'
-                    : 'bg-soda-night/70 border-soda-mist/20 hover:border-soda-accent/40'
+                    ? 'bg-soda-night/80 border-soda-red/30 hover:border-soda-red/45'
+                    : 'bg-soda-night/70 border-soda-mist/15 hover:border-soda-accent/30'
                 }`}
               >
                 <div className="flex items-start gap-6">

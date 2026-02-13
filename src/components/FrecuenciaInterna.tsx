@@ -216,7 +216,7 @@ const SubscriberDashboard: React.FC = () => {
           <div className="flex items-center justify-center gap-3 flex-wrap">
             <motion.div animate={{ opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity }}
               className="inline-flex items-center gap-2 bg-soda-red/10 border border-soda-red/30 rounded-sm px-4 py-1.5">
-              <motion.div animate={{ scale: [1, 1.4, 1] }} transition={{ duration: 1.5, repeat: Infinity }} className="w-2 h-2 bg-soda-red rounded-full" />
+              <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }} className="w-2 h-2 bg-soda-red rounded-full" />
               <span className="text-soda-red text-xs tracking-wider font-medium">SEÑAL ACTIVA</span>
             </motion.div>
             <button onClick={() => setShowMissions(!showMissions)}
@@ -607,20 +607,20 @@ const PublicView: React.FC = () => {
       {[...Array(isMobile ? 3 : 6)].map((_, i) => (
         <motion.div key={`w-${i}`} className="absolute left-1/2 top-1/2 border-2 border-soda-red rounded-full pointer-events-none"
           style={{ width: `${300 + i * 150}px`, height: `${300 + i * 150}px`, marginLeft: `-${150 + i * 75}px`, marginTop: `-${150 + i * 75}px` }}
-          animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.3, 0.1] }}
+          animate={{ scale: [1, 1.1, 1], opacity: [0.05, 0.15, 0.05] }}
           transition={{ duration: 4 + i * 0.5, repeat: Infinity, delay: i * 0.5 }}
         />
       ))}
       {[...Array(isMobile ? 4 : 20)].map((_, i) => (
         <motion.div key={`p-${i}`} className="absolute w-1 h-1 bg-soda-red rounded-full opacity-40"
           style={{ left: `${Math.random() * 100}%`, top: `${Math.random() * 100}%` }}
-          animate={{ y: [0, -100, 0], opacity: [0.2, 0.8, 0.2] }}
+          animate={{ y: [0, -50, 0], opacity: [0.1, 0.4, 0.1] }}
           transition={{ duration: 5 + Math.random() * 5, repeat: Infinity, delay: Math.random() * 5 }}
         />
       ))}
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
-          <motion.div animate={{ scale: [1, 1.05, 1], opacity: [0.8, 1, 0.8] }} transition={{ duration: 3, repeat: Infinity }} className="inline-block mb-8">
+          <motion.div animate={{ scale: [1, 1.03, 1], opacity: [0.7, 1, 0.7] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }} className="inline-block mb-8">
             <div className="text-8xl text-soda-red">◉</div>
           </motion.div>
           <h2 className="text-5xl md:text-6xl font-serif text-soda-glow mb-6">Frecuencia Interna</h2>
@@ -637,8 +637,8 @@ const PublicView: React.FC = () => {
               {plans.map((plan, idx) => (
                 <motion.div key={plan.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }}
                   onClick={() => setSelectedPlan(plan.id)}
-                  className={`relative bg-soda-night/50 rounded-sm p-8 transition-all duration-300 cursor-pointer ${
-                    selectedPlan === plan.id ? 'border-2 border-soda-red shadow-lg shadow-soda-red/20 scale-[1.02]' : plan.featured ? 'border-2 border-soda-accent shadow-lg shadow-soda-accent/10' : 'border border-soda-mist/20 hover:border-soda-accent/40'
+                  className={`relative bg-soda-night/50 rounded-sm p-8 transition-all duration-500 cursor-pointer ${
+                    selectedPlan === plan.id ? 'border border-soda-red/60 scale-[1.01]' : plan.featured ? 'border border-soda-accent/40' : 'border border-soda-mist/15 hover:border-soda-mist/30'
                   }`}>
                   <div className={`absolute top-4 right-4 w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedPlan === plan.id ? 'border-soda-red bg-soda-red' : 'border-soda-mist/40'}`}>{selectedPlan === plan.id && <div className="w-2 h-2 bg-white rounded-full" />}</div>
                   {plan.featured && <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-soda-red px-4 py-1 rounded-sm text-xs tracking-wider text-soda-glow">MÁS ELEGIDO</div>}
@@ -665,15 +665,13 @@ const PublicView: React.FC = () => {
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mt-16">
           <div className="mb-6 text-center"><div className="text-soda-lamp text-sm mb-1">Plan seleccionado: <span className="text-soda-red font-medium">{currentPlan.name}</span></div><div className="text-soda-fog text-xs">${currentPlan.priceARS.toLocaleString('es-AR')} ARS / USD ${currentPlan.priceUSD} por mes</div></div>
           <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-2xl mx-auto">
-            <button className="relative overflow-hidden w-full sm:w-auto px-10 py-5 bg-soda-red/20 border-2 border-soda-red text-soda-glow rounded-sm hover:bg-soda-red/35 hover:shadow-lg hover:shadow-soda-red/25 transition-all duration-300 tracking-wider group">
-              <span className="absolute inset-0 bg-soda-red/10 scale-0 group-hover:scale-100 rounded-full transition-transform duration-500" />
-              <span className="relative flex items-center justify-center gap-2"><Heart size={18} />SUSCRIBIRME (ARGENTINA)</span>
-              <span className="relative block text-xs text-soda-lamp mt-1 opacity-80">Mercado Pago · ${currentPlan.priceARS.toLocaleString('es-AR')} ARS/mes</span>
+            <button className="w-full sm:w-auto px-10 py-5 bg-soda-red/10 border border-soda-red/50 text-soda-glow rounded-sm hover:bg-soda-red/20 hover:border-soda-red/70 transition-all duration-500 tracking-wider">
+              <span className="flex items-center justify-center gap-2"><Heart size={18} />SUSCRIBIRME (ARGENTINA)</span>
+              <span className="block text-xs text-soda-lamp mt-1 opacity-70">Mercado Pago · ${currentPlan.priceARS.toLocaleString('es-AR')} ARS/mes</span>
             </button>
-            <button className="relative overflow-hidden w-full sm:w-auto px-10 py-5 bg-soda-accent/15 border-2 border-soda-accent text-soda-glow rounded-sm hover:bg-soda-accent/30 hover:shadow-lg hover:shadow-soda-accent/20 transition-all duration-300 tracking-wider group">
-              <span className="absolute inset-0 bg-soda-accent/10 scale-0 group-hover:scale-100 rounded-full transition-transform duration-500" />
-              <span className="relative flex items-center justify-center gap-2"><Heart size={18} />SUSCRIBIRME (INTERNACIONAL)</span>
-              <span className="relative block text-xs text-soda-lamp mt-1 opacity-80">USD ${currentPlan.priceUSD}/mes</span>
+            <button className="w-full sm:w-auto px-10 py-5 bg-soda-accent/8 border border-soda-accent/40 text-soda-glow rounded-sm hover:bg-soda-accent/15 hover:border-soda-accent/60 transition-all duration-500 tracking-wider">
+              <span className="flex items-center justify-center gap-2"><Heart size={18} />SUSCRIBIRME (INTERNACIONAL)</span>
+              <span className="block text-xs text-soda-lamp mt-1 opacity-70">USD ${currentPlan.priceUSD}/mes</span>
             </button>
           </div>
           <p className="text-soda-fog text-xs mt-8 font-light text-center">Cancelá cuando quieras, sin compromiso ni letra chica</p>

@@ -13,9 +13,9 @@ export const Hero: React.FC = () => {
       {/* Subtle ambient glow */}
       <motion.div
         className="absolute pointer-events-none"
-        style={{ width: '60%', height: '60%', left: '20%', top: '20%', background: 'radial-gradient(ellipse, rgba(196,85,85,0.05) 0%, transparent 70%)', filter: 'blur(60px)' }}
-        animate={{ opacity: [0.3, 0.6, 0.3], scale: [0.95, 1.05, 0.95] }}
-        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        style={{ width: '60%', height: '60%', left: '20%', top: '20%', background: 'radial-gradient(ellipse, rgba(196,85,85,0.04) 0%, transparent 70%)', filter: 'blur(60px)' }}
+        animate={{ opacity: [0.3, 0.5, 0.3], scale: [0.97, 1.03, 0.97] }}
+        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
       />
 
       <div className="relative z-10 text-center px-6 max-w-6xl mx-auto flex flex-col items-center justify-center">
@@ -30,9 +30,9 @@ export const Hero: React.FC = () => {
           >
             <motion.div
               className="absolute -inset-6 rounded-sm"
-              style={{ background: 'radial-gradient(ellipse, rgba(196,85,85,0.12) 0%, transparent 70%)' }}
-              animate={{ opacity: [0.4, 0.8, 0.4] }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+              style={{ background: 'radial-gradient(ellipse, rgba(196,85,85,0.08) 0%, transparent 70%)' }}
+              animate={{ opacity: [0.3, 0.6, 0.3] }}
+              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
             />
             <img src={hero.imageUrl} alt={hero.title || 'sodaroja'} className="relative z-10 w-full rounded-sm shadow-2xl" style={{ filter: 'brightness(0.9) contrast(1.05)' }} />
           </motion.div>
@@ -45,9 +45,9 @@ export const Hero: React.FC = () => {
           >
             <motion.div
               className="absolute -inset-8"
-              style={{ background: 'radial-gradient(circle, rgba(196,85,85,0.1) 0%, transparent 60%)' }}
-              animate={{ opacity: [0.3, 0.7, 0.3], scale: [0.95, 1.1, 0.95] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+              style={{ background: 'radial-gradient(circle, rgba(196,85,85,0.07) 0%, transparent 60%)' }}
+              animate={{ opacity: [0.2, 0.5, 0.2], scale: [0.97, 1.05, 0.97] }}
+              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
             />
             <div className="w-40 h-40 md:w-48 md:h-48 mx-auto relative">
               <svg viewBox="0 0 120 120" className="w-full h-full">

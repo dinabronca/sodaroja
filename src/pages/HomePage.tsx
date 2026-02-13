@@ -80,7 +80,7 @@ export const HomePage: React.FC = () => {
             transition={{ delay: 0.3, duration: 0.6 }}
             className="text-center mt-12 sm:mt-16"
           >
-            <Link to="/episodios" className="inline-block px-8 sm:px-12 py-3 sm:py-4 border border-soda-lamp/30 text-soda-lamp rounded-sm hover:border-soda-lamp/60 hover:bg-soda-lamp/5 transition-all duration-300 font-light tracking-wider text-sm sm:text-base">
+            <Link to="/episodios" className="inline-block px-8 sm:px-12 py-3 sm:py-4 border border-soda-lamp/20 text-soda-lamp/70 rounded-sm hover:border-soda-lamp/35 hover:text-soda-lamp hover:bg-soda-lamp/3 transition-all duration-500 font-light tracking-widest text-[11px] sm:text-xs">
               VER TODOS LOS EPISODIOS
             </Link>
           </motion.div>

@@ -66,11 +66,11 @@ export const EpisodiosPage: React.FC = () => {
         <div className="flex flex-col sm:flex-row gap-3 mb-8 sm:mb-12">
           <div className="relative flex-1">
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-soda-fog" />
-            <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar por ciudad, titulo o #número..." className="w-full bg-soda-slate bg-opacity-40 border border-soda-mist border-opacity-20 rounded-sm pl-10 pr-4 py-2.5 text-soda-lamp text-sm focus:border-soda-accent focus:outline-none transition-colors" />
+            <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar por ciudad, titulo o #número..." className="w-full bg-soda-slate/30 border border-soda-mist/15 rounded-sm pl-10 pr-4 py-2.5 text-soda-lamp text-sm focus:border-soda-accent/40 focus:outline-none transition-colors duration-500" />
           </div>
           <div className="flex gap-2">
             {(['all', 'free', 'premium'] as const).map(f => (
-              <button key={f} onClick={() => setFilter(f)} className={`px-4 py-2.5 rounded-sm text-xs tracking-wider transition-all border ${filter === f ? 'border-soda-red bg-soda-red bg-opacity-15 text-soda-glow' : 'border-soda-mist border-opacity-20 text-soda-fog hover:text-soda-lamp'}`}>
+              <button key={f} onClick={() => setFilter(f)} className={`px-4 py-2.5 rounded-sm text-xs tracking-wider transition-all duration-500 border ${filter === f ? 'border-soda-red/50 bg-soda-red/10 text-soda-glow' : 'border-soda-mist/15 text-soda-fog/60 hover:text-soda-fog hover:border-soda-mist/25'}`}>
                 {f === 'all' ? 'TODOS' : f === 'free' ? 'ABIERTOS' : 'FRECUENCIA INTERNA'}
               </button>
             ))}

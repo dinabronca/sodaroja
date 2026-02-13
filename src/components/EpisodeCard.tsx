@@ -62,23 +62,23 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        whileHover={!isLocked ? { y: -6, transition: { duration: 0.25 } } : undefined}
+        whileHover={!isLocked ? { y: -4, transition: { duration: 0.5, ease: 'easeOut' } } : undefined}
         className="relative group h-full"
         onClick={handleCardClick}
         style={{ cursor: isLocked ? 'default' : 'pointer' }}
       >
-        <div className={`relative overflow-hidden rounded-sm h-full flex flex-col transition-all duration-300 ${
+        <div className={`relative overflow-hidden rounded-sm h-full flex flex-col transition-all duration-500 ${
           isUnlockedPremium
-            ? 'bg-gradient-to-b from-soda-deep to-[#1a1020] border border-soda-red/40'
+            ? 'bg-gradient-to-b from-soda-deep to-[#1a1020] border border-soda-red/30 hover:border-soda-red/50'
             : isLocked
-            ? 'bg-soda-deep border border-soda-mist/20 hover:border-soda-red/30'
-            : 'bg-soda-deep border border-soda-mist/30 hover:border-soda-accent/50 hover:shadow-lg hover:shadow-soda-accent/5'
+            ? 'bg-soda-deep border border-soda-mist/15 hover:border-soda-red/20'
+            : 'bg-soda-deep border border-soda-mist/20 hover:border-soda-accent/35'
         }`}>
           <div className="relative h-64 overflow-hidden">
             <img src={episode.imageUrl} alt={episode.city}
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              className="w-full h-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-[1.03]"
               loading="lazy"
-              style={isLocked ? { filter: 'saturate(0.3) contrast(1.2) brightness(0.7)' } : isUnlockedPremium ? { filter: 'contrast(1.1) saturate(1.1)' } : {}} />
+              style={isLocked ? { filter: 'saturate(0.3) contrast(1.1) brightness(0.6) blur(2.5px)' } : isUnlockedPremium ? { filter: 'contrast(1.05) saturate(1.05)' } : {}} />
 
             {/* VHS scanline for premium (locked or unlocked) */}
             {(isUnlockedPremium || isLocked) && (
@@ -98,8 +98,8 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
             {/* Badges izquierda */}
             <div className="absolute top-3 left-3 z-20 flex flex-col gap-1.5">
               {isUnlockedPremium && (
-                <div style={{ background: '#c45555', padding: '4px 12px', borderRadius: '2px', boxShadow: '0 0 10px rgba(196,85,85,0.5), 0 0 20px rgba(196,85,85,0.2)' }}>
-                  <span style={{ color: 'white', fontSize: '10px', fontWeight: 700, letterSpacing: '0.1em' }}>FRECUENCIA INTERNA</span>
+                <div style={{ background: 'rgba(196,85,85,0.85)', padding: '4px 12px', borderRadius: '2px', boxShadow: '0 2px 8px rgba(196,85,85,0.3)' }}>
+                  <span style={{ color: 'white', fontSize: '9px', fontWeight: 600, letterSpacing: '0.12em' }}>FRECUENCIA INTERNA</span>
                 </div>
               )}
               {isNewest && <div className="bg-emerald-500 px-3 py-1 rounded-sm"><span className="text-white text-[10px] font-bold tracking-widest">RECIÉN SALIDO</span></div>}
@@ -115,14 +115,15 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
               {episodeNumber !== undefined && <div className="bg-soda-night/80 px-2.5 py-1 rounded-sm border border-soda-mist/15"><span className="text-soda-lamp text-[11px] font-mono font-bold">#{episodeNumber}</span></div>}
             </div>
 
-            {/* Premium locked — mysterious overlay */}
+            {/* Premium locked — cinematic mystery */}
             {isLocked && (
               <div style={{ position: 'absolute', inset: 0, zIndex: 15, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom right, rgba(196,85,85,0.15), rgba(10,14,26,0.6), rgba(138,155,196,0.1))' }} />
-                <div style={{ position: 'relative', zIndex: 10, textAlign: 'center', padding: '0 1.5rem' }}>
-                  <div style={{ fontSize: '3rem', color: '#c45555', marginBottom: '0.5rem', filter: 'drop-shadow(0 0 25px rgba(196,85,85,0.8))', animation: 'pulseGlow 3s ease-in-out infinite' }}>◉</div>
-                  <div style={{ color: '#fef8ed', fontSize: '12px', letterSpacing: '0.15em', fontWeight: 300 }}>FRECUENCIA INTERNA</div>
-                  <div style={{ color: 'rgba(196,85,85,0.7)', fontSize: '9px', letterSpacing: '0.2em', marginTop: '4px' }}>▰▰ SEÑAL ENCRIPTADA ▰▰</div>
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(10,14,26,0.3) 0%, rgba(10,14,26,0.5) 40%, rgba(10,14,26,0.7) 100%)' }} />
+                <div style={{ position: 'relative', zIndex: 10, textAlign: 'center', padding: '0 2rem' }}>
+                  <div style={{ width: '48px', height: '48px', margin: '0 auto 12px', borderRadius: '50%', border: '1.5px solid rgba(196,85,85,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(196,85,85,0.08)' }}>
+                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#c45555', boxShadow: '0 0 12px rgba(196,85,85,0.6)' }} />
+                  </div>
+                  <div style={{ color: 'rgba(254,248,237,0.8)', fontSize: '11px', letterSpacing: '0.2em', fontWeight: 300 }}>FRECUENCIA INTERNA</div>
                 </div>
               </div>
             )}
@@ -140,13 +141,13 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
               <p className="text-soda-fog text-sm leading-relaxed font-light">{episode.description}</p>
             </div>
             {!isLocked && (
-              <div className={`pt-4 border-t ${isUnlockedPremium ? 'border-soda-red/30' : 'border-soda-mist/20'}`}>
-                <div className={`text-xs tracking-wide text-center ${isUnlockedPremium ? 'text-soda-red' : 'text-soda-accent'}`}>Click para escuchar ▶</div>
+              <div className={`pt-4 border-t ${isUnlockedPremium ? 'border-soda-red/20' : 'border-soda-mist/10'}`}>
+                <div className={`text-[11px] tracking-widest text-center font-light transition-colors duration-500 ${isUnlockedPremium ? 'text-soda-red/70 group-hover:text-soda-red' : 'text-soda-fog/60 group-hover:text-soda-accent'}`}>Escuchar ▸</div>
               </div>
             )}
             {isLocked && (
-              <Link to="/frecuencia-interna" onClick={e => e.stopPropagation()} className="block w-full py-3 border border-soda-red text-soda-red rounded-sm hover:bg-soda-red/10 transition-colors text-sm tracking-wider font-light text-center">
-                UNIRME A LA FRECUENCIA
+              <Link to="/frecuencia-interna" onClick={e => e.stopPropagation()} className="block w-full py-3 border border-soda-red/30 text-soda-red/70 rounded-sm hover:border-soda-red/50 hover:text-soda-red hover:bg-soda-red/5 transition-all duration-500 text-[11px] tracking-widest font-light text-center">
+                DESBLOQUEAR
               </Link>
             )}
           </div>

@@ -110,10 +110,10 @@ export const Contacto: React.FC = () => {
                         type="button"
                         key={opt.id}
                         onClick={() => setFormData({ ...formData, subject: opt.id })}
-                        className={`text-left px-3 py-2.5 rounded-sm border transition-all duration-200 ${
+                        className={`text-left px-3 py-2.5 rounded-sm border transition-all duration-500 ${
                           selected
-                            ? 'border-soda-accent bg-soda-accent/10 text-soda-lamp'
-                            : 'border-soda-mist/15 bg-soda-slate/20 text-soda-fog hover:border-soda-mist/30 hover:text-soda-lamp'
+                            ? 'border-soda-accent/40 bg-soda-accent/8 text-soda-lamp'
+                            : 'border-soda-mist/10 bg-soda-slate/15 text-soda-fog/70 hover:border-soda-mist/20 hover:text-soda-fog'
                         }`}
                       >
                         <div className="flex items-center gap-2 mb-0.5">
@@ -134,11 +134,11 @@ export const Contacto: React.FC = () => {
 
               <div><label className="block text-soda-lamp text-sm mb-2">Mensaje</label><textarea required value={formData.message} onChange={(e) => setFormData({...formData, message: e.target.value})} rows={5} className={ic + ' resize-none'} placeholder="Contanos..." /></div>
 
-              <button type="submit" disabled={status === 'sending' || !formData.subject} className={`w-full py-4 border rounded-sm transition-all duration-300 tracking-wider flex items-center justify-center gap-2 text-sm ${
-                status === 'sent' ? 'bg-green-500/20 border-green-500 text-green-400'
-                : status === 'error' ? 'bg-red-500/20 border-red-500 text-red-400'
-                : !formData.subject ? 'border-soda-mist/20 text-soda-fog cursor-not-allowed opacity-50'
-                : 'bg-soda-accent/20 border-soda-accent text-soda-lamp hover:bg-soda-accent/30'
+              <button type="submit" disabled={status === 'sending' || !formData.subject} className={`w-full py-4 border rounded-sm transition-all duration-500 tracking-widest flex items-center justify-center gap-2 text-[11px] ${
+                status === 'sent' ? 'bg-emerald-500/10 border-emerald-500/50 text-emerald-400'
+                : status === 'error' ? 'bg-red-500/10 border-red-500/40 text-red-400/80'
+                : !formData.subject ? 'border-soda-mist/15 text-soda-fog/40 cursor-not-allowed'
+                : 'bg-soda-accent/8 border-soda-accent/30 text-soda-lamp/80 hover:bg-soda-accent/15 hover:border-soda-accent/45 hover:text-soda-lamp'
               }`}>
                 {status === 'idle' && <><Send size={16} />ENVIAR MENSAJE</>}
                 {status === 'sending' && <><Loader2 size={16} className="animate-spin" />ENVIANDO...</>}
