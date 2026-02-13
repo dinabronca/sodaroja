@@ -55,6 +55,15 @@ export const EpisodiosPage: React.FC = () => {
     <section className="relative pt-28 sm:pt-32 pb-24 px-4 sm:px-6 min-h-screen">
       <SEO title="Episodios" description="Todos los episodios de sodaroja. Historias reales de ciudades del mundo." />
       <EpisodeVibes />
+      {/* Floating emojis */}
+      <style>{`@keyframes epFloat { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-30px) rotate(5deg); } }`}</style>
+      {['✈️','🌍','🎧','🗺️','🌆','🎙️','🌃','📻'].map((emoji, i) => (
+        <span key={`ep-${i}`} style={{
+          position: 'absolute', fontSize: '1.5rem', pointerEvents: 'none', userSelect: 'none',
+          left: `${5 + i * 12}%`, top: `${8 + (i % 3) * 25}%`, opacity: 0.3, zIndex: 0,
+          animation: `epFloat ${7 + i}s ease-in-out infinite ${i * 0.7}s`,
+        }}>{emoji}</span>
+      ))}
       <div className="relative z-10 max-w-7xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-center mb-10 sm:mb-16">
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-serif text-soda-glow mb-4 sm:mb-6">{content.episodios?.title || 'Todos los Episodios'}</h1>

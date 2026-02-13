@@ -149,13 +149,19 @@ export const ElEquipo: React.FC = () => {
   return (
     <section id="equipo" className="relative py-32 px-6 overflow-hidden">
       <TeamAmbience />
+
+      {/* Lightning bolts */}
+      <style>{`@keyframes lFlash { 0%,90%,100% { opacity: 0; } 91% { opacity: 0.7; } 92% { opacity: 0; } 93% { opacity: 0.4; } 94% { opacity: 0; } }`}</style>
+      <svg viewBox="0 0 1000 600" preserveAspectRatio="none" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }}>
+        <path d="M 150 0 L 140 110 L 170 115 L 120 280" stroke="rgba(196,85,85,0.4)" strokeWidth="2" fill="none" style={{ animation: 'lFlash 7s ease infinite 0s' }} />
+        <path d="M 850 0 L 830 90 L 870 100 L 820 230" stroke="rgba(138,155,196,0.3)" strokeWidth="1.5" fill="none" style={{ animation: 'lFlash 9s ease infinite 3s' }} />
+        <path d="M 500 0 L 480 75 L 520 85 L 470 190" stroke="rgba(196,85,85,0.2)" strokeWidth="1" fill="none" style={{ animation: 'lFlash 11s ease infinite 6s' }} />
+      </svg>
       
-      {/* Fondo atmosférico extra */}
+      {/* Atmospheric background */}
       <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
-        {/* Gradiente orbital grande */}
         <div className="absolute" style={{ left: '-15%', top: '10%', width: '60%', height: '60%', background: 'radial-gradient(ellipse, rgba(196, 85, 85, 0.06) 0%, transparent 60%)', filter: 'blur(60px)' }} />
         <div className="absolute" style={{ right: '-10%', bottom: '10%', width: '50%', height: '50%', background: 'radial-gradient(ellipse, rgba(138, 155, 196, 0.05) 0%, transparent 60%)', filter: 'blur(60px)' }} />
-        {/* Lineas horizontales sutiles como estacion de radio */}
         {!isMobileDevice && (
           <div className="absolute inset-0" style={{
             backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(212, 197, 176, 0.025) 80px)',

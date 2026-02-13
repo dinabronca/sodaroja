@@ -56,37 +56,66 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
   return (
     <>
       {/* TARJETA */}
-      <div className="relative h-full" onClick={handleCardClick} style={{ contain: 'none', willChange: 'auto' }}>
-        <div className={`relative overflow-hidden rounded-sm h-full flex flex-col ${
+      <div className="relative h-full group" onClick={handleCardClick}
+        style={{ transition: 'transform 0.3s ease', cursor: isLocked ? 'default' : 'pointer' }}
+        onMouseEnter={e => { if (!isLocked) (e.currentTarget as HTMLElement).style.transform = 'translateY(-6px)'; }}
+        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}>
+        <div className={`relative overflow-hidden rounded-sm h-full flex flex-col transition-all duration-300 ${
           isUnlockedPremium
-            ? 'bg-gradient-to-b from-soda-deep to-[#1a1020] border border-soda-red/40 cursor-pointer'
+            ? 'bg-gradient-to-b from-soda-deep to-[#1a1020] border border-soda-red/40'
             : isLocked
-            ? 'bg-soda-deep border border-soda-mist/30'
-            : 'bg-soda-deep border border-soda-mist/30 cursor-pointer'
-        }`} style={{ contain: 'none' }}>
+            ? 'bg-soda-deep border border-soda-mist/20 hover:border-soda-red/30'
+            : 'bg-soda-deep border border-soda-mist/30 hover:border-soda-accent/50'
+        }`}>
           <div className="relative h-64 overflow-hidden">
-            <img src={episode.imageUrl} alt={episode.city} className="w-full h-full object-cover" loading="lazy" />
+            <img src={episode.imageUrl} alt={episode.city}
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              loading="lazy"
+              style={isLocked ? { filter: 'saturate(0.3) contrast(1.2) brightness(0.7)' } : isUnlockedPremium ? { filter: 'contrast(1.1) saturate(1.1)' } : {}} />
+
+            {/* VHS scanline for premium (locked or unlocked) */}
+            {(isUnlockedPremium || isLocked) && (
+              <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 10, overflow: 'hidden' }}>
+                {/* Moving scanline */}
+                <div style={{ position: 'absolute', left: 0, width: '100%', height: '30%', background: 'linear-gradient(transparent 0%, rgba(196,85,85,0.06) 40%, rgba(196,85,85,0.12) 50%, rgba(196,85,85,0.06) 60%, transparent 100%)', animation: 'vhsScan 4s linear infinite' }} />
+                {/* Horizontal lines */}
+                <div style={{ position: 'absolute', inset: 0, background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px)' }} />
+              </div>
+            )}
+
+            {/* Glitch color shift for premium */}
+            {isUnlockedPremium && (
+              <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 11, mixBlendMode: 'screen', opacity: 0.08, background: 'linear-gradient(90deg, rgba(255,0,0,0.3) 33%, rgba(0,255,0,0.3) 66%, rgba(0,0,255,0.3))' }} />
+            )}
 
             {/* Badges izquierda */}
             <div className="absolute top-3 left-3 z-20 flex flex-col gap-1.5">
-              {isUnlockedPremium && <div className="bg-soda-red px-3 py-1 rounded-sm"><span className="text-white text-[10px] font-bold tracking-widest">FRECUENCIA INTERNA</span></div>}
+              {isUnlockedPremium && (
+                <div style={{ background: '#c45555', padding: '4px 12px', borderRadius: '2px', boxShadow: '0 0 10px rgba(196,85,85,0.5), 0 0 20px rgba(196,85,85,0.2)' }}>
+                  <span style={{ color: 'white', fontSize: '10px', fontWeight: 700, letterSpacing: '0.1em' }}>FRECUENCIA INTERNA</span>
+                </div>
+              )}
               {isNewest && <div className="bg-emerald-500 px-3 py-1 rounded-sm"><span className="text-white text-[10px] font-bold tracking-widest">RECIÉN SALIDO</span></div>}
             </div>
 
             {/* Badges derecha */}
             <div className="absolute top-3 right-3 z-20 flex items-center gap-1.5">
-              {listened && <div className="bg-emerald-500/20 p-1.5 rounded-sm border border-emerald-500/30" title="Ya lo escuchaste"><span className="text-[10px]">✓</span></div>}
+              {listened && (
+                <div style={{ background: 'rgba(52,211,153,0.85)', padding: '5px 8px', borderRadius: '2px', border: '1px solid rgba(52,211,153,0.6)', boxShadow: '0 0 8px rgba(52,211,153,0.5)' }} title="Ya lo escuchaste">
+                  <span style={{ color: 'white', fontSize: '10px', fontWeight: 700 }}>✓</span>
+                </div>
+              )}
               {episodeNumber !== undefined && <div className="bg-soda-night/80 px-2.5 py-1 rounded-sm border border-soda-mist/15"><span className="text-soda-lamp text-[11px] font-mono font-bold">#{episodeNumber}</span></div>}
             </div>
 
-            {/* Premium bloqueado — overlay estático */}
+            {/* Premium locked — mysterious overlay */}
             {isLocked && (
-              <div className="absolute inset-0 z-20 flex items-center justify-center">
-                <div className="absolute inset-0 bg-gradient-to-br from-soda-red/25 via-soda-night/70 to-soda-accent/20" />
-                <div className="relative z-10 text-center px-6">
-                  <div className="text-soda-red text-5xl mb-2" style={{ filter: 'drop-shadow(0 0 15px rgba(196,85,85,0.6))' }}>◉</div>
-                  <div className="text-soda-glow text-sm tracking-widest font-light">FRECUENCIA INTERNA</div>
-                  <div className="text-soda-lamp text-xs mt-1 opacity-70">Contenido Exclusivo</div>
+              <div style={{ position: 'absolute', inset: 0, zIndex: 15, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom right, rgba(196,85,85,0.15), rgba(10,14,26,0.6), rgba(138,155,196,0.1))' }} />
+                <div style={{ position: 'relative', zIndex: 10, textAlign: 'center', padding: '0 1.5rem' }}>
+                  <div style={{ fontSize: '3rem', color: '#c45555', marginBottom: '0.5rem', filter: 'drop-shadow(0 0 25px rgba(196,85,85,0.8))', animation: 'pulseGlow 3s ease-in-out infinite' }}>◉</div>
+                  <div style={{ color: '#fef8ed', fontSize: '12px', letterSpacing: '0.15em', fontWeight: 300 }}>FRECUENCIA INTERNA</div>
+                  <div style={{ color: 'rgba(196,85,85,0.7)', fontSize: '9px', letterSpacing: '0.2em', marginTop: '4px' }}>▰▰ SEÑAL ENCRIPTADA ▰▰</div>
                 </div>
               </div>
             )}

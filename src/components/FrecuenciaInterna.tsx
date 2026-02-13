@@ -665,8 +665,16 @@ const PublicView: React.FC = () => {
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mt-16">
           <div className="mb-6 text-center"><div className="text-soda-lamp text-sm mb-1">Plan seleccionado: <span className="text-soda-red font-medium">{currentPlan.name}</span></div><div className="text-soda-fog text-xs">${currentPlan.priceARS.toLocaleString('es-AR')} ARS / USD ${currentPlan.priceUSD} por mes</div></div>
           <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-2xl mx-auto">
-            <button className="w-full sm:w-auto px-10 py-5 bg-soda-red/20 border-2 border-soda-red text-soda-glow rounded-sm hover:bg-soda-red/30 transition-all tracking-wider"><span className="flex items-center justify-center gap-2"><Heart size={18} />SUSCRIBIRME (ARGENTINA)</span><span className="block text-xs text-soda-lamp mt-1 opacity-80">Mercado Pago · ${currentPlan.priceARS.toLocaleString('es-AR')} ARS/mes</span></button>
-            <button className="w-full sm:w-auto px-10 py-5 bg-soda-accent/15 border-2 border-soda-accent text-soda-glow rounded-sm hover:bg-soda-accent/25 transition-all tracking-wider"><span className="flex items-center justify-center gap-2"><Heart size={18} />SUSCRIBIRME (INTERNACIONAL)</span><span className="block text-xs text-soda-lamp mt-1 opacity-80">USD ${currentPlan.priceUSD}/mes</span></button>
+            <button className="relative overflow-hidden w-full sm:w-auto px-10 py-5 bg-soda-red/20 border-2 border-soda-red text-soda-glow rounded-sm hover:bg-soda-red/35 hover:shadow-lg hover:shadow-soda-red/25 transition-all duration-300 tracking-wider group">
+              <span className="absolute inset-0 bg-soda-red/10 scale-0 group-hover:scale-100 rounded-full transition-transform duration-500" />
+              <span className="relative flex items-center justify-center gap-2"><Heart size={18} />SUSCRIBIRME (ARGENTINA)</span>
+              <span className="relative block text-xs text-soda-lamp mt-1 opacity-80">Mercado Pago · ${currentPlan.priceARS.toLocaleString('es-AR')} ARS/mes</span>
+            </button>
+            <button className="relative overflow-hidden w-full sm:w-auto px-10 py-5 bg-soda-accent/15 border-2 border-soda-accent text-soda-glow rounded-sm hover:bg-soda-accent/30 hover:shadow-lg hover:shadow-soda-accent/20 transition-all duration-300 tracking-wider group">
+              <span className="absolute inset-0 bg-soda-accent/10 scale-0 group-hover:scale-100 rounded-full transition-transform duration-500" />
+              <span className="relative flex items-center justify-center gap-2"><Heart size={18} />SUSCRIBIRME (INTERNACIONAL)</span>
+              <span className="relative block text-xs text-soda-lamp mt-1 opacity-80">USD ${currentPlan.priceUSD}/mes</span>
+            </button>
           </div>
           <p className="text-soda-fog text-xs mt-8 font-light text-center">Cancelá cuando quieras, sin compromiso ni letra chica</p>
         </motion.div>

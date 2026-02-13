@@ -26,7 +26,16 @@ export const HomePage: React.FC = () => {
   return (
     <>
       <Hero />
-      <section id="episodios" className="relative py-16 sm:py-24 px-4 sm:px-6" style={{ contain: 'none' }}>
+      <section id="episodios" className="relative py-16 sm:py-24 px-4 sm:px-6">
+        {/* Floating travel emojis - inline keyframes for guaranteed visibility */}
+        <style>{`@keyframes emFloat { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-35px) rotate(8deg); } }`}</style>
+        {['✈️','🌍','🎧','🗺️','🌆','🎙️','🌃','📻','🛫','🌏'].map((emoji, i) => (
+          <span key={`te-${i}`} style={{
+            position: 'absolute', fontSize: '1.6rem', pointerEvents: 'none', userSelect: 'none',
+            left: `${8 + i * 9}%`, top: `${15 + (i % 3) * 28}%`, opacity: 0.35,
+            animation: `emFloat ${7 + i * 1.2}s ease-in-out infinite ${i * 0.8}s`,
+          }}>{emoji}</span>
+        ))}
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-10 sm:mb-16">
             <h2 className="text-4xl sm:text-5xl font-serif text-soda-glow mb-4">Viajes Recientes</h2>
