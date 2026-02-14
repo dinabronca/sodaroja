@@ -1,38 +1,11 @@
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
 import { Hero } from '../components/Hero';
 import { EpisodeCard } from '../components/EpisodeCard';
 import { getContent } from '../data/content';
 import { demoEpisodes } from '../data/episodes';
-
-// Subtle floating dust particles (position: absolute, inside section)
-const DustParticles: React.FC<{ count?: number; color?: string }> = ({ count = 12, color = 'rgba(212,197,176,0.15)' }) => {
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-  const n = isMobile ? Math.floor(count / 3) : count;
-  const particles = useMemo(() =>
-    Array.from({ length: n }, (_, i) => ({
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: 2 + Math.random() * 3,
-      dur: 12 + Math.random() * 10,
-      delay: Math.random() * 8,
-    })),
-    [n]
-  );
-
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
-      {particles.map((p, i) => (
-        <motion.div key={i} className="absolute rounded-full"
-          style={{ left: `${p.x}%`, top: `${p.y}%`, width: p.size, height: p.size, background: color }}
-          animate={{ y: [0, -60, 0], x: [0, 15, -10, 0], opacity: [0, 0.6, 0.3, 0] }}
-          transition={{ duration: p.dur, repeat: Infinity, delay: p.delay, ease: 'easeInOut' }}
-        />
-      ))}
-    </div>
-  );
-};
 
 export const HomePage: React.FC = () => {
   const content = getContent();
@@ -54,34 +27,49 @@ export const HomePage: React.FC = () => {
   return (
     <>
       <Hero />
-      <section id="episodios" className="relative py-16 sm:py-24 px-4 sm:px-6">
-        <DustParticles count={15} color="rgba(196,85,85,0.12)" />
+
+      {/* ===== ÚLTIMOS DESTINOS — estilo editorial ===== */}
+      <section id="episodios" className="relative py-20 sm:py-28 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto relative z-10">
+
+          {/* Header editorial — alineado izquierda */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-10 sm:mb-16"
+            className="mb-12 sm:mb-16"
           >
-            <h2 className="text-4xl sm:text-5xl font-serif text-soda-glow mb-4">Viajes Recientes</h2>
-            <div className="w-32 h-px bg-gradient-to-r from-transparent via-soda-accent to-transparent mx-auto mb-6" />
-            <p className="text-soda-fog font-light tracking-wide">Lo mas nuevo de sodaroja</p>
+            {/* Línea roja + label */}
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-8 h-px bg-soda-red" />
+              <span className="text-soda-red text-[11px] tracking-[0.25em] uppercase font-light">Viajes recientes</span>
+            </div>
+
+            {/* Título grande con cursiva */}
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif text-soda-glow leading-tight">
+              Los últimos <em className="text-soda-red/90">destinos</em>
+            </h2>
           </motion.div>
+
+          {/* Grid de episodios */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {featured.map((episode: any, index: number) => (
               <EpisodeCard key={episode.id} episode={episode} isNewest={index === 0} episodeNumber={episodeNumberMap[episode.id]} />
             ))}
           </div>
+
+          {/* Ver todos — al final, centrado */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-            className="text-center mt-12 sm:mt-16"
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className="text-center mt-14 sm:mt-20"
           >
-            <Link to="/episodios" className="inline-block px-8 sm:px-12 py-3 sm:py-4 border border-soda-lamp/20 text-soda-lamp/70 rounded-sm hover:border-soda-lamp/35 hover:text-soda-lamp hover:bg-soda-lamp/3 transition-all duration-500 font-light tracking-widest text-[11px] sm:text-xs">
-              VER TODOS LOS EPISODIOS
+            <Link to="/episodios" className="group inline-flex items-center gap-3 px-8 sm:px-10 py-3.5 border border-soda-mist/20 text-soda-lamp/70 rounded-sm hover:border-soda-lamp/25 hover:text-soda-lamp transition-all duration-500 tracking-[0.2em] text-[11px] uppercase">
+              Ver todos
+              <ArrowRight size={14} className="text-soda-fog/50 group-hover:text-soda-lamp/70 group-hover:translate-x-0.5 transition-all duration-500" />
             </Link>
           </motion.div>
         </div>
