@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { getContent } from '../data/content';
+import { EditorialHeader } from './Editorial';
 
 const colorMap: Record<string, { border: string; text: string }> = {
   red: { border: 'border-soda-red', text: 'text-soda-red' },
@@ -26,28 +27,29 @@ export const QueEsEsto: React.FC = () => {
   const lightsToShow = isMobile ? antennaLights.filter((_, i) => i % 3 === 0) : antennaLights;
 
   return (
-    <section id="que-es-esto" className="relative py-32 px-6 overflow-hidden">
+    <section id="que-es-esto" className="relative py-24 sm:py-32 px-6 overflow-hidden">
 
-      {/* ===== CAPA 0: FONDO ANTENAS ===== */}
+      {/* ===== CAPA 0: FONDO ANTENAS — treated ===== */}
       <div className="absolute inset-0">
-        {/* La imagen real */}
+        {/* La imagen con tratamiento para suavizar pixelación */}
         <img
           src="/antenas-bg.jpg"
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
           style={{
-            filter: 'saturate(0.15) brightness(0.25) contrast(1.3)',
+            filter: 'saturate(0.1) brightness(0.2) contrast(1.5) blur(1.5px)',
             opacity: 1,
+            imageRendering: 'auto',
           }}
         />
-        {/* Color overlay oscuro para que pegue con el estilo */}
-        <div className="absolute inset-0 bg-soda-night/70" />
-        {/* Fade arriba y abajo para transición suave */}
+        {/* Color overlay oscuro */}
+        <div className="absolute inset-0 bg-soda-night/75" />
+        {/* Fade arriba y abajo */}
         <div className="absolute inset-0" style={{
-          background: 'linear-gradient(to bottom, rgb(10,14,26) 0%, transparent 15%, transparent 85%, rgb(10,14,26) 100%)',
+          background: 'linear-gradient(to bottom, #0a0e1a 0%, transparent 12%, transparent 88%, #0a0e1a 100%)',
         }} />
-        {/* Tinte oscuro rojizo sutil */}
-        <div className="absolute inset-0 bg-soda-red/[0.03]" />
+        {/* Tinte rojizo sutil */}
+        <div className="absolute inset-0 bg-soda-red/[0.02]" />
       </div>
 
       {/* ===== CAPA 1: LUCECITAS DE ANTENA ===== */}
@@ -106,27 +108,26 @@ export const QueEsEsto: React.FC = () => {
 
       {/* ===== CAPA 10: CONTENIDO ===== */}
       <div className="max-w-5xl mx-auto relative" style={{ zIndex: 10 }}>
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-5xl md:text-6xl font-serif text-soda-glow mb-6">{queEsEsto.title}</h2>
-          <div className="w-32 h-px bg-gradient-to-r from-transparent via-soda-accent to-transparent mx-auto mb-8" />
-          <p className="text-soda-lamp text-lg font-light max-w-4xl mx-auto leading-relaxed">{queEsEsto.description}</p>
-        </motion.div>
+        <EditorialHeader
+          label="Sobre el proyecto"
+          title={queEsEsto.title}
+          subtitle={queEsEsto.description}
+          center
+        />
 
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-12"
+          className="mb-12"
         >
-          <h3 className="text-4xl font-serif text-soda-glow mb-4">{queEsEsto.structureTitle}</h3>
-          <p className="text-soda-fog text-sm">{queEsEsto.structureSubtitle}</p>
+          <div className="flex items-center gap-3 justify-center mb-4">
+            <div className="w-6 h-px bg-soda-accent/40" />
+            <span className="text-soda-accent/60 text-[11px] tracking-[0.2em] uppercase">{queEsEsto.structureTitle}</span>
+            <div className="w-6 h-px bg-soda-accent/40" />
+          </div>
+          <p className="text-soda-fog/50 text-[11px] tracking-wider text-center">{queEsEsto.structureSubtitle}</p>
         </motion.div>
 
         <div className="space-y-6">
@@ -175,7 +176,8 @@ export const QueEsEsto: React.FC = () => {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="mt-20"
         >
-          <h3 className="text-3xl font-serif text-soda-glow mb-8 text-center">Temas que exploramos</h3>
+          <h3 className="font-serif text-2xl text-soda-glow mb-2 text-center">Temas que <em className="text-soda-red/80">exploramos</em></h3>
+          <div className="w-8 h-px bg-soda-red/30 mx-auto mb-8" />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {queEsEsto.temas.map((tema, i) => (
               <motion.div

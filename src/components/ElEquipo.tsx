@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Instagram, Youtube, Twitter } from 'lucide-react';
 import { TeamAmbience } from '../effects/SectionBackgrounds';
+import { EditorialHeader } from './Editorial';
 
 interface TeamMember {
   name: string;
@@ -147,7 +148,7 @@ const teamMembers: TeamMember[] = [
 export const ElEquipo: React.FC = () => {
   const isMobileDevice = typeof window !== 'undefined' && (window.innerWidth < 768 || 'ontouchstart' in window);
   return (
-    <section id="equipo" className="relative py-32 px-6 overflow-hidden">
+    <section id="equipo" className="relative py-24 sm:py-32 px-6 overflow-hidden">
       <TeamAmbience />
 
       {/* Atmospheric background with aurora */}
@@ -185,22 +186,13 @@ export const ElEquipo: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto relative" style={{ zIndex: 1 }}>
-        {/* Título */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-5xl md:text-6xl font-serif text-soda-glow mb-6">
-            {sectionTitle}
-          </h2>
-          <div className="w-32 h-px bg-gradient-to-r from-transparent via-soda-accent to-transparent mx-auto mb-6" />
-          <p className="text-soda-fog font-light">
-            {sectionSubtitle}
-          </p>
-        </motion.div>
+        <EditorialHeader
+          label="Quiénes somos"
+          title={sectionTitle}
+          titleAccent=""
+          subtitle={sectionSubtitle}
+          center
+        />
 
         {/* Grid de miembros */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">

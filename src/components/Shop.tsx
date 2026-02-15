@@ -2,80 +2,38 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Package, Mail } from 'lucide-react';
 import { getContent } from '../data/content';
-import { BlueprintEffects } from '../effects/SectionBackgrounds';
+import { EditorialHeader } from './Editorial';
 
 export const Shop: React.FC = () => {
   const shop = getContent().shop;
-  
-  const comingSoonItems = [
-    { icon: Package, name: 'Pack de Stickers', desc: 'Colección de stickers del culto' },
-  ];
 
   return (
-    <section id="shop" className="relative py-32 px-6 overflow-hidden">
-      <BlueprintEffects />
-      <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-5xl md:text-6xl font-serif text-soda-glow mb-6">
-            {shop.title}
-          </h2>
-          <div className="w-32 h-px bg-gradient-to-r from-transparent via-soda-accent to-transparent mx-auto mb-8" />
-          <p className="text-soda-lamp text-lg">
-            {shop.subtitle}
-          </p>
+    <section id="shop" className="relative py-24 sm:py-32 px-6 overflow-hidden">
+      <div className="max-w-4xl mx-auto">
+        <EditorialHeader
+          label="Merch"
+          title={shop.title}
+          subtitle={shop.subtitle}
+          center
+        />
+
+        {/* Coming soon item */}
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+          className="bg-soda-night/50 border border-soda-mist/10 rounded-sm p-10 text-center max-w-md mx-auto mb-12">
+          <Package size={32} className="text-soda-fog/30 mb-4 mx-auto" />
+          <h3 className="text-xl font-serif text-soda-glow mb-2">Pack de Stickers</h3>
+          <p className="text-soda-fog/40 text-sm mb-4">Colección de stickers del culto</p>
+          <span className="text-soda-fog/25 text-[10px] tracking-[0.2em] uppercase">Próximamente</span>
         </motion.div>
 
-        {/* Items centrados */}
-        <div className="flex justify-center mb-12">
-          {comingSoonItems.map((item, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="bg-soda-slate bg-opacity-40 backdrop-blur-sm border border-soda-mist border-opacity-20 rounded-sm p-12 hover:border-soda-accent hover:border-opacity-40 transition-all text-center max-w-md w-full"
-            >
-              <item.icon size={48} className="text-soda-accent mb-6 mx-auto" />
-              <h3 className="text-2xl font-serif text-soda-glow mb-3">{item.name}</h3>
-              <p className="text-soda-fog text-sm">{item.desc}</p>
-              <div className="mt-6 inline-block px-5 py-2 border border-soda-accent border-opacity-30 rounded-sm text-soda-accent text-xs tracking-wider">
-                PRÓXIMAMENTE
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="bg-soda-night bg-opacity-60 border border-soda-red border-opacity-30 rounded-sm p-12 text-center max-w-2xl mx-auto"
-        >
-          <div className="text-6xl mb-6">📦</div>
-          <h3 className="text-2xl font-serif text-soda-glow mb-4">
-            Notificame cuando esté disponible
-          </h3>
-          <p className="text-soda-fog mb-6 max-w-2xl mx-auto">
-            Dejanos tu email y te avisamos cuando esté disponible el catálogo completo
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="tu@email.com"
-              className="flex-1 bg-soda-slate/40 border border-soda-mist/20 rounded-sm px-4 py-3 text-soda-lamp focus:border-soda-accent focus:outline-none transition-colors text-sm"
-            />
-            <button className="px-6 py-3 bg-soda-accent/20 border border-soda-accent text-soda-lamp rounded-sm hover:bg-soda-accent/30 transition-all flex items-center justify-center gap-2 text-sm">
-              <Mail size={16} />
-              <span>Avisame</span>
+        {/* Notify */}
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
+          className="max-w-md mx-auto text-center">
+          <p className="text-soda-fog/40 text-sm mb-6">Dejanos tu email y te avisamos cuando esté disponible</p>
+          <div className="flex gap-3">
+            <input type="email" placeholder="tu@email.com" className="flex-1 bg-soda-night/50 border border-soda-mist/10 rounded-sm px-4 py-3 text-soda-lamp text-sm focus:border-soda-accent/30 focus:outline-none transition-colors duration-500" />
+            <button className="px-5 py-3 border border-soda-mist/15 text-soda-lamp/60 rounded-sm hover:border-soda-lamp/25 hover:text-soda-lamp transition-all duration-500 text-[11px] tracking-wider flex items-center gap-2">
+              <Mail size={14} />Avisame
             </button>
           </div>
         </motion.div>

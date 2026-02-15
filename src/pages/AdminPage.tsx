@@ -553,6 +553,19 @@ export const AdminPage: React.FC = () => {
 
             {/* Google Analytics */}
             <div className={cc}>
+              <h2 className="text-xl font-serif text-soda-glow mb-4">Marca / Logos</h2>
+              <p className={nc + ' mb-3'}>Subí tus logos. Aparecen en el navbar, hero, favicon y footer. Podés cambiarlos cuando quieras.</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div><label className={lc}>Isotipo (solo ícono, cuadrado)</label><input type="text" value={(content as any).brand?.isotipoUrl || '/isotipo.png'} onChange={(e) => update('brand.isotipoUrl', e.target.value)} className={ic} placeholder="/isotipo.png" /></div>
+                <div><label className={lc}>Logotipo (nombre + ícono)</label><input type="text" value={(content as any).brand?.logotipoUrl || '/logotipo.png'} onChange={(e) => update('brand.logotipoUrl', e.target.value)} className={ic} placeholder="/logotipo.png" /></div>
+                <div><label className={lc}>Logo Navbar (se ve en el menú)</label><input type="text" value={(content as any).brand?.navbarLogoUrl || '/isotipo.png'} onChange={(e) => update('brand.navbarLogoUrl', e.target.value)} className={ic} placeholder="/isotipo.png" /></div>
+                <div><label className={lc}>Logo Hero (se ve en la portada)</label><input type="text" value={(content as any).brand?.heroLogoUrl || '/logotipo.png'} onChange={(e) => update('brand.heroLogoUrl', e.target.value)} className={ic} placeholder="/logotipo.png" /></div>
+              </div>
+              <p className={nc + ' mt-2'}>Tip: Subí las imágenes a imgbb.com o similar y pegá la URL acá. Formato PNG con fondo transparente recomendado.</p>
+            </div>
+
+            {/* Google Analytics */}
+            <div className={cc}>
               <h2 className="text-xl font-serif text-soda-glow mb-4">Google Analytics</h2>
               <p className={nc + ' mb-3'}>Pega tu ID de medicion de Google Analytics (formato: G-XXXXXXXXXX).</p>
               <input type="text" value={content.meta?.analyticsId || ''} onChange={(e) => update('meta.analyticsId', e.target.value)} className={ic} placeholder="G-XXXXXXXXXX" />

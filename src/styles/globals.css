@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Crimson+Pro:wght@300;400;600&family=JetBrains+Mono:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=JetBrains+Mono:wght@300;400&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,56 +6,73 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
+
 body {
-  @apply bg-soda-night text-soda-warm;
+  @apply bg-soda-night;
   font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  color: #e8dcc8;
+  line-height: 1.8;
   overflow-x: hidden;
   position: relative;
+  letter-spacing: 0.01em;
 }
+
+/* ===== TYPOGRAPHY POLISH ===== */
+.font-serif { font-family: 'Crimson Pro', Georgia, serif; }
+h1, h2, h3 { font-family: 'Crimson Pro', Georgia, serif; font-weight: 400; letter-spacing: 0.02em; }
+p { font-weight: 300; }
 
 .hoverable { cursor: pointer; }
 
-/* ===== VHS SCANLINE — only for premium episode cards ===== */
+/* ===== SUBTLE GRAIN OVERLAY ===== */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* ===== WARM DIVIDER ===== */
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(196,85,85,0.15) 20%, rgba(212,197,176,0.1) 50%, rgba(138,155,196,0.12) 80%, transparent 100%);
+}
+
+/* ===== VHS SCANLINE ===== */
 @keyframes vhsScan { 0% { top: -100%; } 100% { top: 100%; } }
 
-/* ===== PULSE GLOW ===== */
-@keyframes pulseGlow { 0%, 100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.05); } }
+/* ===== PREMIUM GLOW BREATHE ===== */
+@keyframes premiumBreathe {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(196,85,85,0), inset 0 0 0 0 rgba(196,85,85,0); border-color: rgba(196,85,85,0.15); }
+  50% { box-shadow: 0 0 20px rgba(196,85,85,0.08), inset 0 0 15px rgba(196,85,85,0.03); border-color: rgba(196,85,85,0.35); }
+}
 
 /* ===== SCROLLBAR ===== */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: rgba(20, 24, 36, 0.5); }
-::-webkit-scrollbar-thumb { background: rgba(212, 197, 176, 0.3); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(212, 197, 176, 0.5); }
-::selection { background: rgba(212, 197, 176, 0.3); color: #fef8ed; }
-
-/* ===== LOADER ===== */
-.loader {
-  width: 48px; height: 48px;
-  border: 3px solid rgba(212, 197, 176, 0.2);
-  border-bottom-color: rgba(212, 197, 176, 0.8);
-  border-radius: 50%; display: inline-block;
-  animation: rotation 1s linear infinite;
-}
-@keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: rgba(20, 24, 36, 0.3); }
+::-webkit-scrollbar-thumb { background: rgba(212, 197, 176, 0.2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(212, 197, 176, 0.35); }
+::selection { background: rgba(196, 85, 85, 0.2); color: #fef8ed; }
 
 /* ===== RESPONSIVE ===== */
-@media (hover: none) and (pointer: coarse) {
-  .card-hover:hover { transform: none; }
-}
-
 @media (max-width: 767px) {
   .backdrop-blur-sm, .backdrop-blur-md, .backdrop-blur-xl {
     -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
   }
   .overflow-y-auto { -webkit-overflow-scrolling: touch; }
-  .transition-all { transition-duration: 150ms !important; }
   iframe { will-change: auto !important; contain: strict; }
+  body::after { opacity: 0.015; }
 }
 
 @media (max-width: 640px) {
-  .font-serif { letter-spacing: 0.02em; }
   section { overflow-x: hidden; }
-  footer .flex-wrap { gap: 8px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -64,4 +81,5 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+  body::after { display: none; }
 }

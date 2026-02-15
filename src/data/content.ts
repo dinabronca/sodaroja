@@ -17,6 +17,14 @@ export interface SiteContent {
     emailjsPublicKey: string;
   };
 
+  // Brand / Logos
+  brand: {
+    isotipoUrl: string;   // Isotipo (solo el ícono de la botella)
+    logotipoUrl: string;  // Logotipo (nombre + ícono)
+    navbarLogoUrl: string; // Logo que aparece en el navbar (isotipo o logotipo)
+    heroLogoUrl: string;   // Logo que aparece en el hero (logotipo)
+  };
+
   // Nombres de las secciones (aparecen en el header/navbar)
   sectionNames: {
     inicio: string;
@@ -179,12 +187,19 @@ export interface SiteContent {
 export const defaultContent: SiteContent = {
   meta: {
     pageTitle: 'sodaroja',
-    faviconUrl: '',
+    faviconUrl: '/isotipo.png',
     description: 'sodaroja - un podcast que viaja por el mundo contando historias que nadie mas cuenta.',
     analyticsId: '',
     emailjsServiceId: '',
     emailjsTemplateId: '',
     emailjsPublicKey: '',
+  },
+
+  brand: {
+    isotipoUrl: '/isotipo.png',
+    logotipoUrl: '/logotipo.png',
+    navbarLogoUrl: '/isotipo.png',
+    heroLogoUrl: '/logotipo.png',
   },
 
   sectionNames: {
