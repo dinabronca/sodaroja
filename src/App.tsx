@@ -20,12 +20,12 @@ const MiCuentaPage = lazy(() => import('./pages/MiCuentaPage').then(m => ({ defa
 const AdminPage = lazy(() => import('./pages/AdminPage').then(m => ({ default: m.AdminPage })));
 const UnirsePage = lazy(() => import('./pages/UnirsePage').then(m => ({ default: m.UnirsePage })));
 
-// Loading — identity-coherent
+// Loading — classic
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center">
     <div className="text-center">
-      <div className="w-2 h-2 bg-soda-red rounded-full mx-auto mb-4" style={{ animation: 'premiumBreathe 2s ease-in-out infinite' }} />
-      <p className="text-soda-fog text-[11px] tracking-[0.2em] uppercase">Cargando</p>
+      <div className="loader mx-auto mb-4" />
+      <p className="text-soda-fog text-xs tracking-wider">Cargando...</p>
     </div>
   </div>
 );

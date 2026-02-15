@@ -30,6 +30,11 @@ export const HomePage: React.FC = () => {
 
       {/* ===== ÚLTIMOS DESTINOS — estilo editorial ===== */}
       <section id="episodios" className="relative py-20 sm:py-28 px-4 sm:px-6">
+        {/* Atmospheric background */}
+        <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
+          <div className="absolute" style={{ left: '-5%', bottom: '10%', width: '50%', height: '50%', background: 'radial-gradient(ellipse, rgba(196,85,85,0.03) 0%, transparent 60%)', filter: 'blur(50px)' }} />
+          <div className="absolute" style={{ right: '-5%', top: '20%', width: '40%', height: '40%', background: 'radial-gradient(ellipse, rgba(138,155,196,0.03) 0%, transparent 60%)', filter: 'blur(50px)' }} />
+        </div>
         <div className="max-w-7xl mx-auto relative z-10">
 
           {/* Header editorial — alineado izquierda */}

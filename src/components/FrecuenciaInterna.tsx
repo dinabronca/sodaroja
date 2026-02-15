@@ -620,21 +620,12 @@ const PublicView: React.FC = () => {
       ))}
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
-          {/* Minimal icon */}
-          <motion.div animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }} className="inline-block mb-8">
-            <div className="w-16 h-16 rounded-full border border-soda-red/30 flex items-center justify-center mx-auto bg-soda-red/5">
-              <div className="w-3 h-3 rounded-full bg-soda-red" style={{ boxShadow: '0 0 15px rgba(196,85,85,0.5)' }} />
-            </div>
+          <motion.div animate={{ scale: [1, 1.05, 1], opacity: [0.8, 1, 0.8] }} transition={{ duration: 3, repeat: Infinity }} className="inline-block mb-8">
+            <div className="text-8xl text-soda-red">◉</div>
           </motion.div>
-
-          {/* Editorial header inline */}
-          <div className="flex items-center gap-3 justify-center mb-5">
-            <div className="w-8 h-px bg-soda-red" />
-            <span className="text-soda-red text-[11px] tracking-[0.25em] uppercase font-light">Contenido exclusivo</span>
-            <div className="w-8 h-px bg-soda-red" />
-          </div>
           <h2 className="text-5xl md:text-6xl font-serif text-soda-glow mb-6">Frecuencia <em className="text-soda-red/85">Interna</em></h2>
-          <p className="text-soda-lamp/60 text-lg font-light max-w-2xl mx-auto mb-8">Las historias que se cuentan cuando la noche ya está avanzada</p>
+          <div className="w-32 h-px bg-gradient-to-r from-transparent via-soda-red to-transparent mx-auto mb-8" />
+          <p className="text-soda-lamp text-xl font-light max-w-2xl mx-auto mb-8">Las historias que se cuentan cuando la noche ya está avanzada</p>
         </motion.div>
         <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="max-w-3xl mx-auto mb-20">
           <p className="text-soda-fog text-base font-light leading-relaxed text-center">Sodaroja es un proyecto independiente que hacemos con amor, pero también con tiempo, energía y recursos. Cada episodio lleva horas de investigación, edición y producción. Tu aporte nos permite seguir haciéndolo.</p>
