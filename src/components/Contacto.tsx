@@ -71,7 +71,8 @@ export const Contacto: React.FC = () => {
       <div className="relative z-10 max-w-5xl mx-auto">
         <EditorialHeader
           label="Hablemos"
-          title="Contacto"
+          title="Ponete en"
+          titleAccent="contacto"
           subtitle="Tenés una historia para contar? Querés colaborar? Escribinos."
           center
         />

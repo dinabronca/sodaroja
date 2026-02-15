@@ -207,23 +207,37 @@ const SubscriberDashboard: React.FC = () => {
   // Sorteo banner: 800×200 px
 
   return (
-    <div className="space-y-8 relative" style={{ zIndex: 2 }}>
-      {/* ===== HEADER ===== */}
+    <div className="space-y-10 relative" style={{ zIndex: 2 }}>
+      {/* ===== HEADER — Editorial style ===== */}
       <div className="text-center">
-        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
-          <h2 className="text-4xl md:text-5xl font-serif text-soda-glow">Frecuencia Interna</h2>
-          <p className="text-soda-lamp text-sm">Bienvenido/a, <span className="text-soda-red font-medium">{user?.name || 'suscriptor'}</span></p>
-          <div className="flex items-center justify-center gap-3 flex-wrap">
+        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="space-y-5">
+          {/* Red line + label */}
+          <div className="flex items-center gap-3 justify-center">
+            <div className="w-8 h-px bg-soda-red" />
+            <span className="text-soda-red text-[11px] tracking-[0.25em] uppercase font-light">Contenido exclusivo</span>
+            <div className="w-8 h-px bg-soda-red" />
+          </div>
+
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif text-soda-glow leading-tight">
+            Frecuencia <em className="text-soda-red/85">Interna</em>
+          </h2>
+
+          <p className="text-soda-fog text-base font-light">
+            Bienvenido/a, <span className="text-soda-lamp font-medium">{user?.name || 'suscriptor'}</span>
+          </p>
+
+          <div className="flex items-center justify-center gap-4 flex-wrap">
             <motion.div animate={{ opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity }}
-              className="inline-flex items-center gap-2 bg-soda-red/10 border border-soda-red/30 rounded-sm px-4 py-1.5">
-              <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }} className="w-2 h-2 bg-soda-red rounded-full" />
-              <span className="text-soda-red text-xs tracking-wider font-medium">SEÑAL ACTIVA</span>
+              className="inline-flex items-center gap-2 bg-soda-red/8 border border-soda-red/25 rounded-sm px-4 py-2">
+              <motion.div animate={{ scale: [1, 1.3, 1] }} transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }} className="w-2 h-2 bg-soda-red rounded-full" style={{ boxShadow: '0 0 8px rgba(196,85,85,0.4)' }} />
+              <span className="text-soda-red text-[10px] tracking-[0.2em] uppercase font-medium">Señal activa</span>
             </motion.div>
             <button onClick={() => setShowMissions(!showMissions)}
-              className="inline-flex items-center gap-2 bg-soda-accent/10 border border-soda-accent/20 rounded-sm px-4 py-1.5 hover:bg-soda-accent/15 transition-all">
+              className="inline-flex items-center gap-2 bg-soda-accent/8 border border-soda-accent/20 rounded-sm px-4 py-2 hover:bg-soda-accent/12 transition-all duration-500">
               <span className="text-sm">🥤</span>
-              <span className="text-soda-lamp text-sm font-medium">{soditas} soditas</span>
-              <ChevronRight size={12} className={`text-soda-fog transition-transform ${showMissions ? 'rotate-90' : ''}`} />
+              <span className="text-soda-lamp text-sm font-serif">{soditas}</span>
+              <span className="text-soda-fog/60 text-[10px] tracking-wider">soditas</span>
+              <ChevronRight size={12} className={`text-soda-fog/40 transition-transform duration-300 ${showMissions ? 'rotate-90' : ''}`} />
             </button>
           </div>
         </motion.div>
@@ -234,9 +248,9 @@ const SubscriberDashboard: React.FC = () => {
         {showMissions && (
           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}
             className="overflow-hidden">
-            <div className="bg-soda-night/70 border border-soda-accent/15 rounded-sm p-5 max-w-3xl mx-auto">
-              <h3 className="text-soda-glow font-serif text-sm mb-4 flex items-center gap-2">🥤 Cómo ganar soditas</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="bg-soda-slate/30 backdrop-blur-sm border border-soda-accent/15 rounded-sm p-6 max-w-3xl mx-auto">
+              <h3 className="text-soda-glow font-serif text-base mb-5 flex items-center gap-2">🥤 Cómo ganar <em className="text-soda-red/85">soditas</em></h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {missions.map(m => {
                   const Icon = m.icon;
                   const isSocial = m.id.startsWith('follow-');
@@ -264,13 +278,16 @@ const SubscriberDashboard: React.FC = () => {
         )}
       </AnimatePresence>
 
+      {/* ===== Editorial divider ===== */}
+      <div className="w-24 h-px bg-gradient-to-r from-transparent via-soda-red/30 to-transparent mx-auto" />
+
       {/* ===== GRID 3 COLUMNAS ===== */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
         {/* ===== COL IZQUIERDA — Plan + Opciones ===== */}
         <div className="lg:col-span-3 space-y-4">
-          <div className="bg-soda-night/60 border border-soda-mist/15 rounded-sm p-5">
-            <h3 className="text-soda-glow font-serif text-sm mb-4 flex items-center gap-2"><Settings size={14} className="text-soda-accent" />Tu Plan</h3>
+          <div className="bg-soda-slate/30 backdrop-blur-sm border border-soda-mist/15 rounded-sm p-5">
+            <h3 className="text-soda-glow font-serif text-base mb-5 flex items-center gap-2"><Settings size={14} className="text-soda-accent" />Tu <em className="text-soda-red/85">Plan</em></h3>
             <div className="flex items-center justify-between mb-4">
               <div><div className="text-soda-lamp text-sm font-medium">Plan {plans.find(p => p.id === userPlan)?.name || 'Soda'}</div><div className="text-soda-fog text-xs">${(plans.find(p => p.id === userPlan)?.priceARS || 5000).toLocaleString('es-AR')} ARS / mes</div></div>
               <div className="bg-emerald-500/20 border border-emerald-500/30 rounded-sm px-2.5 py-1"><span className="text-emerald-400 text-[11px]">Activo</span></div>
@@ -329,16 +346,16 @@ const SubscriberDashboard: React.FC = () => {
             </div>
           </div>
           {/* Stats */}
-          <div className="bg-soda-night/60 border border-soda-mist/15 rounded-sm p-4">
-            <h4 className="text-soda-fog text-[10px] tracking-wider mb-3">TUS NÚMEROS</h4>
-            <div className="grid grid-cols-2 gap-2">
+          <div className="bg-soda-slate/30 backdrop-blur-sm border border-soda-mist/15 rounded-sm p-5">
+            <h4 className="text-soda-red text-[10px] tracking-[0.2em] uppercase mb-4">Tus números</h4>
+            <div className="grid grid-cols-2 gap-3">
               {[
                 { n: listenedCount, l: 'Episodios', e: '🎧' },
                 { n: soditas, l: 'Soditas', e: '🥤' },
                 { n: Object.keys(userVotes).length, l: 'Encuestas', e: '📊' },
                 { n: Object.keys(raffleEntries).filter(k => raffleEntries[k]).length, l: 'Sorteos', e: '🎰' },
               ].map((s, i) => (
-                <div key={i} className="text-center py-2"><div className="text-soda-glow text-lg font-serif">{s.n}</div><div className="text-soda-fog text-[10px]">{s.e} {s.l}</div></div>
+                <div key={i} className="text-center py-3 bg-soda-night/30 rounded-sm"><div className="text-soda-glow text-xl font-serif">{s.n}</div><div className="text-soda-fog text-[10px] mt-1">{s.e} {s.l}</div></div>
               ))}
             </div>
           </div>
@@ -347,7 +364,7 @@ const SubscriberDashboard: React.FC = () => {
         {/* ===== COL CENTRAL — Encuesta + Sorteo + Notificaciones ===== */}
         <div className="lg:col-span-5 space-y-4">
           {/* ENCUESTA con imagen/banner */}
-          <div className="bg-soda-night/60 border border-soda-accent/15 rounded-sm overflow-hidden">
+          <div className="bg-soda-slate/30 backdrop-blur-sm border border-soda-accent/15 rounded-sm overflow-hidden">
             {currentPoll ? (
               <>
                 {/* Banner image — 800×200px */}
@@ -381,7 +398,7 @@ const SubscriberDashboard: React.FC = () => {
           </div>
 
           {/* SORTEO con banner */}
-          <div className="bg-soda-night/60 border border-soda-red/15 rounded-sm overflow-hidden">
+          <div className="bg-soda-slate/30 backdrop-blur-sm border border-soda-red/20 rounded-sm overflow-hidden">
             {currentRaffle ? (
               <>
                 {currentRaffle.bannerUrl ? (
@@ -426,11 +443,11 @@ const SubscriberDashboard: React.FC = () => {
           </div>
 
           {/* NOTIFICACIONES PERSONALES */}
-          <div className="bg-soda-night/60 border border-soda-lamp/10 rounded-sm overflow-hidden">
-            <div className="px-4 py-3 border-b border-soda-mist/10 flex items-center justify-between">
-              <h3 className="text-soda-glow font-serif text-sm flex items-center gap-2">
-                <Bell size={14} className="text-soda-lamp" />Notificaciones
-                {unreadNotifs > 0 && <span className="bg-soda-red text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">{unreadNotifs}</span>}
+          <div className="bg-soda-slate/30 backdrop-blur-sm border border-soda-lamp/15 rounded-sm overflow-hidden">
+            <div className="px-5 py-4 border-b border-soda-mist/10 flex items-center justify-between">
+              <h3 className="text-soda-glow font-serif text-base flex items-center gap-2">
+                <Bell size={14} className="text-soda-accent" /><em className="text-soda-red/85">Notificaciones</em>
+                {unreadNotifs > 0 && <span className="bg-soda-red text-white text-[10px] rounded-full w-5 h-5 flex items-center justify-center">{unreadNotifs}</span>}
               </h3>
             </div>
             <div className="max-h-48 overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
@@ -473,10 +490,10 @@ const SubscriberDashboard: React.FC = () => {
 
         {/* ===== COL DERECHA — Mensajes del equipo ===== */}
         <div className="lg:col-span-4 space-y-4">
-          <div className="bg-soda-night/60 border border-soda-mist/15 rounded-sm">
-            <div className="px-4 py-3 border-b border-soda-mist/10">
-              <h3 className="text-soda-glow font-serif text-sm flex items-center gap-2"><Radio size={14} className="text-soda-red" />Transmisiones</h3>
-              <p className="text-soda-fog/40 text-[10px] mt-0.5">Mensajes del equipo sodaroja</p>
+          <div className="bg-soda-slate/30 backdrop-blur-sm border border-soda-mist/15 rounded-sm">
+            <div className="px-5 py-4 border-b border-soda-mist/10">
+              <h3 className="text-soda-glow font-serif text-base flex items-center gap-2"><Radio size={14} className="text-soda-red" /><em className="text-soda-red/85">Transmisiones</em></h3>
+              <p className="text-soda-fog/40 text-[10px] tracking-wider mt-1">Mensajes del equipo sodaroja</p>
             </div>
             <div className="max-h-[480px] overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
               {messages.length === 0 ? (

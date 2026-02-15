@@ -188,8 +188,8 @@ export const ElEquipo: React.FC = () => {
       <div className="max-w-7xl mx-auto relative" style={{ zIndex: 1 }}>
         <EditorialHeader
           label="Quiénes somos"
-          title={sectionTitle}
-          titleAccent=""
+          title="Quiénes lo"
+          titleAccent="hacemos"
           subtitle={sectionSubtitle}
           center
         />

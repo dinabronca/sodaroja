@@ -35,7 +35,8 @@ export const Shop: React.FC = () => {
       <div className="max-w-5xl mx-auto relative z-10">
         <EditorialHeader
           label="Merch"
-          title={shop.title}
+          title={shop.title || 'La'}
+          titleAccent="tienda"
           subtitle={shop.subtitle}
           center
         />

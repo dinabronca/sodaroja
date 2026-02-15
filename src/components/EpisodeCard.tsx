@@ -73,20 +73,27 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
           isLocked
             ? 'bg-soda-slate/30 border border-soda-mist/10'
             : isUnlockedPremium
-            ? 'bg-soda-slate/40 border border-soda-red/20 hover:border-soda-red/35'
+            ? 'bg-soda-slate/40 border-2 border-soda-red/30 hover:border-soda-red/50 shadow-lg shadow-soda-red/5'
             : 'bg-soda-slate/40 border border-soda-mist/15 hover:border-soda-mist/30'
         }`}
           style={isLocked ? { animation: 'premiumBreathe 6s ease-in-out infinite' } : undefined}
         >
           {/* Hover glow */}
-          <div className="absolute inset-0 bg-gradient-to-t from-soda-red/3 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-0 rounded-sm" />
+          <div className={`absolute inset-0 bg-gradient-to-t via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-0 rounded-sm ${
+            isUnlockedPremium ? 'from-soda-red/8' : 'from-soda-red/3'
+          }`} />
+
+          {/* Premium red line at bottom */}
+          {isUnlockedPremium && (
+            <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-soda-red/50 to-transparent z-10" />
+          )}
 
           {/* Image */}
           <div className="relative aspect-[16/10] overflow-hidden bg-soda-deep">
             <img src={episode.imageUrl} alt={episode.city}
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-[1.03]"
               loading="lazy"
-              style={isLocked ? { filter: 'saturate(0.2) brightness(0.4) blur(2px)' } : isUnlockedPremium ? { filter: 'contrast(1.05) saturate(1.1)' } : {}} />
+              style={isLocked ? { filter: 'saturate(0.2) brightness(0.4) blur(2px)' } : isUnlockedPremium ? { filter: 'contrast(1.1) saturate(1.15) brightness(1.05)' } : {}} />
 
             {/* VHS scanline for premium */}
             {(isUnlockedPremium || isLocked) && (
@@ -100,12 +107,12 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
             <div className="absolute inset-0 bg-gradient-to-t from-soda-night/60 via-transparent to-transparent" />
 
             {/* Top badges */}
-            <div className="absolute top-3 left-3 z-20 flex gap-2">
+            <div className="absolute top-3 left-3 z-20 flex flex-col gap-2">
               {isNewest && (
-                <span className="bg-soda-red/90 text-soda-glow text-[10px] tracking-wider px-3 py-1 rounded-sm font-medium shadow-lg shadow-soda-red/20">NUEVO</span>
+                <span className="bg-soda-accent text-soda-night text-[10px] tracking-wider px-3 py-1 rounded-sm font-semibold shadow-lg shadow-soda-accent/30">NUEVO</span>
               )}
               {isUnlockedPremium && (
-                <span className="bg-soda-red/20 border border-soda-red/40 text-soda-red text-[10px] tracking-wider px-3 py-1 rounded-sm">FRECUENCIA INTERNA</span>
+                <span className="bg-soda-red text-soda-glow text-[10px] tracking-wider px-3 py-1 rounded-sm font-medium shadow-lg shadow-soda-red/30">FRECUENCIA INTERNA</span>
               )}
             </div>
 

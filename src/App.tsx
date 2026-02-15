@@ -53,43 +53,36 @@ const SocialIcon: React.FC<{ platform: string; iconUrl?: string }> = ({ platform
   );
 };
 
-// Footer — elevated with editorial identity
+// Footer — single compact line
 const Footer: React.FC = () => {
   const content = getContent();
   const visibleLinks = content.socialLinks.filter(l => l.visible);
   return (
     <>
       <WarmDivider />
-      <footer className="relative py-16 sm:py-20 px-6">
-        <div className="max-w-7xl mx-auto">
-          {/* Top row: brand identity + social */}
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-10 mb-12">
-            <div className="flex items-center gap-3">
-              {content.brand?.isotipoUrl && (
-                <img src={content.brand.isotipoUrl} alt="" className="h-8 w-8 object-contain rounded-full" />
-              )}
-              <div className="text-center sm:text-left">
-                <h3 className="text-xl font-serif text-soda-glow mb-0.5">sodaroja</h3>
-                <p className="text-soda-fog/30 text-[10px] tracking-[0.2em] uppercase">Historias reales de ciudades del mundo</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              {visibleLinks.map((link: any) => (
-                <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer" title={link.platform}>
-                  <SocialIcon platform={link.platform} iconUrl={link.iconUrl} />
-                </a>
-              ))}
-            </div>
+      <footer className="relative py-8 px-6">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          {/* Left: brand */}
+          <div className="flex items-center gap-2.5">
+            {content.brand?.isotipoUrl && (
+              <img src={content.brand.isotipoUrl} alt="" className="h-6 w-6 object-contain rounded-full" />
+            )}
+            <span className="font-serif text-soda-glow text-sm">sodaroja</span>
+            <span className="text-soda-fog/20 text-xs hidden sm:inline">·</span>
+            <span className="text-soda-fog/30 text-[10px] tracking-[0.15em] uppercase hidden sm:inline">Historias reales de ciudades del mundo</span>
           </div>
 
-          {/* Divider */}
-          <div className="w-full h-px bg-soda-mist/10 mb-8" />
-
-          {/* Bottom row: copyright */}
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-soda-fog/40 text-[11px] tracking-wider">&copy; 2026 sodaroja. Todos los derechos reservados.</p>
-            <p className="text-soda-fog/30 text-[10px] tracking-wider">Buenos Aires, Argentina</p>
+          {/* Center: social icons */}
+          <div className="flex items-center gap-3">
+            {visibleLinks.map((link: any) => (
+              <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer" title={link.platform}>
+                <SocialIcon platform={link.platform} iconUrl={link.iconUrl} />
+              </a>
+            ))}
           </div>
+
+          {/* Right: copyright */}
+          <p className="text-soda-fog/30 text-[10px] tracking-wider">&copy; 2026 sodaroja</p>
         </div>
       </footer>
     </>

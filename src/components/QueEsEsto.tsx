@@ -110,7 +110,8 @@ export const QueEsEsto: React.FC = () => {
       <div className="max-w-5xl mx-auto relative" style={{ zIndex: 10 }}>
         <EditorialHeader
           label="Sobre el proyecto"
-          title={queEsEsto.title}
+          title="¿Qué es"
+          titleAccent="sodaroja?"
           subtitle={queEsEsto.description}
           center
         />
