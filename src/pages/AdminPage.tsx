@@ -589,45 +589,47 @@ export const AdminPage: React.FC = () => {
                 <h2 className="text-xl font-serif text-soda-glow">Redes Sociales (Footer)</h2>
                 <button onClick={() => update('socialLinks', [...content.socialLinks, { id: `social-${Date.now()}`, platform: 'Nueva red', abbr: 'NR', url: '#', iconUrl: '', visible: true }])} className="flex items-center gap-1 px-3 py-2 border border-soda-accent text-soda-accent rounded-sm text-xs"><Plus size={14} />Agregar red</button>
               </div>
-              <p className={nc + ' mb-4'}>Toggle = mostrar/ocultar. Nombre corto. URL completa. Icono opcional (URL imagen).</p>
+              <p className={nc + ' mb-4'}>Toggle = mostrar/ocultar. En el footer se muestra la sigla como link de texto.</p>
               {/* Header */}
-              <div className="flex items-center gap-2 mb-2 text-soda-fog text-xs px-1">
-                <div className="w-8"></div>
-                <div className="w-24">Nombre</div>
-                <div className="w-10 text-center">Sigla</div>
-                <div className="flex-1">URL de la red social</div>
-                <div className="w-40">URL icono (opcional)</div>
-                <div className="w-5"></div>
+              <div className="grid grid-cols-[32px_1fr_60px_2fr_32px] gap-2 mb-2 text-soda-fog text-[10px] tracking-wider px-1">
+                <div></div>
+                <div>Nombre</div>
+                <div className="text-center">Sigla</div>
+                <div>URL de la red social</div>
+                <div></div>
               </div>
               {content.socialLinks.map((link: any, idx: number) => (
-                <div key={link.id} className="flex items-center gap-2 mb-2">
-                  <button onClick={() => { const arr = [...content.socialLinks]; arr[idx] = { ...arr[idx], visible: !arr[idx].visible }; update('socialLinks', arr); }} className="flex-shrink-0 w-8">
+                <div key={link.id} className="grid grid-cols-[32px_1fr_60px_2fr_32px] gap-2 mb-2 items-center">
+                  <button onClick={() => { const arr = [...content.socialLinks]; arr[idx] = { ...arr[idx], visible: !arr[idx].visible }; update('socialLinks', arr); }} className="flex-shrink-0">
                     {link.visible ? <ToggleRight size={22} className="text-green-400" /> : <ToggleLeft size={22} className="text-soda-fog" />}
                   </button>
-                  <input type="text" value={link.platform} onChange={(e) => { const arr = [...content.socialLinks]; arr[idx] = { ...arr[idx], platform: e.target.value }; update('socialLinks', arr); }} className={ic + ' w-24'} placeholder="Nombre" />
-                  <input type="text" value={link.abbr} onChange={(e) => { const arr = [...content.socialLinks]; arr[idx] = { ...arr[idx], abbr: e.target.value.substring(0, 3) }; update('socialLinks', arr); }} className={ic + ' w-10 text-center text-xs'} placeholder="XX" maxLength={3} />
-                  <input type="text" value={link.url} onChange={(e) => { const arr = [...content.socialLinks]; arr[idx] = { ...arr[idx], url: e.target.value }; update('socialLinks', arr); }} className={ic + ' flex-1 min-w-0'} placeholder="https://instagram.com/..." />
-                  <input type="text" value={link.iconUrl || ''} onChange={(e) => { const arr = [...content.socialLinks]; arr[idx] = { ...arr[idx], iconUrl: e.target.value }; update('socialLinks', arr); }} className={ic + ' w-40'} placeholder="URL icono" />
-                  <button onClick={() => update('socialLinks', content.socialLinks.filter((_: any, i: number) => i !== idx))} className="text-soda-red flex-shrink-0 w-5"><Trash2 size={14} /></button>
+                  <input type="text" value={link.platform} onChange={(e) => { const arr = [...content.socialLinks]; arr[idx] = { ...arr[idx], platform: e.target.value }; update('socialLinks', arr); }} className={ic} placeholder="Instagram" />
+                  <input type="text" value={link.abbr} onChange={(e) => { const arr = [...content.socialLinks]; arr[idx] = { ...arr[idx], abbr: e.target.value.substring(0, 3) }; update('socialLinks', arr); }} className={ic + ' text-center text-xs'} placeholder="IG" maxLength={3} />
+                  <input type="text" value={link.url} onChange={(e) => { const arr = [...content.socialLinks]; arr[idx] = { ...arr[idx], url: e.target.value }; update('socialLinks', arr); }} className={ic} placeholder="https://instagram.com/sodaroja" />
+                  <button onClick={() => update('socialLinks', content.socialLinks.filter((_: any, i: number) => i !== idx))} className="text-soda-red flex-shrink-0"><Trash2 size={14} /></button>
                 </div>
               ))}
-            </div>
-
-            {/* Prompt para iconos por IA */}
-            <div className={cc}>
-              <h2 className="text-xl font-serif text-soda-glow mb-4">Prompt para generar iconos de redes con IA</h2>
-              <p className={nc + ' mb-3'}>Copia este prompt en ChatGPT, Midjourney, DALL-E o Leonardo para generar iconos que peguen con la web:</p>
-              <div className="bg-soda-night bg-opacity-80 border border-soda-mist border-opacity-30 rounded-sm p-4 text-soda-lamp text-sm font-mono leading-relaxed select-all cursor-text">
-                Genera un icono circular minimalista para la red social [NOMBRE]. Fondo solido de un solo color (elegir entre #c45555 rojo, #8b3a3a borgona, o #6b7a9e azul acento). Simbolo simple y abstracto de la red social en color crema #d4c5b0 centrado. Sin gradientes, sin sombras, sin texto. Estilo flat, trazo fino. Fondo transparente fuera del circulo. 200x200 pixeles. PNG. Que combine con caritas redondas sonrientes minimalistas de la misma paleta de colores.
-              </div>
-              <p className={nc + ' mt-2'}>Subi la imagen generada a un hosting (imgur, cloudinary) y pega la URL en el campo "URL icono" de cada red.</p>
             </div>
 
             {/* Footer Logo */}
             <div className={cc}>
               <h2 className="text-xl font-serif text-soda-glow mb-4">Logo del Footer</h2>
-              <p className={nc + ' mb-3'}>Logo personalizado que aparece en el footer. Si está vacío, se usa el isotipo.</p>
-              <input type="text" value={(content as any).footerLogoUrl || ''} onChange={(e) => update('footerLogoUrl', e.target.value)} className={ic} placeholder="URL del logo para el footer (PNG recomendado)" />
+              <p className={nc + ' mb-3'}>Logo personalizado que aparece a la izquierda del footer. Si está vacío, se usa el isotipo.</p>
+              <div className="bg-soda-night/50 border border-soda-mist/10 rounded-sm p-3 mb-3">
+                <p className="text-soda-lamp text-xs font-medium mb-1">📐 Especificaciones recomendadas:</p>
+                <div className="text-soda-fog text-[11px] space-y-0.5">
+                  <p>• Tamaño: <span className="text-soda-lamp">120×48 px</span> o proporcional</p>
+                  <p>• Formato: <span className="text-soda-lamp">PNG con fondo transparente</span></p>
+                  <p>• Color: <span className="text-soda-lamp">Crema (#d4c5b0)</span> o <span className="text-soda-lamp">blanco (#FFFFFF)</span></p>
+                </div>
+              </div>
+              <input type="text" value={(content as any).footerLogoUrl || ''} onChange={(e) => update('footerLogoUrl', e.target.value)} className={ic} placeholder="https://ejemplo.com/mi-logo-footer.png" />
+              {(content as any).footerLogoUrl && (
+                <div className="mt-3 p-3 bg-soda-night/50 rounded-sm text-center">
+                  <p className="text-soda-fog/40 text-[9px] tracking-wider mb-2">PREVIEW</p>
+                  <img src={(content as any).footerLogoUrl} alt="Footer logo" className="h-10 object-contain mx-auto" />
+                </div>
+              )}
             </div>
 
             {/* Soditas Config */}
@@ -649,9 +651,29 @@ export const AdminPage: React.FC = () => {
                   update('sponsors', [...sp, { id: `sp-${Date.now()}`, name: 'Nuevo Sponsor', logoUrl: '', url: '#', visible: true }]);
                 }} className="flex items-center gap-1 px-3 py-2 border border-soda-accent text-soda-accent rounded-sm text-xs"><Plus size={14} />Agregar sponsor</button>
               </div>
-              <p className={nc + ' mb-4'}>Logos de sponsors que aparecen en el footer. Recomendado: PNG blanco o monocromático, horizontal.</p>
+
+              {/* Specs box */}
+              <div className="bg-soda-night/50 border border-soda-mist/10 rounded-sm p-3 mb-4">
+                <p className="text-soda-lamp text-xs font-medium mb-1">📐 Especificaciones recomendadas para logos:</p>
+                <div className="text-soda-fog text-[11px] space-y-0.5">
+                  <p>• Tamaño: <span className="text-soda-lamp">200×60 px</span> (horizontal)</p>
+                  <p>• Formato: <span className="text-soda-lamp">PNG con fondo transparente</span></p>
+                  <p>• Color: <span className="text-soda-lamp">Blanco puro (#FFFFFF)</span> o <span className="text-soda-lamp">crema (#d4c5b0)</span></p>
+                  <p>• El footer los muestra en monocromático con opacidad baja. Blanco funciona mejor.</p>
+                </div>
+              </div>
+
+              {/* Header */}
+              <div className="grid grid-cols-[32px_140px_1fr_1fr_24px] gap-2 mb-2 text-soda-fog text-[10px] tracking-wider px-1">
+                <div></div>
+                <div>Nombre</div>
+                <div>URL del logo (PNG)</div>
+                <div>URL del sponsor</div>
+                <div></div>
+              </div>
+
               {((content as any).sponsors || []).map((sp: any, i: number) => (
-                <div key={sp.id} className="flex items-center gap-2 mb-2">
+                <div key={sp.id} className="grid grid-cols-[32px_140px_1fr_1fr_24px] gap-2 mb-2 items-center">
                   <button onClick={() => {
                     const arr = [...(content as any).sponsors]; arr[i] = { ...arr[i], visible: !arr[i].visible };
                     update('sponsors', arr);
@@ -661,27 +683,29 @@ export const AdminPage: React.FC = () => {
                   <input type="text" value={sp.name} onChange={(e) => {
                     const arr = [...(content as any).sponsors]; arr[i] = { ...arr[i], name: e.target.value };
                     update('sponsors', arr);
-                  }} className={ic + ' w-32'} placeholder="Nombre" />
+                  }} className={ic} placeholder="Noblex" />
                   <input type="text" value={sp.logoUrl} onChange={(e) => {
                     const arr = [...(content as any).sponsors]; arr[i] = { ...arr[i], logoUrl: e.target.value };
                     update('sponsors', arr);
-                  }} className={ic + ' flex-1'} placeholder="URL del logo (PNG)" />
+                  }} className={ic} placeholder="https://ejemplo.com/logo-blanco.png" />
                   <input type="text" value={sp.url} onChange={(e) => {
                     const arr = [...(content as any).sponsors]; arr[i] = { ...arr[i], url: e.target.value };
                     update('sponsors', arr);
-                  }} className={ic + ' w-48'} placeholder="URL del sponsor" />
+                  }} className={ic} placeholder="https://www.sponsor.com" />
                   <button onClick={() => {
                     const arr = (content as any).sponsors.filter((_: any, j: number) => j !== i);
                     update('sponsors', arr);
-                  }} className="w-5 h-5 flex items-center justify-center text-soda-fog/30 hover:text-red-400 transition-colors"><X size={14} /></button>
+                  }} className="flex items-center justify-center text-soda-fog/30 hover:text-red-400 transition-colors"><X size={14} /></button>
                 </div>
               ))}
-              {((content as any).sponsors || []).some((s: any) => s.logoUrl) && (
-                <div className="mt-3 p-3 bg-soda-night/50 rounded-sm">
-                  <p className={nc + ' mb-2'}>Vista previa:</p>
-                  <div className="flex items-center gap-6 flex-wrap">
+
+              {/* Preview */}
+              {((content as any).sponsors || []).some((s: any) => s.logoUrl && s.visible) && (
+                <div className="mt-4 p-4 bg-soda-night/50 border border-soda-mist/10 rounded-sm">
+                  <p className="text-soda-fog/40 text-[9px] tracking-[0.2em] uppercase text-center mb-3">Vista previa del footer</p>
+                  <div className="flex items-center justify-center gap-8 flex-wrap">
                     {((content as any).sponsors || []).filter((s: any) => s.visible && s.logoUrl).map((s: any) => (
-                      <img key={s.id} src={s.logoUrl} alt={s.name} title={s.name} className="h-5 object-contain" style={{ filter: 'brightness(2) grayscale(1)' }} />
+                      <img key={s.id} src={s.logoUrl} alt={s.name} title={s.name} className="h-5 object-contain" style={{ filter: 'brightness(3) grayscale(1)' }} />
                     ))}
                   </div>
                 </div>

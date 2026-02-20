@@ -53,7 +53,7 @@ const SocialIcon: React.FC<{ platform: string; iconUrl?: string }> = ({ platform
   );
 };
 
-// Footer — with sponsors and editable logo
+// Footer — premium, organized
 const Footer: React.FC = () => {
   const content = getContent();
   const visibleLinks = content.socialLinks.filter(l => l.visible);
@@ -62,49 +62,63 @@ const Footer: React.FC = () => {
   return (
     <>
       <WarmDivider />
-      <footer className="relative py-10 px-6">
-        <div className="max-w-7xl mx-auto">
-          {/* Main row: left info + right socials */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-8">
-            {/* Left: logo + info */}
-            <div className="flex items-center gap-3">
+      <footer className="relative py-12 sm:py-14 px-6">
+        <div className="max-w-6xl mx-auto">
+
+          {/* === ROW 1: Logo left — Socials right === */}
+          <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-8 mb-10">
+            {/* Left: editable logo + brand */}
+            <div className="flex items-center gap-4">
               {footerLogo ? (
-                <img src={footerLogo} alt="sodaroja" className="h-10 object-contain" />
+                <img src={footerLogo} alt="sodaroja" className="h-12 object-contain" />
               ) : content.brand?.isotipoUrl ? (
-                <img src={content.brand.isotipoUrl} alt="" className="h-8 w-8 object-contain rounded-full" />
-              ) : null}
+                <img src={content.brand.isotipoUrl} alt="" className="h-10 w-10 object-contain" />
+              ) : (
+                <div className="w-10 h-10 rounded-full bg-soda-red/20 flex items-center justify-center">
+                  <div className="w-3 h-3 rounded-full bg-soda-red" />
+                </div>
+              )}
               <div>
-                <span className="font-serif text-soda-glow text-base block">sodaroja</span>
-                <span className="text-soda-fog/30 text-[10px] tracking-[0.15em] uppercase block">Historias reales de ciudades del mundo</span>
-                <span className="text-soda-fog/20 text-[9px] tracking-wider block mt-1">&copy; 2026 sodaroja</span>
+                <span className="font-serif text-soda-glow text-lg block leading-tight">sodaroja</span>
+                <span className="text-soda-fog/35 text-[10px] tracking-[0.15em] uppercase block mt-0.5">Historias reales de ciudades del mundo</span>
               </div>
             </div>
 
-            {/* Right: social icons */}
-            <div className="flex items-center gap-3">
+            {/* Right: social links as clean text */}
+            <div className="flex items-center gap-5 flex-wrap justify-center sm:justify-end">
               {visibleLinks.map((link: any) => (
-                <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer" title={link.platform}>
-                  <SocialIcon platform={link.platform} iconUrl={link.iconUrl} />
+                <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer"
+                  className="text-soda-fog/40 text-[11px] tracking-[0.1em] uppercase hover:text-soda-lamp transition-colors duration-500">
+                  {link.abbr || link.platform}
                 </a>
               ))}
             </div>
           </div>
 
-          {/* Sponsors row */}
+          {/* === Divider === */}
+          <div className="w-full h-px bg-soda-mist/8 mb-8" />
+
+          {/* === ROW 2: Sponsors === */}
           {sponsors.length > 0 && (
-            <>
-              <div className="w-full h-px bg-soda-mist/8 mb-6" />
-              <div className="flex items-center justify-center gap-8 sm:gap-12 flex-wrap">
+            <div className="mb-8">
+              <p className="text-soda-fog/20 text-[9px] tracking-[0.2em] uppercase text-center mb-5">Nos acompañan</p>
+              <div className="flex items-center justify-center gap-8 sm:gap-10 flex-wrap">
                 {sponsors.map((s: any) => (
                   <a key={s.id} href={s.url} target="_blank" rel="noopener noreferrer" title={s.name}
-                    className="opacity-30 hover:opacity-60 transition-opacity duration-500 grayscale brightness-200 hover:brightness-100"
+                    className="opacity-25 hover:opacity-50 transition-opacity duration-500"
                   >
-                    <img src={s.logoUrl} alt={s.name} className="h-5 sm:h-6 object-contain" style={{ filter: 'brightness(2) grayscale(1)' }} loading="lazy" />
+                    <img src={s.logoUrl} alt={s.name} className="h-5 sm:h-6 object-contain" style={{ filter: 'brightness(3) grayscale(1)' }} loading="lazy" />
                   </a>
                 ))}
               </div>
-            </>
+            </div>
           )}
+
+          {/* === ROW 3: Copyright centered in red === */}
+          <div className="text-center">
+            <span className="text-soda-red/50 text-[10px] tracking-[0.15em]">&copy; 2026 sodaroja</span>
+          </div>
+
         </div>
       </footer>
     </>
