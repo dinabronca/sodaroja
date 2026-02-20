@@ -53,6 +53,16 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
     if (!isLocked) { setIsExpanded(true); if (!listened) setShowListenPrompt(true); }
   };
 
+  // Auto-mark as listened after 60 seconds with modal open (implies user is engaging with embed)
+  useEffect(() => {
+    if (isExpanded && !listened) {
+      const timer = setTimeout(() => {
+        markListened(true);
+      }, 60000); // 60 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [isExpanded, listened]);
+
   const links = episode.links || {};
   const embeds = episode.embeds || {};
 
@@ -106,22 +116,23 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
             {/* Bottom gradient */}
             <div className="absolute inset-0 bg-gradient-to-t from-soda-night/60 via-transparent to-transparent" />
 
-            {/* Top badges */}
-            <div className="absolute top-3 left-3 z-20 flex flex-col gap-2">
-              {isNewest && (
-                <span className="bg-soda-accent text-soda-night text-[10px] tracking-wider px-3 py-1 rounded-sm font-semibold shadow-lg shadow-soda-accent/30">NUEVO</span>
-              )}
-              {isUnlockedPremium && (
-                <span className="bg-soda-red text-soda-glow text-[10px] tracking-wider px-3 py-1 rounded-sm font-medium shadow-lg shadow-soda-red/30">FRECUENCIA INTERNA</span>
+            {/* Top badges row — same height on both sides */}
+            <div className="absolute top-3 left-3 right-3 z-20 flex justify-between items-start">
+              {/* Left: status badges */}
+              <div className="flex flex-col gap-1.5">
+                {isNewest && (
+                  <span className="bg-soda-accent text-soda-night text-[10px] tracking-[0.12em] uppercase px-2.5 py-[5px] rounded-sm font-semibold shadow-lg shadow-soda-accent/30 leading-none">NUEVO</span>
+                )}
+                {isUnlockedPremium && (
+                  <span className="bg-soda-red text-soda-glow text-[10px] tracking-[0.12em] uppercase px-2.5 py-[5px] rounded-sm font-medium shadow-lg shadow-soda-red/30 leading-none">FRECUENCIA INTERNA</span>
+                )}
+              </div>
+
+              {/* Right: EP number */}
+              {episodeNumber !== undefined && (
+                <span className="text-soda-glow/70 text-[10px] font-mono tracking-[0.12em] bg-soda-night/70 backdrop-blur-sm px-2.5 py-[5px] rounded-sm leading-none">{epNum(episodeNumber)}</span>
               )}
             </div>
-
-            {/* EP number badge */}
-            {episodeNumber !== undefined && (
-              <div className="absolute top-3 right-3 z-20">
-                <span className="text-soda-glow/60 text-[10px] font-mono tracking-wider bg-soda-night/60 backdrop-blur-sm px-2.5 py-1 rounded-sm">{epNum(episodeNumber)}</span>
-              </div>
-            )}
 
             {/* Listened dot */}
             {listened && (
@@ -131,18 +142,28 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
               </div>
             )}
 
-            {/* Locked center overlay */}
+            {/* Locked center overlay — dramatic */}
             {isLocked && (
               <div className="absolute inset-0 z-15 flex items-center justify-center">
-                <div className="text-center">
+                {/* Red tint overlay */}
+                <div className="absolute inset-0 bg-soda-red/8" />
+                {/* Animated rings */}
+                {[0, 1, 2].map(i => (
+                  <motion.div key={`ring-${i}`} className="absolute rounded-full border border-soda-red/20"
+                    style={{ width: 60 + i * 30, height: 60 + i * 30 }}
+                    animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0, 0.3] }}
+                    transition={{ duration: 3, repeat: Infinity, delay: i * 0.6, ease: 'easeInOut' }}
+                  />
+                ))}
+                <div className="text-center relative z-10">
                   <motion.div
-                    animate={{ scale: [1, 1.15, 1], opacity: [0.6, 1, 0.6] }}
-                    transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                    className="w-12 h-12 mx-auto mb-3 rounded-full border border-soda-red/40 flex items-center justify-center bg-soda-red/10"
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                    className="w-14 h-14 mx-auto mb-3 rounded-full border-2 border-soda-red/50 flex items-center justify-center bg-soda-red/15 backdrop-blur-sm"
                   >
-                    <div className="w-3 h-3 rounded-full bg-soda-red" style={{ boxShadow: '0 0 12px rgba(196,85,85,0.6)' }} />
+                    <div className="w-4 h-4 rounded-full bg-soda-red" style={{ boxShadow: '0 0 20px rgba(196,85,85,0.7), 0 0 40px rgba(196,85,85,0.3)' }} />
                   </motion.div>
-                  <span className="text-soda-glow/80 text-[10px] tracking-[0.2em] uppercase font-medium">Frecuencia Interna</span>
+                  <span className="text-soda-glow text-[10px] tracking-[0.2em] uppercase font-medium bg-soda-night/50 backdrop-blur-sm px-3 py-1 rounded-sm">Frecuencia Interna</span>
                 </div>
               </div>
             )}

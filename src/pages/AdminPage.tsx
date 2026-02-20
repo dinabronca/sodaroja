@@ -623,6 +623,71 @@ export const AdminPage: React.FC = () => {
               <p className={nc + ' mt-2'}>Subi la imagen generada a un hosting (imgur, cloudinary) y pega la URL en el campo "URL icono" de cada red.</p>
             </div>
 
+            {/* Footer Logo */}
+            <div className={cc}>
+              <h2 className="text-xl font-serif text-soda-glow mb-4">Logo del Footer</h2>
+              <p className={nc + ' mb-3'}>Logo personalizado que aparece en el footer. Si está vacío, se usa el isotipo.</p>
+              <input type="text" value={(content as any).footerLogoUrl || ''} onChange={(e) => update('footerLogoUrl', e.target.value)} className={ic} placeholder="URL del logo para el footer (PNG recomendado)" />
+            </div>
+
+            {/* Soditas Config */}
+            <div className={cc}>
+              <h2 className="text-xl font-serif text-soda-glow mb-4">🥤 Moneda de Gamificación</h2>
+              <p className={nc + ' mb-3'}>Cambiá el nombre y emoji de las "soditas" (la moneda virtual que ganan los suscriptores).</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div><label className={lc}>Nombre (ej: soditas, puntos, estrellas)</label><input type="text" value={(content as any).soditasConfig?.name || 'soditas'} onChange={(e) => update('soditasConfig.name', e.target.value)} className={ic} placeholder="soditas" /></div>
+                <div><label className={lc}>Emoji</label><input type="text" value={(content as any).soditasConfig?.emoji || '🥤'} onChange={(e) => update('soditasConfig.emoji', e.target.value)} className={ic} placeholder="🥤" /></div>
+              </div>
+            </div>
+
+            {/* Sponsors */}
+            <div className={cc}>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-serif text-soda-glow">Sponsors (Footer)</h2>
+                <button onClick={() => {
+                  const sp = (content as any).sponsors || [];
+                  update('sponsors', [...sp, { id: `sp-${Date.now()}`, name: 'Nuevo Sponsor', logoUrl: '', url: '#', visible: true }]);
+                }} className="flex items-center gap-1 px-3 py-2 border border-soda-accent text-soda-accent rounded-sm text-xs"><Plus size={14} />Agregar sponsor</button>
+              </div>
+              <p className={nc + ' mb-4'}>Logos de sponsors que aparecen en el footer. Recomendado: PNG blanco o monocromático, horizontal.</p>
+              {((content as any).sponsors || []).map((sp: any, i: number) => (
+                <div key={sp.id} className="flex items-center gap-2 mb-2">
+                  <button onClick={() => {
+                    const arr = [...(content as any).sponsors]; arr[i] = { ...arr[i], visible: !arr[i].visible };
+                    update('sponsors', arr);
+                  }} className={`w-8 h-8 rounded-sm flex items-center justify-center text-xs transition-all ${sp.visible ? 'bg-soda-red/20 text-soda-red border border-soda-red/30' : 'bg-soda-mist/5 text-soda-fog/30 border border-soda-mist/10'}`}>
+                    {sp.visible ? '●' : '○'}
+                  </button>
+                  <input type="text" value={sp.name} onChange={(e) => {
+                    const arr = [...(content as any).sponsors]; arr[i] = { ...arr[i], name: e.target.value };
+                    update('sponsors', arr);
+                  }} className={ic + ' w-32'} placeholder="Nombre" />
+                  <input type="text" value={sp.logoUrl} onChange={(e) => {
+                    const arr = [...(content as any).sponsors]; arr[i] = { ...arr[i], logoUrl: e.target.value };
+                    update('sponsors', arr);
+                  }} className={ic + ' flex-1'} placeholder="URL del logo (PNG)" />
+                  <input type="text" value={sp.url} onChange={(e) => {
+                    const arr = [...(content as any).sponsors]; arr[i] = { ...arr[i], url: e.target.value };
+                    update('sponsors', arr);
+                  }} className={ic + ' w-48'} placeholder="URL del sponsor" />
+                  <button onClick={() => {
+                    const arr = (content as any).sponsors.filter((_: any, j: number) => j !== i);
+                    update('sponsors', arr);
+                  }} className="w-5 h-5 flex items-center justify-center text-soda-fog/30 hover:text-red-400 transition-colors"><X size={14} /></button>
+                </div>
+              ))}
+              {((content as any).sponsors || []).some((s: any) => s.logoUrl) && (
+                <div className="mt-3 p-3 bg-soda-night/50 rounded-sm">
+                  <p className={nc + ' mb-2'}>Vista previa:</p>
+                  <div className="flex items-center gap-6 flex-wrap">
+                    {((content as any).sponsors || []).filter((s: any) => s.visible && s.logoUrl).map((s: any) => (
+                      <img key={s.id} src={s.logoUrl} alt={s.name} title={s.name} className="h-5 object-contain" style={{ filter: 'brightness(2) grayscale(1)' }} />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* Seguridad */}
             <div className={cc}>
               <h2 className="text-xl font-serif text-soda-glow mb-4">Seguridad</h2>

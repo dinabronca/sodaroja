@@ -282,7 +282,11 @@ const SubscriberDashboard: React.FC = () => {
       <div className="w-24 h-px bg-gradient-to-r from-transparent via-soda-red/30 to-transparent mx-auto" />
 
       {/* ===== GRID 3 COLUMNAS ===== */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="relative">
+        {/* Atmospheric glow behind panels */}
+        <motion.div className="absolute" style={{ left: '20%', top: '10%', width: '60%', height: '80%', background: 'radial-gradient(ellipse, rgba(196,85,85,0.04) 0%, transparent 70%)', filter: 'blur(60px)', zIndex: 0 }}
+          animate={{ opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }} />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 relative" style={{ zIndex: 1 }}>
 
         {/* ===== COL IZQUIERDA — Plan + Opciones ===== */}
         <div className="lg:col-span-3 space-y-4">
@@ -390,9 +394,12 @@ const SubscriberDashboard: React.FC = () => {
                 )}
               </>
             ) : (
-              <div className="px-5 py-8 text-center">
-                <BarChart3 size={24} className="text-soda-fog/20 mx-auto mb-2" />
-                <p className="text-soda-fog text-xs">No hay encuestas activas.</p>
+              <div className="px-5 py-10 text-center">
+                <motion.div animate={{ rotate: [0, 5, -5, 0] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}>
+                  <BarChart3 size={28} className="text-soda-accent/25 mx-auto mb-3" />
+                </motion.div>
+                <p className="text-soda-fog font-serif text-sm mb-1">Sin encuestas activas</p>
+                <p className="text-soda-fog/30 text-[11px]">Cuando haya una encuesta, votá y ganá soditas.</p>
               </div>
             )}
           </div>
@@ -435,9 +442,12 @@ const SubscriberDashboard: React.FC = () => {
                 </div>
               </>
             ) : (
-              <div className="px-5 py-8 text-center">
-                <Trophy size={24} className="text-soda-fog/20 mx-auto mb-2" />
-                <p className="text-soda-fog text-xs">No hay sorteos activos. Guardá tus soditas 🥤</p>
+              <div className="px-5 py-10 text-center">
+                <motion.div animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.4, 0.2] }} transition={{ duration: 3, repeat: Infinity }}>
+                  <Trophy size={28} className="text-soda-red/25 mx-auto mb-3" />
+                </motion.div>
+                <p className="text-soda-fog font-serif text-sm mb-1">Sin sorteos activos</p>
+                <p className="text-soda-fog/30 text-[11px]">Guardá tus soditas 🥤 para cuando haya uno.</p>
               </div>
             )}
           </div>
@@ -452,7 +462,10 @@ const SubscriberDashboard: React.FC = () => {
             </div>
             <div className="max-h-48 overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
               {notifications.length === 0 ? (
-                <div className="px-4 py-6 text-center"><p className="text-soda-fog/40 text-xs">Sin notificaciones.</p></div>
+                <div className="px-5 py-8 text-center">
+                  <Bell size={20} className="text-soda-accent/20 mx-auto mb-2" />
+                  <p className="text-soda-fog/40 text-xs font-serif">Sin notificaciones</p>
+                </div>
               ) : (
                 <div className="divide-y divide-soda-mist/5">
                   {notifications.slice().reverse().map((n: any) => (
@@ -497,12 +510,12 @@ const SubscriberDashboard: React.FC = () => {
             </div>
             <div className="max-h-[480px] overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
               {messages.length === 0 ? (
-                <div className="px-4 py-12 text-center">
-                  <motion.div animate={{ opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 3, repeat: Infinity }}>
-                    <Radio size={28} className="text-soda-fog/15 mx-auto mb-3" />
+                <div className="px-5 py-14 text-center">
+                  <motion.div animate={{ opacity: [0.15, 0.35, 0.15] }} transition={{ duration: 4, repeat: Infinity }}>
+                    <Radio size={32} className="text-soda-red/20 mx-auto mb-4" />
                   </motion.div>
-                  <p className="text-soda-fog text-xs">Silencio en la frecuencia...</p>
-                  <p className="text-soda-fog/40 text-[10px] mt-1">Cuando publiquemos algo, lo ves acá primero.</p>
+                  <p className="text-soda-fog font-serif text-sm mb-1">Silencio en la frecuencia...</p>
+                  <p className="text-soda-fog/30 text-[11px]">Cuando publiquemos algo, lo ves acá primero.</p>
                 </div>
               ) : (
                 <div className="divide-y divide-soda-mist/5">
@@ -524,6 +537,7 @@ const SubscriberDashboard: React.FC = () => {
             </div>
           </div>
         </div>
+      </div>
       </div>
 
       {/* ===== POLL PAGE (overlay) — multi-question ===== */}

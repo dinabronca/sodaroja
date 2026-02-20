@@ -169,6 +169,24 @@ export interface SiteContent {
     visible: boolean;
   }[];
 
+  // FOOTER — Sponsors
+  sponsors: {
+    id: string;
+    name: string;
+    logoUrl: string;
+    url: string;
+    visible: boolean;
+  }[];
+
+  // FOOTER — Logo
+  footerLogoUrl: string;
+
+  // GAMIFICACIÓN — Soditas config
+  soditasConfig: {
+    name: string;
+    emoji: string;
+  };
+
   // MI CUENTA — Campos del perfil de usuario
   userProfileFields: {
     id: string;
@@ -408,6 +426,22 @@ export const defaultContent: SiteContent = {
     { id: 'tt', platform: 'TikTok', abbr: 'TT', url: '#', visible: true },
     { id: 'ap', platform: 'Apple Podcasts', abbr: 'AP', url: '#', visible: true },
   ],
+
+  sponsors: [
+    { id: 'sp1', name: 'Noblex', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Noblex_logo.svg/200px-Noblex_logo.svg.png', url: 'https://www.noblex.com.ar', visible: true },
+    { id: 'sp2', name: 'Personal', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Personal_Argentina_Logo.svg/200px-Personal_Argentina_Logo.svg.png', url: 'https://www.personal.com.ar', visible: true },
+    { id: 'sp3', name: 'Universal Assistance', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Universal_Assistance_logo.svg/200px-Universal_Assistance_logo.svg.png', url: 'https://www.universal-assistance.com', visible: true },
+    { id: 'sp4', name: 'YPF', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/YPF_logo.svg/200px-YPF_logo.svg.png', url: 'https://www.ypf.com', visible: true },
+    { id: 'sp5', name: 'Globant', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Globant_Logo.svg/200px-Globant_Logo.svg.png', url: 'https://www.globant.com', visible: true },
+    { id: 'sp6', name: 'Santander', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Banco_Santander_Logotipo.svg/200px-Banco_Santander_Logotipo.svg.png', url: 'https://www.santander.com.ar', visible: true },
+  ],
+
+  footerLogoUrl: '',
+
+  soditasConfig: {
+    name: 'soditas',
+    emoji: '🥤',
+  },
 
   userProfileFields: [
     { id: 'name', label: 'Nombre', type: 'text', required: true, visible: true, placeholder: 'Tu nombre' },
