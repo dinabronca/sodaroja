@@ -17,28 +17,36 @@ export const UnirsePage: React.FC = () => {
     if (getCurrentUser()) navigate('/mi-cuenta');
   }, []);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const ic = "w-full bg-soda-night bg-opacity-60 border border-soda-mist border-opacity-20 rounded-sm px-4 py-3 text-soda-lamp focus:border-soda-accent focus:outline-none transition-colors text-sm";
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
 
-    if (mode === 'login') {
-      if (!formData.email || !formData.password) { setError('Completá email y contraseña'); return; }
-      const user = findUser(formData.email, formData.password);
-      if (!user) { setError('Email o contraseña incorrectos'); return; }
-      loginUser(user);
-      navigate('/mi-cuenta');
-      window.location.reload();
-    } else {
-      if (!formData.name || !formData.email || !formData.password) { setError('Completá todos los campos obligatorios'); return; }
-      if (formData.password.length < 6) { setError('La contraseña debe tener al menos 6 caracteres'); return; }
-      if (formData.password !== formData.confirmPassword) { setError('Las contraseñas no coinciden'); return; }
-      const user = registerUser(formData.name, formData.email, formData.password, formData.photoUrl);
-      loginUser(user);
-      navigate('/mi-cuenta');
-      window.location.reload();
+    try {
+      if (mode === 'login') {
+        if (!formData.email || !formData.password) { setError('Completá email y contraseña'); setIsLoading(false); return; }
+        const result = await findUser(formData.email, formData.password);
+        if (!result.user) { setError(result.error || 'Email o contraseña incorrectos'); setIsLoading(false); return; }
+        loginUser(result.user);
+        navigate('/mi-cuenta');
+        window.location.reload();
+      } else {
+        if (!formData.name || !formData.email || !formData.password) { setError('Completá todos los campos obligatorios'); setIsLoading(false); return; }
+        if (formData.password !== formData.confirmPassword) { setError('Las contraseñas no coinciden'); setIsLoading(false); return; }
+        const result = await registerUser(formData.name, formData.email, formData.password, formData.photoUrl);
+        if (!result.user) { setError(result.error || 'Error al crear cuenta'); setIsLoading(false); return; }
+        loginUser(result.user);
+        navigate('/mi-cuenta');
+        window.location.reload();
+      }
+    } catch (err) {
+      setError('Error inesperado. Intentá de nuevo.');
     }
+    setIsLoading(false);
   };
 
   return (
@@ -61,8 +69,8 @@ export const UnirsePage: React.FC = () => {
             <div className="mb-6 bg-soda-night bg-opacity-40 border border-soda-accent border-opacity-20 rounded-sm p-4">
               <p className="text-soda-accent text-xs font-medium mb-2">Cuentas de prueba:</p>
               <div className="space-y-1 text-xs">
-                <p className="text-soda-lamp">Premium: <span className="text-soda-fog">premium@sodaroja.com</span> / <span className="text-soda-fog">sodaroja1</span></p>
-                <p className="text-soda-lamp">Gratis: <span className="text-soda-fog">user@sodaroja.com</span> / <span className="text-soda-fog">sodaroja2</span></p>
+                <p className="text-soda-lamp">Premium: <span className="text-soda-fog">premium@sodaroja.com</span> / <span className="text-soda-fog">Sodaroja1!</span></p>
+                <p className="text-soda-lamp">Gratis: <span className="text-soda-fog">user@sodaroja.com</span> / <span className="text-soda-fog">Sodaroja2!</span></p>
               </div>
             </div>
           )}

@@ -1,34 +1,25 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { ScrollToTop } from './components/ScrollToTop';
-import { WarmDivider } from './components/Editorial';
 import { HomePage } from './pages/HomePage';
+import { QueEsEstoPage } from './pages/QueEsEstoPage';
+import { EquipoPage } from './pages/EquipoPage';
+import { EpisodiosPage } from './pages/EpisodiosPage';
+import { FrecuenciaInternaPage } from './pages/FrecuenciaInternaPage';
+import { ShopPage } from './pages/ShopPage';
+import { ContactoPage } from './pages/ContactoPage';
+import { MiCuentaPage } from './pages/MiCuentaPage';
+import { UnirsePage } from './pages/UnirsePage';
 import { getContent } from './data/content';
 import { initDemoUsers } from './data/auth';
 import './styles/globals.css';
 
+// Admin stays lazy — it's big and rarely used
+const AdminPage = React.lazy(() => import('./pages/AdminPage').then(m => ({ default: m.AdminPage })));
+
+// Init demo users (async)
 initDemoUsers();
-
-const QueEsEstoPage = lazy(() => import('./pages/QueEsEstoPage').then(m => ({ default: m.QueEsEstoPage })));
-const EquipoPage = lazy(() => import('./pages/EquipoPage').then(m => ({ default: m.EquipoPage })));
-const EpisodiosPage = lazy(() => import('./pages/EpisodiosPage').then(m => ({ default: m.EpisodiosPage })));
-const FrecuenciaInternaPage = lazy(() => import('./pages/FrecuenciaInternaPage').then(m => ({ default: m.FrecuenciaInternaPage })));
-const ShopPage = lazy(() => import('./pages/ShopPage').then(m => ({ default: m.ShopPage })));
-const ContactoPage = lazy(() => import('./pages/ContactoPage').then(m => ({ default: m.ContactoPage })));
-const MiCuentaPage = lazy(() => import('./pages/MiCuentaPage').then(m => ({ default: m.MiCuentaPage })));
-const AdminPage = lazy(() => import('./pages/AdminPage').then(m => ({ default: m.AdminPage })));
-const UnirsePage = lazy(() => import('./pages/UnirsePage').then(m => ({ default: m.UnirsePage })));
-
-// Loading — classic
-const PageLoader = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <div className="text-center">
-      <div className="loader mx-auto mb-4" />
-      <p className="text-soda-fog text-xs tracking-wider">Cargando...</p>
-    </div>
-  </div>
-);
 
 // Social icon SVGs
 const SocialIcon: React.FC<{ platform: string; iconUrl?: string }> = ({ platform, iconUrl }) => {
@@ -53,75 +44,85 @@ const SocialIcon: React.FC<{ platform: string; iconUrl?: string }> = ({ platform
   );
 };
 
-// Footer — premium, organized
+// Footer — editorial, compact, premium
 const Footer: React.FC = () => {
   const content = getContent();
   const visibleLinks = content.socialLinks.filter(l => l.visible);
   const sponsors = (content as any).sponsors?.filter((s: any) => s.visible) || [];
   const footerLogo = (content as any).footerLogoUrl;
   return (
-    <>
-      <WarmDivider />
-      <footer className="relative py-12 sm:py-14 px-6">
-        <div className="max-w-6xl mx-auto">
+    <footer className="relative px-6 pt-12 pb-8 border-t border-soda-mist/8">
+      <div className="max-w-5xl mx-auto">
 
-          {/* === ROW 1: Logo left — Socials right === */}
-          <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-8 mb-10">
-            {/* Left: editable logo + brand */}
-            <div className="flex items-center gap-4">
-              {footerLogo ? (
-                <img src={footerLogo} alt="sodaroja" className="h-12 object-contain" />
-              ) : content.brand?.isotipoUrl ? (
-                <img src={content.brand.isotipoUrl} alt="" className="h-10 w-10 object-contain" />
-              ) : (
-                <div className="w-10 h-10 rounded-full bg-soda-red/20 flex items-center justify-center">
-                  <div className="w-3 h-3 rounded-full bg-soda-red" />
-                </div>
-              )}
-              <div>
-                <span className="font-serif text-soda-glow text-lg block leading-tight">sodaroja</span>
-                <span className="text-soda-fog/35 text-[10px] tracking-[0.15em] uppercase block mt-0.5">Historias reales de ciudades del mundo</span>
-              </div>
+        {/* === Sponsors strip === */}
+        {sponsors.length > 0 && (
+          <div className="mb-10">
+            <p className="text-soda-fog/15 text-[8px] tracking-[0.3em] uppercase text-center mb-4">Nos acompañan</p>
+            <div className="flex items-center justify-center gap-7 sm:gap-10 flex-wrap">
+              {sponsors.map((s: any) => (
+                <a key={s.id} href={s.url} target="_blank" rel="noopener noreferrer" title={s.name}
+                  className="opacity-20 hover:opacity-45 transition-opacity duration-700">
+                  <img src={s.logoUrl} alt={s.name} className="h-4 sm:h-[18px] object-contain" style={{ filter: 'brightness(3) grayscale(1)' }} loading="lazy" />
+                </a>
+              ))}
             </div>
+            <div className="w-full h-px bg-soda-mist/5 mt-10" />
+          </div>
+        )}
 
-            {/* Right: social links as clean text */}
-            <div className="flex items-center gap-5 flex-wrap justify-center sm:justify-end">
+        {/* === Main footer grid === */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-4 mb-10">
+
+          {/* Col 1: Brand */}
+          <div className="text-center sm:text-left">
+            <div className="flex items-center gap-2.5 justify-center sm:justify-start mb-3">
+              {footerLogo ? (
+                <img src={footerLogo} alt="sodaroja" className="h-8 object-contain" />
+              ) : content.brand?.isotipoUrl ? (
+                <img src={content.brand.isotipoUrl} alt="" className="h-7 w-7 object-contain" />
+              ) : null}
+              <span className="font-serif text-soda-glow text-sm">sodaroja</span>
+            </div>
+            <p className="text-soda-fog/25 text-[10px] leading-relaxed max-w-[200px] mx-auto sm:mx-0">
+              Historias reales de ciudades del mundo. Un podcast que viaja.
+            </p>
+          </div>
+
+          {/* Col 2: Socials — centered */}
+          <div className="text-center">
+            <p className="text-soda-fog/20 text-[8px] tracking-[0.3em] uppercase mb-3">Seguinos</p>
+            <div className="flex items-center justify-center gap-4 flex-wrap">
               {visibleLinks.map((link: any) => (
                 <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer"
-                  className="text-soda-fog/40 text-[11px] tracking-[0.1em] uppercase hover:text-soda-lamp transition-colors duration-500">
+                  className="text-soda-fog/30 text-[10px] tracking-[0.12em] uppercase hover:text-soda-lamp transition-colors duration-500">
                   {link.abbr || link.platform}
                 </a>
               ))}
             </div>
           </div>
 
-          {/* === Divider === */}
-          <div className="w-full h-px bg-soda-mist/8 mb-8" />
-
-          {/* === ROW 2: Sponsors === */}
-          {sponsors.length > 0 && (
-            <div className="mb-8">
-              <p className="text-soda-fog/20 text-[9px] tracking-[0.2em] uppercase text-center mb-5">Nos acompañan</p>
-              <div className="flex items-center justify-center gap-8 sm:gap-10 flex-wrap">
-                {sponsors.map((s: any) => (
-                  <a key={s.id} href={s.url} target="_blank" rel="noopener noreferrer" title={s.name}
-                    className="opacity-25 hover:opacity-50 transition-opacity duration-500"
-                  >
-                    <img src={s.logoUrl} alt={s.name} className="h-5 sm:h-6 object-contain" style={{ filter: 'brightness(3) grayscale(1)' }} loading="lazy" />
-                  </a>
-                ))}
-              </div>
+          {/* Col 3: Links — right */}
+          <div className="text-center sm:text-right">
+            <p className="text-soda-fog/20 text-[8px] tracking-[0.3em] uppercase mb-3">Secciones</p>
+            <div className="flex flex-col gap-1.5">
+              {[
+                { label: 'Episodios', href: '/episodios' },
+                { label: 'Frecuencia Interna', href: '/frecuencia-interna' },
+                { label: 'Contacto', href: '/contacto' },
+              ].map(l => (
+                <a key={l.href} href={l.href} className="text-soda-fog/25 text-[10px] tracking-wider hover:text-soda-fog/50 transition-colors duration-500">{l.label}</a>
+              ))}
             </div>
-          )}
-
-          {/* === ROW 3: Copyright centered in red === */}
-          <div className="text-center">
-            <span className="text-soda-red/50 text-[10px] tracking-[0.15em]">&copy; 2026 sodaroja</span>
           </div>
-
         </div>
-      </footer>
-    </>
+
+        {/* === Bottom bar === */}
+        <div className="text-center">
+          <span className="text-soda-red/35 text-[9px] tracking-[0.15em]">&copy; 2026 sodaroja</span>
+        </div>
+
+      </div>
+    </footer>
   );
 };
 
@@ -131,20 +132,18 @@ function App() {
       <ScrollToTop />
       <div className="relative min-h-screen bg-soda-night overflow-x-hidden">
         <Navbar />
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/que-es-esto" element={<QueEsEstoPage />} />
-            <Route path="/equipo" element={<EquipoPage />} />
-            <Route path="/episodios" element={<EpisodiosPage />} />
-            <Route path="/frecuencia-interna" element={<FrecuenciaInternaPage />} />
-            <Route path="/shop" element={<ShopPage />} />
-            <Route path="/contacto" element={<ContactoPage />} />
-            <Route path="/mi-cuenta" element={<MiCuentaPage />} />
-            <Route path="/admin" element={<AdminPage />} />
-            <Route path="/unirse" element={<UnirsePage />} />
-          </Routes>
-        </Suspense>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/que-es-esto" element={<QueEsEstoPage />} />
+          <Route path="/equipo" element={<EquipoPage />} />
+          <Route path="/episodios" element={<EpisodiosPage />} />
+          <Route path="/frecuencia-interna" element={<FrecuenciaInternaPage />} />
+          <Route path="/shop" element={<ShopPage />} />
+          <Route path="/contacto" element={<ContactoPage />} />
+          <Route path="/mi-cuenta" element={<MiCuentaPage />} />
+          <Route path="/admin" element={<React.Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="loader" /></div>}><AdminPage /></React.Suspense>} />
+          <Route path="/unirse" element={<UnirsePage />} />
+        </Routes>
         <Footer />
       </div>
     </Router>

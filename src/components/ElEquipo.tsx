@@ -266,7 +266,7 @@ export const ElEquipo: React.FC = () => {
                     src={member.photoUrl}
                     alt={member.name}
                     className="w-full h-full object-cover object-center"
-                    whileHover={{ scale: 1.03 }}
+                    whileHover={{ scale: 1.01, transition: { duration: 0.8, ease: 'easeOut' } }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
                     loading="lazy"
                   />
