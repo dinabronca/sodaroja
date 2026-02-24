@@ -25,7 +25,6 @@ export const AdminPage: React.FC = () => {
     if (valid) { setIsAuthenticated(true); setError(''); } 
     else { setAdminAttempts(a => a + 1); setError(`Contraseña incorrecta (${adminAttempts + 1}/5)`); }
   };
-  };
 
   const handleSave = () => {
     saveContent(content);

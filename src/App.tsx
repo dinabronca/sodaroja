@@ -131,6 +131,8 @@ function App() {
     <Router>
       <ScrollToTop />
       <div className="relative min-h-screen bg-soda-night overflow-x-hidden">
+        {/* Global VHS band */}
+        <div className="vhs-global-band" />
         <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />

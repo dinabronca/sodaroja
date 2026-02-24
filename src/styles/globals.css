@@ -38,6 +38,46 @@ body::after {
   background-size: 256px 256px;
 }
 
+/* ===== GLOBAL VHS SCANLINE ===== */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(0, 0, 0, 0.012) 3px,
+      rgba(0, 0, 0, 0.012) 4px
+    );
+}
+
+/* Slow-moving VHS band */
+@keyframes vhsGlobal {
+  0% { transform: translateY(-100vh); }
+  100% { transform: translateY(100vh); }
+}
+
+.vhs-global-band {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 25vh;
+  background: linear-gradient(
+    transparent 0%,
+    rgba(196, 85, 85, 0.015) 30%,
+    rgba(196, 85, 85, 0.025) 50%,
+    rgba(196, 85, 85, 0.015) 70%,
+    transparent 100%
+  );
+  z-index: 9997;
+  pointer-events: none;
+  animation: vhsGlobal 12s linear infinite;
+}
+
 /* ===== WARM DIVIDER ===== */
 .section-divider {
   width: 100%;
@@ -86,6 +126,8 @@ body::after {
   .overflow-y-auto { -webkit-overflow-scrolling: touch; }
   iframe { will-change: auto !important; contain: strict; }
   body::after { opacity: 0.015; }
+  body::before { opacity: 0.5; }
+  .vhs-global-band { opacity: 0.5; }
 }
 
 @media (max-width: 640px) {
