@@ -205,7 +205,7 @@ export const findUser = async (email: string, password: string): Promise<{ user:
       delete (legacyUser as any).password;
       saveDB(db);
     }
-    return { user: user || legacyUser };
+    return { user: user || legacyUser || null };
   }
   
   recordFailedAttempt(cleanEmail);
