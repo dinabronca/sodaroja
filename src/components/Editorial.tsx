@@ -17,22 +17,22 @@ export const EditorialHeader: React.FC<{
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ duration: 0.8 }}
-    className={`mb-12 sm:mb-16 ${center ? 'text-center' : ''}`}
+    className={`mb-14 sm:mb-20 ${center ? 'text-center' : ''}`}
   >
     {/* Red line + label */}
     <div className={`flex items-center gap-3 mb-5 ${center ? 'justify-center' : ''}`}>
-      <div className="w-8 h-px bg-soda-red" />
-      <span className="text-soda-red text-[11px] tracking-[0.25em] uppercase font-light">{label}</span>
+      <div className="w-10 h-px bg-soda-red/60" />
+      <span className="text-soda-red/80 text-[10px] tracking-[0.3em] uppercase font-light">{label}</span>
     </div>
 
     {/* Title with optional italic accent */}
-    <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif text-soda-glow leading-tight mb-4">
+    <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif text-soda-glow leading-[1.1] mb-5">
       {title}{' '}
-      {titleAccent && <em className="text-soda-red/85">{titleAccent}</em>}
+      {titleAccent && <em className="text-soda-red/80">{titleAccent}</em>}
     </h2>
 
     {subtitle && (
-      <p className={`text-soda-fog text-base font-light leading-relaxed ${center ? 'max-w-2xl mx-auto' : 'max-w-3xl'}`}>
+      <p className={`text-soda-fog/60 text-base font-light leading-relaxed ${center ? 'max-w-2xl mx-auto' : 'max-w-3xl'}`}>
         {subtitle}
       </p>
     )}
@@ -41,5 +41,7 @@ export const EditorialHeader: React.FC<{
 
 /* ===== WARM DIVIDER ===== */
 export const WarmDivider: React.FC = () => (
-  <div className="section-divider" />
+  <div className="py-4 px-6">
+    <div className="max-w-5xl mx-auto h-px bg-gradient-to-r from-transparent via-soda-mist/8 to-transparent" />
+  </div>
 );

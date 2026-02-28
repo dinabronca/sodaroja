@@ -16,12 +16,16 @@ body {
   overflow-x: hidden;
   position: relative;
   letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* ===== TYPOGRAPHY POLISH ===== */
 .font-serif { font-family: 'Crimson Pro', Georgia, serif; }
 h1, h2, h3 { font-family: 'Crimson Pro', Georgia, serif; font-weight: 400; letter-spacing: 0.02em; }
 p { font-weight: 300; }
+em { font-style: italic; font-family: 'Crimson Pro', Georgia, serif; }
+a { transition: color 0.5s ease, opacity 0.5s ease; }
 
 .hoverable { cursor: pointer; }
 
@@ -112,11 +116,11 @@ body::before {
 @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
 /* ===== SCROLLBAR ===== */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: rgba(20, 24, 36, 0.3); }
-::-webkit-scrollbar-thumb { background: rgba(212, 197, 176, 0.2); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(212, 197, 176, 0.35); }
-::selection { background: rgba(196, 85, 85, 0.2); color: #fef8ed; }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(196, 85, 85, 0.15); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(196, 85, 85, 0.25); }
+::selection { background: rgba(196, 85, 85, 0.15); color: #fef8ed; }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 767px) {

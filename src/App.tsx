@@ -44,81 +44,65 @@ const SocialIcon: React.FC<{ platform: string; iconUrl?: string }> = ({ platform
   );
 };
 
-// Footer — editorial, compact, premium
+// Footer — per wireframe: sponsors top, logo-phrase left, empty center, socials right
 const Footer: React.FC = () => {
   const content = getContent();
   const visibleLinks = content.socialLinks.filter(l => l.visible);
   const sponsors = (content as any).sponsors?.filter((s: any) => s.visible) || [];
   const footerLogo = (content as any).footerLogoUrl;
   return (
-    <footer className="relative px-6 pt-12 pb-8 border-t border-soda-mist/8">
+    <footer className="relative px-6 pt-14 pb-10">
+      {/* Top line */}
+      <div className="max-w-5xl mx-auto">
+        <div className="h-px w-full bg-gradient-to-r from-transparent via-soda-mist/10 to-transparent mb-10" />
+      </div>
+
       <div className="max-w-5xl mx-auto">
 
-        {/* === Sponsors strip === */}
+        {/* === ROW 1: Sponsors — full width === */}
         {sponsors.length > 0 && (
-          <div className="mb-10">
-            <p className="text-soda-fog/15 text-[8px] tracking-[0.3em] uppercase text-center mb-4">Nos acompañan</p>
-            <div className="flex items-center justify-center gap-7 sm:gap-10 flex-wrap">
+          <div className="mb-12">
+            <div className="flex items-center justify-center gap-6 sm:gap-10 flex-wrap">
               {sponsors.map((s: any) => (
                 <a key={s.id} href={s.url} target="_blank" rel="noopener noreferrer" title={s.name}
-                  className="opacity-20 hover:opacity-45 transition-opacity duration-700">
+                  className="opacity-15 hover:opacity-40 transition-opacity duration-700">
                   <img src={s.logoUrl} alt={s.name} className="h-4 sm:h-[18px] object-contain" style={{ filter: 'brightness(3) grayscale(1)' }} loading="lazy" />
                 </a>
               ))}
             </div>
-            <div className="w-full h-px bg-soda-mist/5 mt-10" />
           </div>
         )}
 
-        {/* === Main footer grid === */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-4 mb-10">
+        {/* === ROW 2: Two columns — logo left, socials right === */}
+        <div className="flex flex-col sm:flex-row items-center sm:items-end justify-between gap-8">
 
-          {/* Col 1: Brand */}
-          <div className="text-center sm:text-left">
-            <div className="flex items-center gap-2.5 justify-center sm:justify-start mb-3">
-              {footerLogo ? (
-                <img src={footerLogo} alt="sodaroja" className="h-8 object-contain" />
-              ) : content.brand?.isotipoUrl ? (
-                <img src={content.brand.isotipoUrl} alt="" className="h-7 w-7 object-contain" />
-              ) : null}
-              <span className="font-serif text-soda-glow text-sm">sodaroja</span>
-            </div>
-            <p className="text-soda-fog/25 text-[10px] leading-relaxed max-w-[200px] mx-auto sm:mx-0">
-              Historias reales de ciudades del mundo. Un podcast que viaja.
-            </p>
-          </div>
-
-          {/* Col 2: Socials — centered */}
-          <div className="text-center">
-            <p className="text-soda-fog/20 text-[8px] tracking-[0.3em] uppercase mb-3">Seguinos</p>
-            <div className="flex items-center justify-center gap-4 flex-wrap">
-              {visibleLinks.map((link: any) => (
-                <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer"
-                  className="text-soda-fog/30 text-[10px] tracking-[0.12em] uppercase hover:text-soda-lamp transition-colors duration-500">
-                  {link.abbr || link.platform}
-                </a>
-              ))}
+          {/* Left: Logo + phrase */}
+          <div className="flex items-center gap-3">
+            {footerLogo ? (
+              <img src={footerLogo} alt="sodaroja" className="h-8 object-contain opacity-60" />
+            ) : content.brand?.isotipoUrl ? (
+              <img src={content.brand.isotipoUrl} alt="" className="h-6 w-6 object-contain opacity-40" />
+            ) : null}
+            <div>
+              <span className="font-serif text-soda-glow/60 text-sm block leading-tight">sodaroja</span>
+              <span className="text-soda-fog/20 text-[9px] tracking-[0.12em] block mt-0.5">Historias reales de ciudades del mundo</span>
             </div>
           </div>
 
-          {/* Col 3: Links — right */}
-          <div className="text-center sm:text-right">
-            <p className="text-soda-fog/20 text-[8px] tracking-[0.3em] uppercase mb-3">Secciones</p>
-            <div className="flex flex-col gap-1.5">
-              {[
-                { label: 'Episodios', href: '/episodios' },
-                { label: 'Frecuencia Interna', href: '/frecuencia-interna' },
-                { label: 'Contacto', href: '/contacto' },
-              ].map(l => (
-                <a key={l.href} href={l.href} className="text-soda-fog/25 text-[10px] tracking-wider hover:text-soda-fog/50 transition-colors duration-500">{l.label}</a>
-              ))}
-            </div>
+          {/* Right: Social links */}
+          <div className="flex items-center gap-5 flex-wrap justify-center sm:justify-end">
+            {visibleLinks.map((link: any) => (
+              <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer"
+                className="text-soda-fog/25 text-[10px] tracking-[0.1em] uppercase hover:text-soda-fog/50 transition-colors duration-700">
+                {link.abbr || link.platform}
+              </a>
+            ))}
           </div>
         </div>
 
-        {/* === Bottom bar === */}
-        <div className="text-center">
-          <span className="text-soda-red/35 text-[9px] tracking-[0.15em]">&copy; 2026 sodaroja</span>
+        {/* === Copyright === */}
+        <div className="mt-8 text-center sm:text-left">
+          <span className="text-soda-red/25 text-[9px] tracking-[0.12em]">&copy; 2026 sodaroja</span>
         </div>
 
       </div>

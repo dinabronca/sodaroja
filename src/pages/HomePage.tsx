@@ -43,17 +43,17 @@ export const HomePage: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="mb-12 sm:mb-16"
+            className="mb-14 sm:mb-20"
           >
             {/* Línea roja + label */}
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-px bg-soda-red" />
-              <span className="text-soda-red text-[11px] tracking-[0.25em] uppercase font-light">Viajes recientes</span>
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-px bg-soda-red/60" />
+              <span className="text-soda-red/80 text-[10px] tracking-[0.3em] uppercase font-light">Viajes recientes</span>
             </div>
 
             {/* Título grande con cursiva */}
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif text-soda-glow leading-tight">
-              Los últimos <em className="text-soda-red/90">destinos</em>
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif text-soda-glow leading-[1.1]">
+              Los últimos <em className="text-soda-red/80">destinos</em>
             </h2>
           </motion.div>
 
@@ -72,9 +72,9 @@ export const HomePage: React.FC = () => {
             transition={{ delay: 0.2, duration: 0.6 }}
             className="text-center mt-14 sm:mt-20"
           >
-            <Link to="/episodios" className="group inline-flex items-center gap-3 px-8 sm:px-10 py-3.5 border border-soda-mist/20 text-soda-lamp/70 rounded-sm hover:border-soda-lamp/25 hover:text-soda-lamp transition-all duration-500 tracking-[0.2em] text-[11px] uppercase">
-              Ver todos
-              <ArrowRight size={14} className="text-soda-fog/50 group-hover:text-soda-lamp/70 group-hover:translate-x-0.5 transition-all duration-500" />
+            <Link to="/episodios" className="group inline-flex items-center gap-3 px-10 py-4 border border-soda-mist/15 text-soda-fog/50 rounded-sm hover:border-soda-mist/25 hover:text-soda-lamp transition-all duration-700 tracking-[0.25em] text-[10px] uppercase">
+              Ver todos los episodios
+              <ArrowRight size={13} className="text-soda-fog/30 group-hover:text-soda-lamp/50 group-hover:translate-x-1 transition-all duration-700" />
             </Link>
           </motion.div>
         </div>

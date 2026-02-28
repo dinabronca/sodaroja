@@ -61,15 +61,15 @@ export const Navbar: React.FC = () => {
             </Link>
 
             {/* Desktop menu */}
-            <div className="hidden lg:flex items-center space-x-7">
+            <div className="hidden lg:flex items-center space-x-8">
               {menuItems.map((item) => {
                 const active = isActive(item.href);
                 return (
                   <Link key={item.href} to={item.href}
-                    className={`text-[11px] tracking-[0.15em] uppercase relative group transition-colors duration-500 ${
+                    className={`text-[10px] tracking-[0.18em] uppercase relative group transition-colors duration-700 ${
                       item.special === 'frecuencia'
-                        ? active ? 'text-soda-red' : 'text-soda-red/60 hover:text-soda-red'
-                        : active ? 'text-soda-lamp' : 'text-soda-fog/50 hover:text-soda-lamp'
+                        ? active ? 'text-soda-red' : 'text-soda-red/50 hover:text-soda-red'
+                        : active ? 'text-soda-lamp' : 'text-soda-fog/40 hover:text-soda-lamp'
                     }`}
                   >
                     {item.label}

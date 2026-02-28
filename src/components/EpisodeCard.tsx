@@ -170,35 +170,35 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
           </div>
 
           {/* Info below image */}
-          <div className="p-5 relative z-10">
+          <div className="p-5 sm:p-6 relative z-10">
             {/* City + Date row */}
-            <div className="flex items-center justify-between mb-2">
-              <span className={`text-[11px] tracking-[0.15em] uppercase font-medium ${isUnlockedPremium ? 'text-soda-red' : 'text-soda-accent'}`}>
+            <div className="flex items-center justify-between mb-3">
+              <span className={`text-[10px] tracking-[0.2em] uppercase font-medium ${isUnlockedPremium ? 'text-soda-red/80' : 'text-soda-accent/70'}`}>
                 {episode.city}
               </span>
               {formattedDate && !isLocked && (
-                <span className="text-soda-fog/40 text-[11px]">{formattedDate}</span>
+                <span className="text-soda-fog/30 text-[10px] tracking-wider">{formattedDate}</span>
               )}
             </div>
 
             {/* Title */}
-            <h3 className="text-xl font-serif text-soda-glow mb-2 leading-tight group-hover:text-soda-glow/90 transition-colors">
-              "{episode.title}"
+            <h3 className="text-lg sm:text-xl font-serif text-soda-glow mb-3 leading-snug group-hover:text-soda-glow/85 transition-colors duration-700">
+              &ldquo;{episode.title}&rdquo;
             </h3>
 
             {/* Description */}
-            <p className="text-soda-fog text-sm font-light leading-relaxed mb-4 line-clamp-2">
+            <p className="text-soda-fog/60 text-[13px] font-light leading-relaxed mb-5 line-clamp-2">
               {episode.description}
             </p>
 
             {/* CTA */}
             {isLocked ? (
-              <Link to="/frecuencia-interna" onClick={e => e.stopPropagation()} className="inline-flex items-center gap-2 text-soda-red/70 text-[11px] tracking-wider hover:text-soda-red transition-colors duration-500 group/cta">
-                Desbloquear <ChevronRight size={12} className="group-hover/cta:translate-x-0.5 transition-transform" />
+              <Link to="/frecuencia-interna" onClick={e => e.stopPropagation()} className="inline-flex items-center gap-2 text-soda-red/60 text-[10px] tracking-[0.15em] uppercase hover:text-soda-red transition-colors duration-700 group/cta">
+                Desbloquear <ChevronRight size={11} className="group-hover/cta:translate-x-1 transition-transform duration-500" />
               </Link>
             ) : (
-              <span className="inline-flex items-center gap-2 text-soda-accent/70 text-[11px] tracking-wider group-hover:text-soda-lamp transition-colors duration-500">
-                Escuchar <ChevronRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
+              <span className="inline-flex items-center gap-2 text-soda-fog/40 text-[10px] tracking-[0.15em] uppercase group-hover:text-soda-lamp/60 transition-colors duration-700">
+                Escuchar <ChevronRight size={11} className="group-hover:translate-x-1 transition-transform duration-500" />
               </span>
             )}
           </div>
