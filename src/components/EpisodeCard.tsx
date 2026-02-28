@@ -19,7 +19,7 @@ const formatDate = (dateStr?: string): string => {
 
 const epNum = (n?: number) => n !== undefined ? `EP. ${String(n).padStart(3, '0')}` : '';
 
-export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episodeNumber?: number }> = ({ episode, isNewest = false, episodeNumber }) => {
+export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episodeNumber?: number; featured?: boolean }> = ({ episode, isNewest = false, episodeNumber, featured = false }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [listened, setListened] = useState(false);
   const [showListenPrompt, setShowListenPrompt] = useState(false);
@@ -80,6 +80,8 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
         style={{ cursor: isLocked ? 'default' : 'pointer' }}
       >
         <div className={`relative overflow-hidden rounded-sm h-full transition-all duration-700 ${
+          featured ? 'flex flex-col md:flex-row' : ''
+        } ${
           isLocked
             ? 'bg-soda-slate/30 border border-soda-mist/10'
             : isUnlockedPremium
@@ -99,7 +101,7 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
           )}
 
           {/* Image */}
-          <div className="relative aspect-[16/10] overflow-hidden bg-soda-deep">
+          <div className={`relative overflow-hidden bg-soda-deep ${featured ? 'md:w-3/5 aspect-[16/10] md:aspect-auto' : 'aspect-[16/10]'}`}>
             <img src={episode.imageUrl} alt={episode.city}
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] ease-out group-hover:scale-[1.015]"
               loading="lazy"
@@ -170,7 +172,7 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
           </div>
 
           {/* Info below image */}
-          <div className="p-5 sm:p-6 relative z-10">
+          <div className={`relative z-10 ${featured ? 'md:w-2/5 p-6 sm:p-8 md:p-10 flex flex-col justify-center' : 'p-5 sm:p-6'}`}>
             {/* City + Date row */}
             <div className="flex items-center justify-between mb-3">
               <span className={`text-[10px] tracking-[0.2em] uppercase font-medium ${isUnlockedPremium ? 'text-soda-red/80' : 'text-soda-accent/70'}`}>
@@ -182,12 +184,12 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
             </div>
 
             {/* Title */}
-            <h3 className="text-lg sm:text-xl font-serif text-soda-glow mb-3 leading-snug group-hover:text-soda-glow/85 transition-colors duration-700">
+            <h3 className={`font-serif text-soda-glow mb-3 leading-snug group-hover:text-soda-glow/85 transition-colors duration-700 ${featured ? 'text-2xl sm:text-3xl' : 'text-lg sm:text-xl'}`}>
               &ldquo;{episode.title}&rdquo;
             </h3>
 
             {/* Description */}
-            <p className="text-soda-fog/60 text-[13px] font-light leading-relaxed mb-5 line-clamp-2">
+            <p className={`text-soda-fog/60 font-light leading-relaxed mb-5 ${featured ? 'text-sm line-clamp-4' : 'text-[13px] line-clamp-2'}`}>
               {episode.description}
             </p>
 

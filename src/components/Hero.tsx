@@ -9,7 +9,9 @@ export const Hero: React.FC = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-soda-deep via-soda-night to-soda-deep" />
+      <div className="absolute inset-0 bg-gradient-to-b from-soda-deep via-soda-night to-soda-night" />
+      {/* Extended bottom fade for seamless section transition */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-soda-night to-transparent pointer-events-none z-[5]" />
 
       {/* Subtle ambient glow */}
       <motion.div

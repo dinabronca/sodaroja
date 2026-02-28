@@ -57,10 +57,12 @@ export const HomePage: React.FC = () => {
             </h2>
           </motion.div>
 
-          {/* Grid de episodios */}
+          {/* Grid de episodios — editorial layout */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {featured.map((episode: any, index: number) => (
-              <EpisodeCard key={episode.id} episode={episode} isNewest={index === 0} episodeNumber={episodeNumberMap[episode.id]} />
+              <div key={episode.id} className={index === 0 ? 'md:col-span-2 lg:col-span-2' : ''}>
+                <EpisodeCard key={episode.id} episode={episode} isNewest={index === 0} episodeNumber={episodeNumberMap[episode.id]} featured={index === 0} />
+              </div>
             ))}
           </div>
 
