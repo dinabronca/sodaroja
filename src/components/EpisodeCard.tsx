@@ -79,25 +79,34 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
         onClick={handleCardClick}
         style={{ cursor: isLocked ? 'default' : 'pointer' }}
       >
-        <div className={`relative overflow-hidden rounded-sm h-full transition-all duration-700 ${
+        <div className={`postal-card relative overflow-hidden rounded-sm h-full transition-all duration-700 ${
           featured ? 'flex flex-col md:flex-row' : ''
         } ${
           isLocked
             ? 'bg-soda-slate/30 border border-soda-mist/10'
             : isUnlockedPremium
-            ? 'bg-soda-slate/40 border-2 border-soda-red/30 hover:border-soda-red/50 shadow-lg shadow-soda-red/5'
-            : 'bg-soda-slate/40 border border-soda-mist/15 hover:border-soda-mist/30'
+            ? 'bg-soda-slate/40 border border-soda-red/25 hover:border-soda-red/40'
+            : 'bg-soda-slate/30 border border-soda-mist/10 hover:border-soda-mist/20'
         }`}
           style={isLocked ? { animation: 'premiumBreathe 6s ease-in-out infinite' } : undefined}
         >
           {/* Hover glow */}
-          <div className={`absolute inset-0 bg-gradient-to-t via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-0 rounded-sm ${
-            isUnlockedPremium ? 'from-soda-red/8' : 'from-soda-red/3'
+          <div className={`absolute inset-0 bg-gradient-to-t via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none z-0 rounded-sm ${
+            isUnlockedPremium ? 'from-soda-red/6' : 'from-soda-red/3'
           }`} />
+
+          {/* Airmail stamp corner — postal detail */}
+          {!isLocked && !featured && (
+            <div className="absolute top-3 right-3 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+              <div className="w-6 h-6 border border-soda-red/15 rounded-sm flex items-center justify-center" style={{ borderStyle: 'dashed' }}>
+                <div className="w-2 h-2 rounded-full bg-soda-red/20" />
+              </div>
+            </div>
+          )}
 
           {/* Premium red line at bottom */}
           {isUnlockedPremium && (
-            <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-soda-red/50 to-transparent z-10" />
+            <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-soda-red/40 to-transparent z-10" />
           )}
 
           {/* Image */}
@@ -179,7 +188,7 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
                 {episode.city}
               </span>
               {formattedDate && !isLocked && (
-                <span className="text-soda-fog/30 text-[10px] tracking-wider">{formattedDate}</span>
+                <span className="text-soda-lamp/40 text-[10px] tracking-wider">{formattedDate}</span>
               )}
             </div>
 
@@ -189,7 +198,7 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
             </h3>
 
             {/* Description */}
-            <p className={`text-soda-fog/60 font-light leading-relaxed mb-5 ${featured ? 'text-sm line-clamp-4' : 'text-[13px] line-clamp-2'}`}>
+            <p className={`text-soda-lamp/55 font-light leading-relaxed mb-5 ${featured ? 'text-sm line-clamp-4' : 'text-[13px] line-clamp-2'}`}>
               {episode.description}
             </p>
 
@@ -199,7 +208,7 @@ export const EpisodeCard: React.FC<{ episode: Episode; isNewest?: boolean; episo
                 Desbloquear <ChevronRight size={11} className="group-hover/cta:translate-x-1 transition-transform duration-500" />
               </Link>
             ) : (
-              <span className="inline-flex items-center gap-2 text-soda-fog/40 text-[10px] tracking-[0.15em] uppercase group-hover:text-soda-lamp/60 transition-colors duration-700">
+              <span className="inline-flex items-center gap-2 text-soda-lamp/45 text-[10px] tracking-[0.15em] uppercase group-hover:text-soda-lamp/80 transition-colors duration-700">
                 Escuchar <ChevronRight size={11} className="group-hover:translate-x-1 transition-transform duration-500" />
               </span>
             )}

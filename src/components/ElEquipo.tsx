@@ -148,7 +148,7 @@ const teamMembers: TeamMember[] = [
 export const ElEquipo: React.FC = () => {
   const isMobileDevice = typeof window !== 'undefined' && (window.innerWidth < 768 || 'ontouchstart' in window);
   return (
-    <section id="equipo" className="relative py-24 sm:py-32 px-6 overflow-hidden">
+    <section id="equipo" className="relative py-28 sm:py-36 px-6 overflow-hidden">
       <TeamAmbience />
 
       {/* Atmospheric background with aurora */}

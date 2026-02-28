@@ -69,7 +69,7 @@ export const Navbar: React.FC = () => {
                     className={`text-[10px] tracking-[0.18em] uppercase relative group transition-colors duration-700 ${
                       item.special === 'frecuencia'
                         ? active ? 'text-soda-red' : 'text-soda-red/50 hover:text-soda-red'
-                        : active ? 'text-soda-lamp' : 'text-soda-fog/40 hover:text-soda-lamp'
+                        : active ? 'text-soda-lamp' : 'text-soda-lamp/40 hover:text-soda-lamp'
                     }`}
                   >
                     {item.label}

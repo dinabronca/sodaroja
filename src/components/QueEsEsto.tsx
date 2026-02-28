@@ -27,7 +27,7 @@ export const QueEsEsto: React.FC = () => {
   const lightsToShow = isMobile ? antennaLights.filter((_, i) => i % 3 === 0) : antennaLights;
 
   return (
-    <section id="que-es-esto" className="relative py-24 sm:py-32 px-6 overflow-hidden">
+    <section id="que-es-esto" className="relative py-28 sm:py-36 px-6 overflow-hidden">
 
       {/* ===== CAPA 0: FONDO ANTENAS — treated ===== */}
       <div className="absolute inset-0">
@@ -112,9 +112,39 @@ export const QueEsEsto: React.FC = () => {
           label="Sobre el proyecto"
           title="¿Qué es"
           titleAccent="sodaroja?"
-          subtitle={queEsEsto.description}
           center
         />
+
+        {/* Giant editorial quote */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+          className="relative max-w-3xl mx-auto text-center mb-20 sm:mb-28 px-4"
+        >
+          <span className="absolute -top-8 left-1/2 -translate-x-1/2 text-soda-red/10 text-[120px] sm:text-[180px] font-serif leading-none select-none pointer-events-none" style={{ fontFamily: 'Georgia, serif' }}>&ldquo;</span>
+          <p className="relative z-10 text-2xl sm:text-3xl md:text-4xl font-serif text-soda-glow/80 leading-[1.3] italic">
+            Cada ciudad tiene una historia que nadie cuenta. Nosotros la encontramos.
+          </p>
+          <div className="mt-6 flex items-center justify-center gap-3">
+            <div className="w-8 h-px bg-soda-red/30" />
+            <span className="text-soda-red/40 text-[10px] tracking-[0.3em] uppercase">sodaroja</span>
+            <div className="w-8 h-px bg-soda-red/30" />
+          </div>
+        </motion.div>
+
+        {/* Description */}
+        {queEsEsto.description && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-soda-fog/50 text-base font-light leading-relaxed max-w-2xl mx-auto text-center mb-16"
+          >
+            {queEsEsto.description}
+          </motion.p>
+        )}
 
         <motion.div
           initial={{ opacity: 0 }}

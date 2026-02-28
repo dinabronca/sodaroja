@@ -1,27 +1,31 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { getContent } from '../data/content';
 
 export const Hero: React.FC = () => {
   const content = getContent();
   const { hero, brand } = content;
   const heroLogo = brand?.heroLogoUrl;
+  const { scrollY } = useScroll();
+  const bgY = useTransform(scrollY, [0, 800], [0, 150]);
+  const contentY = useTransform(scrollY, [0, 600], [0, -60]);
+  const opacity = useTransform(scrollY, [0, 500], [1, 0]);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-soda-deep via-soda-night to-soda-night" />
-      {/* Extended bottom fade for seamless section transition */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-soda-night to-transparent pointer-events-none z-[5]" />
+      {/* Parallax background */}
+      <motion.div className="absolute inset-0 bg-gradient-to-b from-soda-deep via-soda-night to-soda-night" style={{ y: bgY }} />
+      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-soda-night to-transparent pointer-events-none z-[5]" />
 
       {/* Subtle ambient glow */}
       <motion.div
         className="absolute pointer-events-none"
-        style={{ width: '60%', height: '60%', left: '20%', top: '20%', background: 'radial-gradient(ellipse, rgba(196,85,85,0.04) 0%, transparent 70%)', filter: 'blur(60px)' }}
+        style={{ width: '60%', height: '60%', left: '20%', top: '20%', background: 'radial-gradient(ellipse, rgba(196,85,85,0.04) 0%, transparent 70%)', filter: 'blur(60px)', y: bgY }}
         animate={{ opacity: [0.3, 0.5, 0.3], scale: [0.97, 1.03, 0.97] }}
         transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
       />
 
-      <div className="relative z-10 text-center px-6 max-w-6xl mx-auto flex flex-col items-center justify-center">
+      <motion.div className="relative z-10 text-center px-6 max-w-6xl mx-auto flex flex-col items-center justify-center" style={{ y: contentY, opacity }}>
 
         {/* Brand logotipo or hero image or SVG fallback */}
         {hero.imageUrl ? (
@@ -122,7 +126,7 @@ export const Hero: React.FC = () => {
             {hero.description}
           </motion.p>
         )}
-      </div>
+      </motion.div>
 
       {/* Scroll indicator */}
       <motion.div

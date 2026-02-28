@@ -284,13 +284,15 @@ export const AdminPage: React.FC = () => {
               {showNewEpisode && (
                 <div className="border-2 border-soda-accent border-opacity-30 rounded-sm p-5 mb-6 bg-soda-night bg-opacity-40">
                   <h3 className="text-soda-accent text-sm font-medium mb-4">Nuevo Episodio</h3>
-                  <div className="grid grid-cols-2 gap-4 mb-4">
+                  <div className="grid grid-cols-3 gap-4 mb-4">
                     <div><label className={lc}>Ciudad</label><input type="text" value={newEpisode.city} onChange={(e) => setNewEpisode({ ...newEpisode, city: e.target.value })} className={ic} placeholder="Ej: Buenos Aires" /></div>
+                    <div><label className={lc}>País</label><input type="text" value={(newEpisode as any).country || ''} onChange={(e) => setNewEpisode({ ...newEpisode, country: e.target.value } as any)} className={ic} placeholder="Ej: Argentina" /></div>
                     <div><label className={lc}>Título</label><input type="text" value={newEpisode.title} onChange={(e) => setNewEpisode({ ...newEpisode, title: e.target.value })} className={ic} placeholder="Ej: La Dama de Blanco" /></div>
                   </div>
                   <div className="mb-4"><label className={lc}>Descripción</label><textarea rows={2} value={newEpisode.description} onChange={(e) => setNewEpisode({ ...newEpisode, description: e.target.value })} className={ic + ' resize-y'} placeholder="Breve descripción del episodio" /></div>
-                  <div className="grid grid-cols-3 gap-4 mb-4">
+                  <div className="grid grid-cols-4 gap-4 mb-4">
                     <div><label className={lc}>Fecha (YYYY-MM-DD)</label><input type="date" value={newEpisode.publishDate} onChange={(e) => setNewEpisode({ ...newEpisode, publishDate: e.target.value })} className={ic} /></div>
+                    <div><label className={lc}>Duración (min)</label><input type="number" value={(newEpisode as any).durationMin || ''} onChange={(e) => setNewEpisode({ ...newEpisode, durationMin: parseInt(e.target.value) || 0 } as any)} className={ic} placeholder="45" /></div>
                     <div><label className={lc}>URL Imagen (800×600px)</label><input type="text" value={newEpisode.imageUrl} onChange={(e) => setNewEpisode({ ...newEpisode, imageUrl: e.target.value })} className={ic} placeholder="https://..." /></div>
                     <div><label className={lc}>Premium</label>
                       <button onClick={() => setNewEpisode({ ...newEpisode, isPremium: !newEpisode.isPremium })} className="flex items-center gap-2 text-sm mt-1">
@@ -338,13 +340,15 @@ export const AdminPage: React.FC = () => {
                   </div>
                   {isEditing && (
                     <div className="px-4 pb-4 border-t border-soda-mist border-opacity-10 pt-4 bg-soda-night bg-opacity-30">
-                      <div className="grid grid-cols-2 gap-3 mb-3">
+                      <div className="grid grid-cols-3 gap-3 mb-3">
                         <div><label className={lc}>Ciudad</label><input type="text" value={ep.city} onChange={(e) => { const arr = [...content.episodios.items]; arr[idx] = { ...arr[idx], city: e.target.value }; update('episodios.items', arr); }} className={ic} /></div>
+                        <div><label className={lc}>País</label><input type="text" value={(ep as any).country || ''} onChange={(e) => { const arr = [...content.episodios.items]; arr[idx] = { ...arr[idx], country: e.target.value }; update('episodios.items', arr); }} className={ic} placeholder="Ej: Argentina" /></div>
                         <div><label className={lc}>Titulo</label><input type="text" value={ep.title} onChange={(e) => { const arr = [...content.episodios.items]; arr[idx] = { ...arr[idx], title: e.target.value }; update('episodios.items', arr); }} className={ic} /></div>
                       </div>
                       <div className="mb-3"><label className={lc}>Descripcion</label><textarea rows={2} value={ep.description} onChange={(e) => { const arr = [...content.episodios.items]; arr[idx] = { ...arr[idx], description: e.target.value }; update('episodios.items', arr); }} className={ic + ' resize-y'} /></div>
-                      <div className="grid grid-cols-3 gap-3 mb-3">
+                      <div className="grid grid-cols-4 gap-3 mb-3">
                         <div><label className={lc}>Fecha</label><input type="date" value={ep.publishDate} onChange={(e) => { const arr = [...content.episodios.items]; arr[idx] = { ...arr[idx], publishDate: e.target.value }; update('episodios.items', arr); }} className={ic} /></div>
+                        <div><label className={lc}>Duración (min)</label><input type="number" value={(ep as any).durationMin || ''} onChange={(e) => { const arr = [...content.episodios.items]; arr[idx] = { ...arr[idx], durationMin: parseInt(e.target.value) || 0 }; update('episodios.items', arr); }} className={ic} placeholder="45" /></div>
                         <div><label className={lc}>URL Imagen</label><input type="text" value={ep.imageUrl} onChange={(e) => { const arr = [...content.episodios.items]; arr[idx] = { ...arr[idx], imageUrl: e.target.value }; update('episodios.items', arr); }} className={ic} /></div>
                         <div><label className={lc}>Premium</label>
                           <button onClick={() => { const arr = [...content.episodios.items]; arr[idx] = { ...arr[idx], isPremium: !arr[idx].isPremium }; update('episodios.items', arr); }} className="flex items-center gap-2 text-xs mt-1">

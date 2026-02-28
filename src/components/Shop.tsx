@@ -10,7 +10,7 @@ export const Shop: React.FC = () => {
   const isMobile = typeof window !== 'undefined' && (window.innerWidth < 768 || 'ontouchstart' in window);
 
   return (
-    <section id="shop" className="relative py-24 sm:py-32 px-6 overflow-hidden bg-gradient-to-b from-soda-night via-soda-deep to-soda-night">
+    <section id="shop" className="relative py-28 sm:py-36 px-6 overflow-hidden bg-gradient-to-b from-soda-night via-soda-deep to-soda-night">
       <BlueprintEffects />
 
       {/* Atmospheric gradients */}

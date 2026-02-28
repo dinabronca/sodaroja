@@ -4,6 +4,8 @@
 interface DemoEpisode {
   id: string;
   city: string;
+  country?: string;
+  durationMin?: number;
   title: string;
   description: string;
   imageUrl: string;
@@ -19,6 +21,8 @@ export const demoEpisodes: DemoEpisode[] = [
   {
     id: '6',
     city: 'NUEVA YORK',
+    country: 'Estados Unidos',
+    durationMin: 52,
     title: 'El Fantasma del Metro',
     description: 'Línea 6, estación City Hall. Clausurada en 1945. Pero algunos conductores juran que alguien sigue esperando allí.',
     imageUrl: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=800&q=80',
@@ -34,6 +38,8 @@ export const demoEpisodes: DemoEpisode[] = [
   {
     id: '5',
     city: 'PRAGA',
+    country: 'República Checa',
+    durationMin: 48,
     title: 'El Reloj que Predijo la Guerra',
     description: 'En la plaza más antigua de Europa, un reloj astronómico medieval guarda una profecía que nadie quiso escuchar.',
     imageUrl: 'https://images.unsplash.com/photo-1541849546-216549ae216d?w=800&q=80',
@@ -47,6 +53,8 @@ export const demoEpisodes: DemoEpisode[] = [
   {
     id: '4',
     city: 'ESTAMBUL',
+    country: 'Turquía',
+    durationMin: 55,
     title: 'Los Tesoros Hundidos del Bósforo',
     description: 'Tres imperios. Mil naufragios. Un buzo que encontró algo que no debía encontrar.',
     imageUrl: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=800&q=80',
@@ -63,6 +71,8 @@ export const demoEpisodes: DemoEpisode[] = [
   {
     id: '3',
     city: 'BUENOS AIRES',
+    country: 'Argentina',
+    durationMin: 42,
     title: 'La Dama de Blanco',
     description: 'Cada noche de tormenta, una figura cruza el Cementerio de la Recoleta. Los que la siguieron... nunca contaron la historia completa.',
     imageUrl: 'https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=800&q=80',
@@ -78,6 +88,8 @@ export const demoEpisodes: DemoEpisode[] = [
   {
     id: '2',
     city: 'TOKIO',
+    country: 'Japón',
+    durationMin: 58,
     title: 'El Último Samurái Digital',
     description: 'En los callejones de Akihabara, un hombre programa códigos que nadie puede descifrar. Su identidad: un misterio de 20 años.',
     imageUrl: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80',
@@ -91,6 +103,8 @@ export const demoEpisodes: DemoEpisode[] = [
   {
     id: '1',
     city: 'PARÍS',
+    country: 'Francia',
+    durationMin: 45,
     title: 'Las Catacumbas Olvidadas',
     description: 'Bajo las calles más elegantes del mundo, seis millones de esqueletos guardan secretos que nadie quiere recordar.',
     imageUrl: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&q=80',
